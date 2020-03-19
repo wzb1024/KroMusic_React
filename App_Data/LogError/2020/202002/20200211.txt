@@ -1,0 +1,138 @@
+
+记录时间：2020-02-11 14:30:20,071 
+线程ID:[8] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：InvalidOperationException
+消息内容：未找到视图“UserMsg”或其母版视图，或没有视图引擎支持搜索的位置。搜索了以下位置: 
+~/Areas/User/Views/AccountMsg/UserMsg.aspx
+~/Areas/User/Views/AccountMsg/UserMsg.ascx
+~/Areas/User/Views/Shared/UserMsg.aspx
+~/Areas/User/Views/Shared/UserMsg.ascx
+~/Views/AccountMsg/UserMsg.aspx
+~/Views/AccountMsg/UserMsg.ascx
+~/Views/Shared/UserMsg.aspx
+~/Views/Shared/UserMsg.ascx
+~/Areas/User/Views/AccountMsg/UserMsg.cshtml
+~/Areas/User/Views/AccountMsg/UserMsg.vbhtml
+~/Areas/User/Views/Shared/UserMsg.cshtml
+~/Areas/User/Views/Shared/UserMsg.vbhtml
+~/Views/AccountMsg/UserMsg.cshtml
+~/Views/AccountMsg/UserMsg.vbhtml
+~/Views/Shared/UserMsg.cshtml
+~/Views/Shared/UserMsg.vbhtml
+引发异常的方法：System.Web.Mvc.ViewEngineResult FindView(System.Web.Mvc.ControllerContext)
+引发异常源：System.Web.Mvc   在 System.Web.Mvc.ViewResult.FindView(ControllerContext context)
+   在 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+ 
+
+记录时间：2020-02-11 14:41:28,609 
+线程ID:[22] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：HttpException
+消息内容：无法直接请求文件“~/Views/Home/Ranking.cshtml”，因为它调用了“RenderSection”方法。
+引发异常的方法：Void EnsurePageCanBeRequestedDirectly(System.String)
+引发异常源：System.Web.WebPages   在 System.Web.WebPages.WebPageBase.EnsurePageCanBeRequestedDirectly(String methodName)
+   在 System.Web.WebPages.WebPageBase.RenderSection(String name, Boolean required)
+   在 System.Web.WebPages.WebPageBase.RenderSection(String name)
+   在 ASP._Page_Views_Home_Ranking_cshtml.Execute() 位置 D:\Subject\KroMusic\Views\Home\Ranking.cshtml:行号 13
+   在 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   在 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   在 System.Web.WebPages.StartPage.RunPage()
+   在 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   在 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   在 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   在 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   在 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+ 
+
+记录时间：2020-02-11 14:41:34,931 
+线程ID:[29] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：HttpException
+消息内容：无法直接请求文件“~/Views/Home/Ranking.cshtml”，因为它调用了“RenderSection”方法。
+引发异常的方法：Void EnsurePageCanBeRequestedDirectly(System.String)
+引发异常源：System.Web.WebPages   在 System.Web.WebPages.WebPageBase.EnsurePageCanBeRequestedDirectly(String methodName)
+   在 System.Web.WebPages.WebPageBase.RenderSection(String name, Boolean required)
+   在 System.Web.WebPages.WebPageBase.RenderSection(String name)
+   在 ASP._Page_Views_Home_Ranking_cshtml.Execute() 位置 D:\Subject\KroMusic\Views\Home\Ranking.cshtml:行号 13
+   在 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   在 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   在 System.Web.WebPages.StartPage.RunPage()
+   在 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   在 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   在 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   在 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   在 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+ 
+
+记录时间：2020-02-11 14:41:53,995 
+线程ID:[22] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：HttpException
+消息内容：无法直接请求文件“~/Views/Home/Ranking.cshtml”，因为它调用了“RenderSection”方法。
+引发异常的方法：Void EnsurePageCanBeRequestedDirectly(System.String)
+引发异常源：System.Web.WebPages   在 System.Web.WebPages.WebPageBase.EnsurePageCanBeRequestedDirectly(String methodName)
+   在 System.Web.WebPages.WebPageBase.RenderSection(String name, Boolean required)
+   在 System.Web.WebPages.WebPageBase.RenderSection(String name)
+   在 ASP._Page_Views_Home_Ranking_cshtml.Execute() 位置 D:\Subject\KroMusic\Views\Home\Ranking.cshtml:行号 13
+   在 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   在 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   在 System.Web.WebPages.StartPage.RunPage()
+   在 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   在 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   在 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   在 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   在 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+ 
+
+记录时间：2020-02-11 23:20:51,103 
+线程ID:[6] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：InvalidOperationException
+消息内容：操作“CategoryNavbar”只能由子请求访问。
+引发异常的方法：Void OnAuthorization(System.Web.Mvc.AuthorizationContext)
+引发异常源：System.Web.Mvc   在 System.Web.Mvc.ChildActionOnlyAttribute.OnAuthorization(AuthorizationContext filterContext)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAuthorizationFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__0(AsyncCallback asyncCallback, Object asyncState)
+ 
+
+记录时间：2020-02-11 23:22:11,046 
+线程ID:[6] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：InvalidOperationException
+消息内容：操作“CategoryNavbar”只能由子请求访问。
+引发异常的方法：Void OnAuthorization(System.Web.Mvc.AuthorizationContext)
+引发异常源：System.Web.Mvc   在 System.Web.Mvc.ChildActionOnlyAttribute.OnAuthorization(AuthorizationContext filterContext)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAuthorizationFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__0(AsyncCallback asyncCallback, Object asyncState)
+ 

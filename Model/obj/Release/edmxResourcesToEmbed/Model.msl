@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="KroMusicEntities">
+    <EntitySetMapping Name="Music">
+      <EntityTypeMapping TypeName="Model.Music">
+        <MappingFragment StoreEntitySet="Music">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Music_name" ColumnName="Music_name" />
+          <ScalarProperty Name="Singer_id" ColumnName="Singer_id" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Likes" ColumnName="Likes" />
+          <ScalarProperty Name="Listen_times" ColumnName="Listen_times" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Span" ColumnName="Span" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User">
+      <EntityTypeMapping TypeName="Model.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Hdimage" ColumnName="Hdimage" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="NikName" ColumnName="NikName" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Age" ColumnName="Age" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

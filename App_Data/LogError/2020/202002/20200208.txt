@@ -1,0 +1,93 @@
+
+记录时间：2020-02-08 17:01:55,329 
+线程ID:[12] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：NullReferenceException
+消息内容：未将对象引用设置到对象的实例。
+引发异常的方法：System.Web.Mvc.ActionResult Clear()
+引发异常源：KroMusic   在 KroMusic.Controllers.HomeController.Clear() 位置 D:\Subject\KroMusic\Controllers\HomeController.cs:行号 66
+   在 lambda_method(Closure , ControllerBase , Object[] )
+   在 System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   在 System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c.<BeginInvokeSynchronousActionMethod>b__9_0(IAsyncResult asyncResult, ActionInvocation innerInvokeState)
+   在 System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`2.CallEndDelegate(IAsyncResult asyncResult)
+   在 System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass11_0.<InvokeActionMethodFilterAsynchronouslyRecursive>b__0()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass11_2.<InvokeActionMethodFilterAsynchronouslyRecursive>b__2()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass11_2.<InvokeActionMethodFilterAsynchronouslyRecursive>b__2()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass7_0.<BeginInvokeActionMethodWithFilters>b__1(IAsyncResult asyncResult)
+   在 System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)
+   在 System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+ 
+
+记录时间：2020-02-08 23:56:12,226 
+线程ID:[6] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：InvalidOperationException
+消息内容：未找到分部视图“CategoryNavbar”或没有视图引擎支持搜索的位置。搜索了以下位置: 
+~/Areas/Music/Views/Playlist/CategoryNavbar.aspx
+~/Areas/Music/Views/Playlist/CategoryNavbar.ascx
+~/Areas/Music/Views/Shared/CategoryNavbar.aspx
+~/Areas/Music/Views/Shared/CategoryNavbar.ascx
+~/Views/Playlist/CategoryNavbar.aspx
+~/Views/Playlist/CategoryNavbar.ascx
+~/Views/Shared/CategoryNavbar.aspx
+~/Views/Shared/CategoryNavbar.ascx
+~/Areas/Music/Views/Playlist/CategoryNavbar.cshtml
+~/Areas/Music/Views/Playlist/CategoryNavbar.vbhtml
+~/Areas/Music/Views/Shared/CategoryNavbar.cshtml
+~/Areas/Music/Views/Shared/CategoryNavbar.vbhtml
+~/Views/Playlist/CategoryNavbar.cshtml
+~/Views/Playlist/CategoryNavbar.vbhtml
+~/Views/Shared/CategoryNavbar.cshtml
+~/Views/Shared/CategoryNavbar.vbhtml
+引发异常的方法：System.Web.Mvc.ViewEngineResult FindView(System.Web.Mvc.ControllerContext)
+引发异常源：System.Web.Mvc   在 System.Web.Mvc.PartialViewResult.FindView(ControllerContext context)
+   在 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+ 
+
+记录时间：2020-02-08 23:57:48,101 
+线程ID:[9] 
+日志级别： ERROR 
+出错类：KroMusic.Filter.MyExceptionAttribute property: [(null)] - 
+错误描述：消息类型：InvalidOperationException
+消息内容：未找到分部视图“CategoryNavbar”或没有视图引擎支持搜索的位置。搜索了以下位置: 
+~/Areas/Music/Views/Playlist/CategoryNavbar.aspx
+~/Areas/Music/Views/Playlist/CategoryNavbar.ascx
+~/Areas/Music/Views/Shared/CategoryNavbar.aspx
+~/Areas/Music/Views/Shared/CategoryNavbar.ascx
+~/Views/Playlist/CategoryNavbar.aspx
+~/Views/Playlist/CategoryNavbar.ascx
+~/Views/Shared/CategoryNavbar.aspx
+~/Views/Shared/CategoryNavbar.ascx
+~/Areas/Music/Views/Playlist/CategoryNavbar.cshtml
+~/Areas/Music/Views/Playlist/CategoryNavbar.vbhtml
+~/Areas/Music/Views/Shared/CategoryNavbar.cshtml
+~/Areas/Music/Views/Shared/CategoryNavbar.vbhtml
+~/Views/Playlist/CategoryNavbar.cshtml
+~/Views/Playlist/CategoryNavbar.vbhtml
+~/Views/Shared/CategoryNavbar.cshtml
+~/Views/Shared/CategoryNavbar.vbhtml
+引发异常的方法：System.Web.Mvc.ViewEngineResult FindView(System.Web.Mvc.ControllerContext)
+引发异常源：System.Web.Mvc   在 System.Web.Mvc.PartialViewResult.FindView(ControllerContext context)
+   在 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+ 

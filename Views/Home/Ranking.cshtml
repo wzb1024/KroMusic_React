@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Ranking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <script>
+        $(function () {
+            $("ul.nav").children().removeClass("active")
+            $("ul.nav li").eq(2).addClass("active")
+        })
+    </script>
+
+
+    <div id="rangking-container">
+            <div id="rankingNav">
+                <ul>
+                    <li>巅峰榜</li>
+                    <li><a>飙升榜</a></li>
+                    <li><a>周热度榜</a></li>
+                    <li><a>月热度榜</a></li>
+                </ul>
+                <ul>
+                    <li>地区榜</li>
+                    <li><a>内地榜</a></li>
+                    <li><a>香港地区榜</a></li>
+                    <li><a>欧美榜</a></li>
+                    <li><a>日本榜</a></li>
+                    <li><a>韩国榜</a></li>
+                </ul>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+
+        <div id="ranking-list-box">
+
+        </div>
+    </div>

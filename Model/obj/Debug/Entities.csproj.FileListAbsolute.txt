@@ -1,0 +1,13 @@
+D:\Project\KroMusic\Model\bin\Debug\Model.dll.config
+D:\Project\KroMusic\Model\bin\Debug\Model.dll
+D:\Project\KroMusic\Model\bin\Debug\Model.pdb
+D:\Project\KroMusic\Model\bin\Debug\EntityFramework.dll
+D:\Project\KroMusic\Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\Project\KroMusic\Model\bin\Debug\EntityFramework.xml
+D:\Project\KroMusic\Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\Project\KroMusic\Model\bin\Debug\zh-Hans\EntityFramework.resources.dll
+D:\Project\KroMusic\Model\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\Project\KroMusic\Model\obj\Debug\Entities.csprojAssemblyReference.cache
+D:\Project\KroMusic\Model\obj\Debug\Entities.csproj.CopyComplete
+D:\Project\KroMusic\Model\obj\Debug\Model.dll
+D:\Project\KroMusic\Model\obj\Debug\Model.pdb

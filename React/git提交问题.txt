@@ -1,0 +1,11 @@
+cnpm 安装的依赖会被默认安装到项目的 node_modules 目录下。这个目录通常是不需要提交到代码仓库中的。如果你使用的是 git 来作为代码的管理工具，那么你可以添加 .gitignore 文件到项目根目录中，避免将不必要的代码提交到 git 仓库中。
+.gitignore 如下：
+node_modules
+dist
+.umi
+
+LF will be replaced by CRLF in package.json问题
+#在工程目录下添加 .gitattributes 文件，文件内容为:
+ 
+package.json text eol=lf
+package-lock.json text eol=lf

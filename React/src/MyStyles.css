@@ -1,0 +1,790 @@
+﻿* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: "Lantinghei sc", "Microsoft YaHei", 宋体, Arial, Helvetica,
+    sans-serif;
+  font-size: 12px;
+  font-style: normal;
+}
+body {
+  overflow: hidden;
+}
+#html_body {
+  background-color: #f8fff0;
+  width: 1920px;
+}   
+li {
+  list-style: none;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: black;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+}
+
+button {
+  outline: none;
+}
+
+em {
+  font-weight: normal;
+}
+
+.shadow {
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.5);
+}
+
+#renderBody {
+  position: relative;
+  padding-top: 70px;
+  min-height: 920px;
+  width: 1920px;
+  height: 960px;
+  overflow: scroll;
+}
+.container {
+  width: 1020px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  min-height: 920px;
+  padding: 30px 40px;
+}
+
+.ue-bar {
+  position: fixed;
+  width: 1920px;
+  height: 70px;
+  background-color: white;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.ue-bar-warp {
+  width: 1060px;
+  height: 70px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.ue-bar-logo {
+  width: 80px;
+  height: 50px;
+  float: left;
+}
+
+.ue-bar-logo a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.ue-bar-nav {
+  height: 70px;
+  float: left;
+}
+
+.ue-bar-nav li {
+  height: 70px;
+  float: left;
+  padding: 0 10px;
+  margin-right: 20px;
+}
+
+.ue-bar-nav li * {
+  font-size: 18px;
+}
+
+.ue-bar-nav li a {
+  line-height: 70px;
+}
+
+.ue-bar-nav a.active {
+  color: #7bed9f;
+}
+
+.ue-bar-nav li a:hover {
+  color: #7bed9f;
+}
+
+.ue-bar-signin {
+  height: 70px;
+  margin-right: 120px;
+  float: right;
+}
+
+.ue-bar-signin ul {
+  height: 70px;
+  float: right;
+}
+
+.ue-bar-signin li {
+  height: 70px;
+  float: right;
+}
+
+.ue-bar-signin a {
+  height: 100%;
+  display: inline-block;
+  padding-top: 20px;
+  font-size: 18px;
+}
+
+.ue-bar-signin a:hover {
+  color: #7bed9f;
+}
+
+.ue-bar-signin em {
+  font-size: 18px;
+  padding-top: 8px;
+}
+
+/*登录*/
+
+
+
+/*注册框*/
+#signup_container{
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 360px;
+  padding: 15px 3px;
+  position: absolute;
+  top: 20%;
+  right: 25%;
+}
+
+#signup-box h3 {
+  text-align: center;
+}
+
+#signup-box .form-item input {
+  position: relative;
+  margin-bottom: 7px;
+}
+
+#signup-box .form-item label {
+  position: relative;
+  margin-bottom: 7px;
+  top: 3px;
+}
+
+#head-image {
+  position: relative;
+}
+
+#hdimg {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+#imageFile {
+  position: relative;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, 10%);
+  display: block;
+  width: 70px;
+  padding: 0 10px;
+  background: #d0eeff;
+  border: 1px solid #99d3f5;
+  border-radius: 4px;
+  overflow: hidden;
+  color: #1e88c7;
+  text-decoration: none;
+  text-indent: 0;
+  line-height: 20px;
+}
+
+#imageFile input {
+  position: absolute;
+  font-size: 100px;
+  right: 0;
+  top: 0;
+  opacity: 0;
+}
+
+#imageFile:hover {
+  background: #aadffd;
+  border-color: #78c3f3;
+  color: #004974;
+  text-decoration: none;
+}
+
+.form-item span {
+  color: red;
+}
+
+/*轮播图*/
+#recommend {
+  width: 100%;
+  height: 500px;
+  background-color: #f1f2f6;
+  padding: 50px;
+}
+
+#rcmd-title {
+  display: block;
+  float: left;
+  width: 200px;
+  height: 100%;
+}
+
+#rcmd-title em {
+  display: block;
+  width: 30px;
+  height: 100%;
+  font-size: 30px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#rcmd-container {
+  display: block;
+  float: left;
+  height: 100%;
+  width: 77%;
+}
+
+#hit-songs {
+  height: 400px;
+  width: 100%;
+}
+
+#index-ranking {
+  height: 400px;
+  width: 100%;
+  background-color: #f1f2f6;
+}
+
+/*搜索*/
+#search-container {
+  position: relative;
+  min-height: 920px;
+}
+/*#search-box {
+    position: relative;
+    top: 66px;
+    margin: 0 auto;
+    padding: 0;
+    width: 520px;
+    height: 50px;
+    border: 2px #b2bec3 solid;
+    border-radius: 40px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+}*/
+#search-box {
+  position: relative;
+  top: 166px;
+  margin: 0 auto;
+  padding: 0;
+  width: 660px;
+  height: 80px;
+  border: 2px #b2bec3 solid;
+  border-radius: 40px;
+  color: #576574;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+#search-input {
+  height: 100%;
+  width: 75%;
+  display: inline-block;
+  padding: 0 15px;
+  font-size: 20px;
+  outline: none;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+
+#search-box button {
+  display: inline-block;
+  height: 100%;
+  width: 25%;
+  font-size: 25px;
+  outline: none;
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+#search-result-box {
+  width: 520px;
+  margin: 0 auto;
+  position: relative;
+  top: 90px;
+  padding: 15px 30px;
+  border-radius: 40px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+  display: none;
+}
+
+#search-section {
+  width: 660px;
+  height: 600px;
+  margin: 0 auto;
+  position: relative;
+  top: 180px;
+  padding: 30px;
+}
+
+#searc-history h4,
+#searc-history button {
+  display: inline-block;
+  margin-right: 20px;
+  outline: none;
+}
+
+#searc-history {
+  width: 100%;
+  height: auto;
+  overflow: initial;
+}
+
+#searc-history ul {
+  display: block;
+}
+
+#searc-history ul li {
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 5px;
+  background-color: #a4b0be;
+  border-radius: 10px;
+}
+
+#searc-history ul li a {
+  font-size: 16px;
+  padding: 2px 4px;
+}
+
+#searc-history ul li a:hover {
+  color: #f1f2f6;
+}
+
+#search-pop-song {
+  display: block;
+  margin-top: 33px;
+  width: 100%;
+}
+
+#search-result-box > * {
+  margin-bottom: 15px;
+}
+
+#search-result-box ul li a {
+  display: block;
+  color: #2c3a47;
+  width: 100%;
+  padding: 0 3px;
+  font-size: 16px;
+  line-height: 30px;
+}
+
+#search-result-box ul li a:hover {
+  text-decoration: none;
+  background-color: #a4b0be;
+}
+
+#search-result-box h4 {
+  border-bottom: 1px #b2bec3 solid;
+  margin: 0;
+  padding-bottom: 5px;
+  color: #636e72;
+}
+/*分类页*/
+#categories_nav {
+  margin: 0 auto;
+  width: 860px;
+  border-bottom: 1px solid #d9d9d9;
+  padding: 0 20px;
+  padding-bottom: 12px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+#categories_nav:hover {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+element.style {
+  height: 256px;
+}
+
+.ant-drawer-top > .ant-drawer-content-wrapper {
+  width: 800px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#categories_nav > div {
+  height: 25px;
+}
+.typeItem > span {
+  font-size: 16px;
+  margin-right: 10px;
+  color: #1f1f1f;
+}
+.typeItem button {
+  padding: 2px 4px;
+}
+.typeItem > button:hover span {
+  color: #bfbfbf;
+}
+.typeItem > button > span.active {
+  color: #bfbfbf;
+}
+.typeItem button span {
+  font-size: 14px;
+  color: #8c8c8c;
+}
+
+#categorybar {
+  width: 100%;
+  margin-top: 20px;
+  padding-bottom: 15px;
+  overflow: hidden;
+}
+#breadcrumb {
+  height: 25px;
+  float: left;
+}
+#sort_btn {
+  height: 25px;
+  float: right;
+}
+#breadcrumb button {
+  padding: 0 5px;
+}
+#breadcrumb button span {
+  font-size: 17px;
+  color: #bfbfbf;
+  transition: all 0.1s;
+}
+#breadcrumb > span {
+  font-size: 16px;
+  color: #bfbfbf;
+}
+#sort_btn button {
+  padding: 0px 5px;
+  height: 28px;
+  border: 1px solid #bfbfbf;
+}
+#sort_btn > button.selected > span,
+#sort_btn > button.selected {
+  background-color: #bfbfbf;
+  color: #fafafa;
+}
+#sort_btn button span {
+  font-size: 16px;
+  color: #bfbfbf;
+}
+#playlistcards {
+  overflow: hidden;
+  text-align: center;
+}
+#playlistcards > :not(:nth-child(5n)) {
+  margin-right: 10px;
+}
+.playlist_card {
+  width: 180px;
+  height: 240px;
+  float: left;
+  margin-top: 5px;
+}
+
+.pagination {
+  margin: 15px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*账户*/
+#account_container {
+  padding: 3% 8%;
+  width: 65%;
+
+  margin: 0 auto;
+}
+#account_msg {
+  width: 15%;
+  height: 60%;
+  position: fixed;
+  border: 1px solid black;
+}
+#head_img{
+    text-align: center;
+    padding-top: 10px;
+}
+#account_taps {
+  float: right;
+  width: 65%;
+  min-height: 720px;
+  border: 1px solid black;
+}
+
+/*歌单*/
+
+#playlist_intro {
+  width: 260px;
+  border: 1px solid black;
+  padding: 20px 15px 5px; 
+  position: fixed;
+}
+#playlist_cover
+{
+  height: 160px;
+  width: 160px;
+  border: 1px solid black;
+  margin-bottom: 15px;
+
+}
+#playlist_intro>ul>li{
+  margin-bottom: 8px;
+  line-height: 16px;
+}
+#playlist_intro>ul>li>*{
+  font-size: 14px;
+}
+#playlist_intro>ul>li>p{
+  line-height: 20px;
+  letter-spacing: 0.6px;
+}
+
+#playlist_content{
+  float: right;
+  width: 670px;
+  min-height: 830px;
+  border: 1px solid black;
+}
+
+
+
+#playlist_operate {
+  width: 180px;
+  height:30px;
+  margin: 0 auto  ;
+  margin-top: 20px;
+}
+#playlist_operate>button{
+  width: 60px;
+  line-height: 30px;
+  cursor: pointer;
+  background-color: white;
+}
+#playlist_operate>button svg{
+font-size: 24px;
+}
+#playlist_operate>button:hover svg{
+
+  transform: scale(1.1);
+}
+
+#playlist_items_title {
+  width: 100%;
+  min-width: 800px;
+  margin: 0;
+  margin-top: 33px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.3);
+}
+
+#playlist_operate ul > :first-child {
+  width: 28%;
+}
+
+#playlist_operate ul > :not(:first-child) {
+  width: 24%;
+}
+
+#playlist_operate ul li button {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#playlist_items_title li {
+  display: inline-block;
+  width: 16%;
+}
+
+#playlist_items_title li em {
+  font-size: 16px;
+}
+
+#playlist_items_title > :first-child {
+  width: 70%;
+}
+
+#playlist_items_title > :last-child {
+  width: 10%;
+}
+
+#playlist_items {
+  width: 100%;
+  min-width: 800px;
+  margin: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 10px 0px 20px;
+}
+
+#playlist_items > ul li {
+  display: inline-block;
+  width: 16%;
+}
+
+#playlist_items > ul > :first-child {
+  width: 70%;
+}
+
+#playlist_items > ul > :last-child {
+  width: 10%;
+}
+
+#playlist_items > :nth-child(2n) {
+  background-color: #dcdde1;
+}
+
+.playlist_item {
+  padding: 8px 20px;
+  margin: 0;
+}
+
+.playlist_item :hover .playlist_music_operate {
+  display: inline-block;
+}
+
+.playlist_item li a em,
+.playlist_item li > em {
+  font-size: 14px;
+}
+
+.playlist_music_operate {
+  margin-right: 25px;
+  display: none;
+  float: right;
+}
+
+.playlist_music_operate span {
+  font-size: 16px;
+}
+
+.playlist_music_operate span:hover {
+  color: red;
+}
+/*歌曲详情*/
+#music_details_box {
+  width: 50%;
+}
+
+#music_introduce {
+  width: 100%;
+  height: 230px;
+  padding: 0 30px;
+  padding-top: 40px;
+  min-width: 800px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#music_cover {
+  float: left;
+  margin-right: 30px;
+}
+
+#music_title {
+  float: left;
+  padding: 0 20px;
+  font-size: 30px;
+}
+
+#music_title > ul {
+  display: inline-block;
+  margin-left: 30px;
+}
+
+#music_title ul :not(:first-child) {
+  margin-top: 8px;
+}
+
+#music_title ul li {
+  font-size: 18px;
+}
+
+#music_operate {
+  margin: 0 auto;
+  margin-top: 33px;
+  width: 60%;
+  min-width: 480px;
+  height: 50px;
+  border-radius: 35px;
+  padding: 10px 22px;
+}
+
+#music_operate ul {
+  font-size: 0;
+  width: 100%;
+}
+
+#music_operate ul li {
+  display: inline-block;
+  height: 30px;
+  padding: 0 10px;
+}
+
+#music_operate ul > :first-child {
+  width: 28%;
+}
+
+#music_operate ul > :not(:first-child) {
+  width: 24%;
+}
+
+#music_operate ul li button {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#music_lyric_box {
+  float: left;
+  width: 60%;
+  min-height: 600px;
+  padding: 20px;
+  margin-top: 30px;
+}
+#relate_music_box {
+  float: right;
+  width: 35%;
+  height: 600px;
+  margin-top: 30px;
+}
+#relate_music_box h4 {
+  margin: 0 auto;
+  width: 80%;
+  height: 20px;
+  margin-bottom: 18px;
+}
+.relate_music {
+  margin: 0 auto;
+  width: 80%;
+  height: 70px;
+  padding: 5px 8px;
+  margin-bottom: 20px;
+}
+
+/*组件样式*/
+#components-form-demo-normal-login .login-form {
+  max-width: 300px;
+}
+#components-form-demo-normal-login .login-form-forgot {
+  float: right;
+}
+#components-form-demo-normal-login .login-form-button {
+  width: 100%;
+}

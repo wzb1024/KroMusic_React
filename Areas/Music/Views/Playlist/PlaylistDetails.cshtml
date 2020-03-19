@@ -1,0 +1,196 @@
+﻿@model Model.Playlist
+
+@{
+    ViewBag.Title = "PlaylistDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        $("#playlist_collect_btn").click(function () {
+            $.ajax("/Music/Playlist/PlaylistCollect", {
+                type: "get",
+                data: { id:@Model.Id},
+                error: function (err) {
+                    alert(err)
+                },
+                success: function (result) {
+                    if (result == "True") {
+                        $("#playlist_collect_btn span").removeClass("glyphicon-star-empty").addClass("glyphicon-star").css("color", "red");
+                        $("#playlist_collect_btn em").empty().html("已收藏");
+
+                    }
+                    else if (result == "False") {
+                        $("#playlist_collect_btn span").removeClass("glyphicon-star").addClass("glyphicon-star-empty").css("color", "black")
+                        $("#playlist_collect_btn em").empty().html("收藏");
+                    }
+                    else {
+                        $("#sign_box").css("display", "block");
+                        $("#sign_box").html(result);
+                    }
+                }
+
+            })
+        })
+        var likes=@Model.Likes;
+        $("#playlist_like_btn").click(function () {
+            $.ajax("/Music/Playlist/PlaylistLike", {
+                type: "get",
+                data: { id:@Model.Id},
+                error: function (err) {
+                    alert(err)
+                },
+                success: function (result) {
+                    if (result == "True") {
+                        $("#playlist_like_btn span").css("color", "red");
+                        $("#playlist_like_btn em").empty().html(eval(likes+=1));
+
+                    }
+                    else if (result == "False") {
+                        $("#playlist_like_btn span").css("color", "black")
+                        $("#playlist_like_btn em").empty().html(eval(likes-=1));
+
+                    }
+                    else {
+                        $("#sign_box").css("display", "block");
+                        $("#sign_box").html(result);
+                    }
+                }
+
+            })
+        })
+    })
+</script>
+<div id="playlist_details_box" class="container">
+    <div id="playlist_introduce" class=" shadow">
+        <div id="playlist_cover">
+            <img src=@Model.Cover width="140" height="160">
+        </div>
+        <div id="playlist_title">
+            <ul>
+                <li>@Model.Name</li>
+                <li>创建者：<a href=@Url.Action("UserMsg", "AccountMsg", new { area = "User", id = Model.OwnerId })>  @Model.User.NikName</a></li>
+                <li>
+                    标签：@foreach (var item in Model.PlaylistType)
+                    {
+                        <span>@item.SubType.Name &nbsp;</span>
+                    }
+                </li>
+                <li>创建时间： @Model.CreateTime.ToShortDateString()</li>
+                <li>播放量：@Model.PlayTimes</li>
+            </ul>
+
+
+        </div>
+        <div id="playlist_brief" class="shadow">
+            <h4>歌单简介</h4>
+            <p>@Model.Description</p>
+        </div>
+    </div>
+    <div id="playlist_operate" class="shadow">
+        <ul>
+            <li>
+                <button>
+                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span><em>播放全部</em>
+                </button>
+            </li>
+            <li>
+                <button id="playlist_like_btn">
+                    @{
+                        if (Session["UserId"] != null)
+                        {
+
+                            if (Session["UserId"] != null)
+                            {
+                                bool isExist = Model.LikePlaylist.Any(u => u.UserId == int.Parse(Session["UserId"].ToString()));
+                                if (isExist)
+                                {
+                                    <span style="color:red" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                }
+                                else
+                                {
+                                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+
+                                }
+                            }
+
+
+                        }
+                        else
+                        {
+
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+
+                        }
+                        <em>@Model.Likes</em>
+                    }
+                </button>
+            </li>
+            <li>
+                <button id="playlist_collect_btn">
+                    @{
+                        if (Session["UserId"] != null)
+                        {
+                            bool isExist = Model.FavoritePlaylist.Any(u => u.UserId == int.Parse(Session["UserId"].ToString()));
+                            if (isExist)
+                            {
+                                <span style="color:red" class="glyphicon glyphicon-star" aria-hidden="true"></span><em>已收藏</em>
+                            }
+                            else
+                            {
+                                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span><em>收藏</em>
+
+                            }
+                        }
+
+                        else
+                        {
+
+                            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span><em>收藏</em>
+
+                        }
+                    }
+
+                </button>
+            </li>
+            <li>
+                <button>
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span><em>评论</em>
+                </button>
+            </li>
+
+        </ul>
+
+
+    </div>
+    @*初步为全部加载，后改进为异步分页*@    
+    <ul id="playlist_items_title">
+        <li>
+            <em>歌曲</em>
+        </li>
+        <li>
+            <em>歌手</em>
+        </li>
+        <li>
+            <em>时长</em>
+        </li>
+    </ul>
+    <div id="playlist_items" class="shadow">
+        @foreach (var item in Model.PlaylistItems)
+        {
+            <ul class="playlist_item">
+                <li id="@item.MusicId">
+                    <a href=@Url.Action("MusicDetails","Song",new { area="Music",id=item.MusicId})><em>@item.Music.MusicName</em></a>
+                    <button class="music_add_btn playlist_music_operate"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                    <button class="music_collect_btn playlist_music_operate"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></button>
+                    <button class="music_play_btn playlist_music_operate"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+                </li>
+                <li>
+                    <a href=@Url.Action("SingerDetails","Singer",new { area="Music",id=item.Music.SingerId})><em>@item.Music.Singer.Name</em></a>
+                </li>
+                <li>
+                    <em>@item.Music.Span</em>
+                </li>
+            </ul>
+        }
+    </div>
+</div>

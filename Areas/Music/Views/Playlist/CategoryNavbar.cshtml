@@ -1,0 +1,18 @@
+﻿
+@model IEnumerable<Model.Type>
+@{
+    foreach (var item in Model)
+    {
+        <div class="type-section">
+            <h4>@item.Name:</h4>
+            <ul>
+                @foreach (var u in item.SubType)
+                {
+                    <li><a class="type_link" id=@u.Id>@u.Name</a></li>
+                    
+                }
+            </ul>
+        </div>
+
+    }
+}

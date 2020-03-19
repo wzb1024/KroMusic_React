@@ -1,0 +1,15 @@
+D:\Subject\KroMusic\DAL\bin\Release\DAL.dll.config
+D:\Subject\KroMusic\DAL\bin\Release\DAL.dll
+D:\Subject\KroMusic\DAL\bin\Release\DAL.pdb
+D:\Subject\KroMusic\DAL\bin\Release\EntityFramework.dll
+D:\Subject\KroMusic\DAL\bin\Release\EntityFramework.SqlServer.dll
+D:\Subject\KroMusic\DAL\bin\Release\Model.dll
+D:\Subject\KroMusic\DAL\bin\Release\Model.pdb
+D:\Subject\KroMusic\DAL\bin\Release\Model.dll.config
+D:\Subject\KroMusic\DAL\bin\Release\EntityFramework.xml
+D:\Subject\KroMusic\DAL\bin\Release\EntityFramework.SqlServer.xml
+D:\Subject\KroMusic\DAL\bin\Release\zh-Hans\EntityFramework.resources.dll
+D:\Subject\KroMusic\DAL\obj\Release\DAL.csprojAssemblyReference.cache
+D:\Subject\KroMusic\DAL\obj\Release\DAL.csproj.CopyComplete
+D:\Subject\KroMusic\DAL\obj\Release\DAL.dll
+D:\Subject\KroMusic\DAL\obj\Release\DAL.pdb

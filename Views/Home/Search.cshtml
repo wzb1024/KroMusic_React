@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        $("ul.nav").children().removeClass("active")
+        $("ul.nav li").eq(4).addClass("active")
+        $.search = function (value) {
+            //查询是否存在音乐
+            $.getJSON("/Music/Song/SearchResult", { keywords: value }, function (data) {
+                var length = 0;
+                $.each(data, function (idx, obj) {
+
+
+                    length++;
+                })
+            })
+            //查询是否存在歌手
+            $.getJSON("/Music/Singer/SearchResult", { keywords: value }, function (data) {
+                var length = 0;
+                $.each(data, function (idx, obj) {
+
+
+                    length++;
+                })
+            })
+            //查询是否存在歌单
+            $.getJSON("/Music/Playlist/SearchResult", { keywords: value }, function (data) {
+                var length = 0;
+                $.each(data, function (idx, obj) {
+
+
+                    length++;
+                })
+            })
+            $("#search-section").hide();
+            $("#search-box").animate({ top: '66', width: '520px', height: '50px' })
+            $("#search-result-box").slideDown(500)
+        }
+        $("#search-btn").click(function () {
+            var keywords = $("#search-input").val();
+            if (keywords != "") {
+                $.search(keywords)
+                $.ajax("/Home/AddHistory", {
+                    data: { value: keywords }
+                })
+            }
+        })
+        $("#searc-history ul li a").click(function () {
+            var kerwords = $(this).html();
+            $.search(kerwords);
+        });
+        $("#searc-history button").click(function () {
+            $.ajax("/Home/Clear", {
+                success: function () {
+                    $("#searc-history ul").slideUp(300);
+                }
+            })
+        });
+
+    })
+</script>
+
+<div id="search-container" class="container">
+    <div id="search-box">
+        <input type="text" placeholder="输入歌手名、歌单名或歌曲名" id="search-input" />
+        <button id="search-btn">搜索</button>
+    </div>
+    <div id="search-section">
+        <div id="searc-history">
+            <h4>历史搜索</h4><button>清除</button>
+            <ul>
+                @{
+                    List<string> values = ViewBag.Values;
+                    if (values != null)
+                    {
+                        foreach (string item in values)
+                        {
+                            <li><a>@item</a></li>
+                        }
+                    }
+
+                }
+            </ul>
+        </div>
+        <div id="search-pop-song">
+            <h4>热门歌曲</h4>
+        </div>
+    </div>
+    <div id="search-result-box">
+        <div id="search-result-songs">
+            <h4>歌曲</h4>
+            <ul>
+                <li><a>1</a></li>
+                <li><a>1</a></li>
+            </ul>
+        </div>
+        <div id="search-result-singers">
+            <h4>歌手</h4>
+            <ul>
+                <li><a>1</a></li>
+                <li><a>1</a></li>
+            </ul>
+        </div>
+        <div id="search-result-playlists">
+            <h4>歌单</h4>
+            <ul>
+                <li><a>1</a></li>
+                <li><a>1</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+

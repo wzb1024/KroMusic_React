@@ -1,0 +1,56 @@
+﻿ 
+<script>
+    $(function () {
+        var poplist = [];
+        var newlist = [];
+
+        $.getList = function (list) {
+            $("#category-list-box").empty();
+            $.each(list, function (idx, obj) {
+                $("#category-list-box").append("<div class=\"category-list-item\"><a href='/Music/Playlist/PlaylistDetails?id=" + obj.PlaylistId + "'><img src=" + obj.Cover + " /></a><a href='/Music/Playlist/PlaylistDetails?id=" + obj.PlaylistId + "'><em>" + obj.Name + "</em></a><a href='/User/AccountMsg/UserMsg?id=" + obj.OwnerId + "'><em>" + obj.Owner + "</em></a><em>播放量:" + obj.PlayTimes + "</em></div>")
+            })
+        }
+        $("#pop-btn").click(function () {
+            $("#new-btn").removeClass("active");
+            $("#pop-btn").addClass("active");
+            $.getList(poplist);
+        })
+        $("#new-btn").click(function () {
+            $("#pop-btn").removeClass("active");
+            $("#new-btn").addClass("active");
+            $.getList(newlist);
+        })
+
+        $("a.type_link").click(function () {
+            var value = $(this).attr("id");
+            $(".type-section ul li a").removeClass("active");
+            $(this).addClass("active");
+            $.getJSON("/Music/Playlist/CategoryList", {id : value }, function (data) {
+                newlist = $.extend(true, [], data);
+                poplist = data.sort(function (a, b) {
+                    return b.PlayTimes - a.PlayTimes;
+                })
+                $.getList(poplist);
+            })
+            $("#categorybar ul").children("li").eq(1).remove();//删除序号为n的子元素
+            if (value != 0) {
+                $("#categorybar ul").append("<li><a class=\"type_link shadow\" id=" + value + ">" + $(this).html() + "</a></li>")
+            }
+        })
+    })
+</script>
+<div id="category-box" class="container">
+
+</div>
+<div id="category-cantainer" class="container">
+    <div id="categorybar">
+        <ul>
+            <li><a class="type_link shadow" id="0">全部歌单</a></li>
+        </ul>
+        <button id="pop-btn" class="active">最热</button>
+        <button id="new-btn">最新</button>
+    </div>
+    <div id="category-list-box">
+    </div>
+</div>
+

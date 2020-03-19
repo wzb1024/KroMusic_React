@@ -1,0 +1,173 @@
+﻿@model Model.Music
+
+@{
+    ViewBag.Title = "MusicDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        $("#music_collect_btn").click(function () {
+            $.ajax("/Music/Song/MusicCollect", {
+                type: "get",
+                data: { id:@Model.Id},
+                error: function (err) {
+                    alert(err)
+                },
+                success: function (result) {
+                    if (result == "True") {
+                        $("#music_collect_btn span").removeClass("glyphicon-heart-empty").addClass("glyphicon-heart").css("color", "red");
+                        $("#music_collect_btn em").empty().html("已收藏");
+
+                    }
+                    else if (result == "False") {
+                        $("#music_collect_btn span").removeClass("glyphicon-heart").addClass("glyphicon-heart-empty").css("color", "black")
+                        $("#music_collect_btn em").empty().html("收藏");
+                    }
+                    else {
+                        $("#sign_box").css("display", "block");
+                        $("#sign_box").html(result);
+                    }
+                }
+
+            })
+        })
+        var likes=@Model.Likes;
+        $("#music_like_btn").click(function () {
+            $.ajax("/Music/Song/MusicLike", {
+                type: "get",
+                data: { id:@Model.Id},
+                error: function (err) {
+                    alert(err)
+                },
+                success: function (result) {
+                    if (result == "True") {
+                        $("#music_like_btn span").css("color", "red");
+                        $("#music_like_btn em").empty().html(eval(likes+=1));
+
+                    }
+                    else if (result == "False") {
+                        $("#music_like_btn span").css("color", "black");
+                        $("#music_like_btn em").empty().html(eval(likes-=1));
+
+                    }
+                    else {
+                        $("#sign_box").css("display", "block");
+                        $("#sign_box").html(result);
+                    }
+                }
+
+            })
+        })
+    })
+</script>
+<div id="music_details_box" class="container">
+    <div id="music_introduce" class=" shadow">
+        <div id="music_cover">
+            <img src=@Model.ImagePath width="140" height="160">
+        </div>
+        <div id="music_title">
+            <ul>
+                <li>@Model.MusicName</li>
+                <li>演唱：<a href=@Url.Action("SingerDetails", "Singer", new { area = "Music", id = Model.SingerId })>  @Model.Singer.Name</a></li>
+                <li>
+                    标签：@foreach (var item in Model.MusicType)
+                    {
+                        <span>@item.SubType.Name &nbsp;</span>
+                    }
+                </li>
+                <li>发布时间： @Model.ReleaseTime.ToShortDateString()</li>
+            </ul>
+            <ul>
+                <li>地区：@Model.Region</li>
+                <li>播放量：@Model.PlayTimes</li>
+            </ul>
+
+
+        </div>
+    </div>
+    <div id="music_operate" class="shadow">
+        <ul>
+            <li>
+                <button>
+                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span><em>播放</em>
+                </button>
+            </li>
+            <li>
+                <button id="music_like_btn">
+                    @{
+                        if (Session["UserId"] != null)
+                        {
+
+                            if (Session["UserId"] != null)
+                            {
+                                bool isExist = Model.LikeMusic.Any(u => u.UserId == int.Parse(Session["UserId"].ToString()));
+                                if (isExist)
+                                {
+                                    <span style="color:red" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                }
+                                else
+                                {
+                                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+
+                                }
+                            }
+
+
+                        }
+                        else
+                        {
+
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+
+                        }
+                        <em>@Model.Likes</em>
+                    }
+                </button>
+            </li>
+            <li>
+                <button id="music_collect_btn">
+                    @{
+                        if (Session["UserId"] != null)
+                        {
+                            bool isExist = Model.FavoriteMusic.Any(u => u.UserId == int.Parse(Session["UserId"].ToString()));
+                            if (isExist)
+                            {
+                                <span style="color:red" class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                            }
+                            else
+                            {
+                                <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span><em>加入我喜欢</em>
+
+                            }
+                        }
+
+                        else
+                        {
+
+                            <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span><em>加入我喜欢</em>
+
+                        }
+                    }
+
+                </button>
+            </li>
+            <li>
+                <button>
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span><em>评论</em>
+                </button>
+            </li>
+
+        </ul>
+    </div>
+    <div id="music_lyric_box" class="shadow"></div>
+    <div id="relate_music_box">
+        <h4>相关音乐</h4>
+        <div class="relate_music shadow"></div>
+        <div class="relate_music shadow"></div>
+        <div class="relate_music shadow"></div>
+        <div class="relate_music shadow"></div>
+        <div class="relate_music shadow"></div>
+        <div class="relate_music shadow"></div>
+    </div>
+
+</div>

@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="KroMusicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Attention">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="SingerId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Singer" Relationship="Self.FK_Attention_Attention" FromRole="Attention" ToRole="Singer" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Attention_User" FromRole="Attention" ToRole="User" />
+  </EntityType>
+  <EntityType Name="FavoriteMusic">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="MusicId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Music" Relationship="Self.FK_FavoriteMusic_Music" FromRole="FavoriteMusic" ToRole="Music" />
+    <NavigationProperty Name="User" Relationship="Self.FK_FavoriteMusic_User" FromRole="FavoriteMusic" ToRole="User" />
+  </EntityType>
+  <EntityType Name="FavoritePlaylist">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="PlaylistId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Playlist" Relationship="Self.FK_FavoritePlaylist_Playlist" FromRole="FavoritePlaylist" ToRole="Playlist" />
+    <NavigationProperty Name="User" Relationship="Self.FK_FavoritePlaylist_User" FromRole="FavoritePlaylist" ToRole="User" />
+  </EntityType>
+  <EntityType Name="LikeMusic">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="MusicId" Type="Int32" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Music" Relationship="Self.FK_LikeMusic_Music" FromRole="LikeMusic" ToRole="Music" />
+    <NavigationProperty Name="User" Relationship="Self.FK_LikeMusic_User" FromRole="LikeMusic" ToRole="User" />
+  </EntityType>
+  <EntityType Name="LikePlaylist">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="PlaylistId" Type="Int32" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Playlist" Relationship="Self.FK_LikePlaylist_Playlist" FromRole="LikePlaylist" ToRole="Playlist" />
+    <NavigationProperty Name="User" Relationship="Self.FK_LikePlaylist_User" FromRole="LikePlaylist" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Music">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MusicName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SingerId" Type="Int32" Nullable="false" />
+    <Property Name="Path" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ImagePath" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Likes" Type="Int32" Nullable="false" />
+    <Property Name="PlayTimes" Type="Int32" Nullable="false" />
+    <Property Name="Size" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Span" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="Region" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DownloadTimes" Type="Int32" Nullable="false" />
+    <Property Name="ReleaseTime" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="FavoriteMusic" Relationship="Self.FK_FavoriteMusic_Music" FromRole="Music" ToRole="FavoriteMusic" />
+    <NavigationProperty Name="LikeMusic" Relationship="Self.FK_LikeMusic_Music" FromRole="Music" ToRole="LikeMusic" />
+    <NavigationProperty Name="Singer" Relationship="Self.FK_Music_Singer" FromRole="Music" ToRole="Singer" />
+    <NavigationProperty Name="MusicType" Relationship="Self.FK_MusicType_Music" FromRole="Music" ToRole="MusicType" />
+    <NavigationProperty Name="PlaylistItems" Relationship="Self.FK_PlaylistItems_Music" FromRole="Music" ToRole="PlaylistItems" />
+  </EntityType>
+  <EntityType Name="MusicType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MusicId" Type="Int32" Nullable="false" />
+    <Property Name="SubTypeId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Music" Relationship="Self.FK_MusicType_Music" FromRole="MusicType" ToRole="Music" />
+    <NavigationProperty Name="SubType" Relationship="Self.FK_MusicType_SubType1" FromRole="MusicType" ToRole="SubType" />
+  </EntityType>
+  <EntityType Name="Playlist">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Likes" Type="Int32" Nullable="false" />
+    <Property Name="OwnerId" Type="Int32" Nullable="false" />
+    <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PlayTimes" Type="Int32" Nullable="false" />
+    <Property Name="Cover" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="FavoritePlaylist" Relationship="Self.FK_FavoritePlaylist_Playlist" FromRole="Playlist" ToRole="FavoritePlaylist" />
+    <NavigationProperty Name="LikePlaylist" Relationship="Self.FK_LikePlaylist_Playlist" FromRole="Playlist" ToRole="LikePlaylist" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Playlist_User" FromRole="Playlist" ToRole="User" />
+    <NavigationProperty Name="PlaylistItems" Relationship="Self.FK_PlaylistItems_Playlist" FromRole="Playlist" ToRole="PlaylistItems" />
+    <NavigationProperty Name="PlaylistType" Relationship="Self.FK_PlaylistType_Playlist" FromRole="Playlist" ToRole="PlaylistType" />
+  </EntityType>
+  <EntityType Name="PlaylistItems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlaylistId" Type="Int32" Nullable="false" />
+    <Property Name="MusicId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Music" Relationship="Self.FK_PlaylistItems_Music" FromRole="PlaylistItems" ToRole="Music" />
+    <NavigationProperty Name="Playlist" Relationship="Self.FK_PlaylistItems_Playlist" FromRole="PlaylistItems" ToRole="Playlist" />
+  </EntityType>
+  <EntityType Name="PlaylistType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlaylistId" Type="Int32" Nullable="false" />
+    <Property Name="SubTypeId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Playlist" Relationship="Self.FK_PlaylistType_Playlist" FromRole="PlaylistType" ToRole="Playlist" />
+    <NavigationProperty Name="SubType" Relationship="Self.FK_PlaylistType_SubType" FromRole="PlaylistType" ToRole="SubType" />
+  </EntityType>
+  <EntityType Name="Singer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="5" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Age" Type="Int32" Nullable="false" />
+    <Property Name="Introduce" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Fans" Type="Int32" Nullable="false" />
+    <Property Name="Nationality" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Profession" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Attention" Relationship="Self.FK_Attention_Attention" FromRole="Singer" ToRole="Attention" />
+    <NavigationProperty Name="Music" Relationship="Self.FK_Music_Singer" FromRole="Singer" ToRole="Music" />
+  </EntityType>
+  <EntityType Name="SubType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TypeId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="MusicType" Relationship="Self.FK_MusicType_SubType1" FromRole="SubType" ToRole="MusicType" />
+    <NavigationProperty Name="PlaylistType" Relationship="Self.FK_PlaylistType_SubType" FromRole="SubType" ToRole="PlaylistType" />
+    <NavigationProperty Name="Type" Relationship="Self.FK_SubType_Type" FromRole="SubType" ToRole="Type" />
+  </EntityType>
+  <EntityType Name="Type">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="SubType" Relationship="Self.FK_SubType_Type" FromRole="Type" ToRole="SubType" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Hdimage" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NikName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Age" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Attention" Relationship="Self.FK_Attention_User" FromRole="User" ToRole="Attention" />
+    <NavigationProperty Name="FavoriteMusic" Relationship="Self.FK_FavoriteMusic_User" FromRole="User" ToRole="FavoriteMusic" />
+    <NavigationProperty Name="FavoritePlaylist" Relationship="Self.FK_FavoritePlaylist_User" FromRole="User" ToRole="FavoritePlaylist" />
+    <NavigationProperty Name="LikeMusic" Relationship="Self.FK_LikeMusic_User" FromRole="User" ToRole="LikeMusic" />
+    <NavigationProperty Name="LikePlaylist" Relationship="Self.FK_LikePlaylist_User" FromRole="User" ToRole="LikePlaylist" />
+    <NavigationProperty Name="Playlist" Relationship="Self.FK_Playlist_User" FromRole="User" ToRole="Playlist" />
+  </EntityType>
+  <Association Name="FK_Attention_Attention">
+    <End Role="Singer" Type="Self.Singer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Singer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Attention">
+        <PropertyRef Name="SingerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Attention_User">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Attention">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FavoriteMusic_Music">
+    <End Role="Music" Type="Self.Music" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="FavoriteMusic" Type="Self.FavoriteMusic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Music">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FavoriteMusic">
+        <PropertyRef Name="MusicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FavoriteMusic_User">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="FavoriteMusic" Type="Self.FavoriteMusic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FavoriteMusic">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FavoritePlaylist_Playlist">
+    <End Role="Playlist" Type="Self.Playlist" Multiplicity="1" />
+    <End Role="FavoritePlaylist" Type="Self.FavoritePlaylist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Playlist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FavoritePlaylist">
+        <PropertyRef Name="PlaylistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FavoritePlaylist_User">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="FavoritePlaylist" Type="Self.FavoritePlaylist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FavoritePlaylist">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LikeMusic_Music">
+    <End Role="Music" Type="Self.Music" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="LikeMusic" Type="Self.LikeMusic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Music">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LikeMusic">
+        <PropertyRef Name="MusicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LikeMusic_User">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="LikeMusic" Type="Self.LikeMusic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LikeMusic">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LikePlaylist_Playlist">
+    <End Role="Playlist" Type="Self.Playlist" Multiplicity="1" />
+    <End Role="LikePlaylist" Type="Self.LikePlaylist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Playlist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LikePlaylist">
+        <PropertyRef Name="PlaylistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LikePlaylist_User">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="LikePlaylist" Type="Self.LikePlaylist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LikePlaylist">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Music_Singer">
+    <End Role="Singer" Type="Self.Singer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Music" Type="Self.Music" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Singer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Music">
+        <PropertyRef Name="SingerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MusicType_Music">
+    <End Role="Music" Type="Self.Music" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="MusicType" Type="Self.MusicType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Music">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MusicType">
+        <PropertyRef Name="MusicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PlaylistItems_Music">
+    <End Role="Music" Type="Self.Music" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PlaylistItems" Type="Self.PlaylistItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Music">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PlaylistItems">
+        <PropertyRef Name="MusicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MusicType_SubType1">
+    <End Role="SubType" Type="Self.SubType" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="MusicType" Type="Self.MusicType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MusicType">
+        <PropertyRef Name="SubTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Playlist_User">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Playlist">
+        <PropertyRef Name="OwnerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PlaylistItems_Playlist">
+    <End Role="Playlist" Type="Self.Playlist" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PlaylistItems" Type="Self.PlaylistItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Playlist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PlaylistItems">
+        <PropertyRef Name="PlaylistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PlaylistType_Playlist">
+    <End Role="Playlist" Type="Self.Playlist" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PlaylistType" Type="Self.PlaylistType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Playlist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PlaylistType">
+        <PropertyRef Name="PlaylistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PlaylistType_SubType">
+    <End Role="SubType" Type="Self.SubType" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PlaylistType" Type="Self.PlaylistType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PlaylistType">
+        <PropertyRef Name="SubTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SubType_Type">
+    <End Role="Type" Type="Self.Type" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="SubType" Type="Self.SubType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Type">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SubType">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="KroMusicEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Attention" EntityType="Self.Attention" />
+    <EntitySet Name="FavoriteMusic" EntityType="Self.FavoriteMusic" />
+    <EntitySet Name="FavoritePlaylist" EntityType="Self.FavoritePlaylist" />
+    <EntitySet Name="LikeMusic" EntityType="Self.LikeMusic" />
+    <EntitySet Name="LikePlaylist" EntityType="Self.LikePlaylist" />
+    <EntitySet Name="Music" EntityType="Self.Music" />
+    <EntitySet Name="MusicType" EntityType="Self.MusicType" />
+    <EntitySet Name="Playlist" EntityType="Self.Playlist" />
+    <EntitySet Name="PlaylistItems" EntityType="Self.PlaylistItems" />
+    <EntitySet Name="PlaylistType" EntityType="Self.PlaylistType" />
+    <EntitySet Name="Singer" EntityType="Self.Singer" />
+    <EntitySet Name="SubType" EntityType="Self.SubType" />
+    <EntitySet Name="Type" EntityType="Self.Type" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="FK_Attention_Attention" Association="Self.FK_Attention_Attention">
+      <End Role="Singer" EntitySet="Singer" />
+      <End Role="Attention" EntitySet="Attention" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Attention_User" Association="Self.FK_Attention_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Attention" EntitySet="Attention" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FavoriteMusic_Music" Association="Self.FK_FavoriteMusic_Music">
+      <End Role="Music" EntitySet="Music" />
+      <End Role="FavoriteMusic" EntitySet="FavoriteMusic" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FavoriteMusic_User" Association="Self.FK_FavoriteMusic_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="FavoriteMusic" EntitySet="FavoriteMusic" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FavoritePlaylist_Playlist" Association="Self.FK_FavoritePlaylist_Playlist">
+      <End Role="Playlist" EntitySet="Playlist" />
+      <End Role="FavoritePlaylist" EntitySet="FavoritePlaylist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FavoritePlaylist_User" Association="Self.FK_FavoritePlaylist_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="FavoritePlaylist" EntitySet="FavoritePlaylist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LikeMusic_Music" Association="Self.FK_LikeMusic_Music">
+      <End Role="Music" EntitySet="Music" />
+      <End Role="LikeMusic" EntitySet="LikeMusic" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LikeMusic_User" Association="Self.FK_LikeMusic_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="LikeMusic" EntitySet="LikeMusic" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LikePlaylist_Playlist" Association="Self.FK_LikePlaylist_Playlist">
+      <End Role="Playlist" EntitySet="Playlist" />
+      <End Role="LikePlaylist" EntitySet="LikePlaylist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LikePlaylist_User" Association="Self.FK_LikePlaylist_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="LikePlaylist" EntitySet="LikePlaylist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Music_Singer" Association="Self.FK_Music_Singer">
+      <End Role="Singer" EntitySet="Singer" />
+      <End Role="Music" EntitySet="Music" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MusicType_Music" Association="Self.FK_MusicType_Music">
+      <End Role="Music" EntitySet="Music" />
+      <End Role="MusicType" EntitySet="MusicType" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PlaylistItems_Music" Association="Self.FK_PlaylistItems_Music">
+      <End Role="Music" EntitySet="Music" />
+      <End Role="PlaylistItems" EntitySet="PlaylistItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MusicType_SubType1" Association="Self.FK_MusicType_SubType1">
+      <End Role="SubType" EntitySet="SubType" />
+      <End Role="MusicType" EntitySet="MusicType" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Playlist_User" Association="Self.FK_Playlist_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Playlist" EntitySet="Playlist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PlaylistItems_Playlist" Association="Self.FK_PlaylistItems_Playlist">
+      <End Role="Playlist" EntitySet="Playlist" />
+      <End Role="PlaylistItems" EntitySet="PlaylistItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PlaylistType_Playlist" Association="Self.FK_PlaylistType_Playlist">
+      <End Role="Playlist" EntitySet="Playlist" />
+      <End Role="PlaylistType" EntitySet="PlaylistType" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PlaylistType_SubType" Association="Self.FK_PlaylistType_SubType">
+      <End Role="SubType" EntitySet="SubType" />
+      <End Role="PlaylistType" EntitySet="PlaylistType" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SubType_Type" Association="Self.FK_SubType_Type">
+      <End Role="Type" EntitySet="Type" />
+      <End Role="SubType" EntitySet="SubType" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
