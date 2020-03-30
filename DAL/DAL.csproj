@@ -57,9 +57,9 @@
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\Entities.csproj">
+    <ProjectReference Include="..\Model\Model.csproj">
       <Project>{905962d5-c152-4a5e-8870-827ec071c420}</Project>
-      <Name>Entities</Name>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

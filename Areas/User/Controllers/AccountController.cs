@@ -64,7 +64,7 @@ namespace KroMusic.Areas.User.Controllers
                     Session["UserId"] = id;
                     var self = manager.GetById(id);
                     result.Status = true;
-                    result.NikName = self.NikName;
+                    result.NikName = self.NickName;
                     result.Hdimg = self.Hdimage; 
 
                 }
@@ -95,7 +95,7 @@ namespace KroMusic.Areas.User.Controllers
             else
             {
                 var user = manager.GetById(int.Parse(Session["UserId"].ToString()));
-                return Json(new { SigninState = true, NikName = user.NikName, Hdimg = user.Hdimage },JsonRequestBehavior.AllowGet);
+                return Json(new { SigninState = true, NikName = user.NickName, Hdimg = user.Hdimage },JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -109,10 +109,9 @@ namespace KroMusic.Areas.User.Controllers
         }
         [HttpGet]
 
-        public ActionResult CheckNikName(string NikName)
+        public ActionResult CheckNikName(string NickName)
         {
-            var user = manager.CheckNikName(NikName);
-            if (user != null)
+            if(manager.ExistNickName(NickName))
                 return Content("昵称已被占用！");
             else
                 return Content("");
@@ -134,7 +133,7 @@ namespace KroMusic.Areas.User.Controllers
                     ModelState.AddModelError("", "该用户已存在！");
                     return PartialView(model);
                 }
-                if (manager.CheckNikName(model.NikName) != null)
+                if (manager.ExistNickName(model.NikName) )
                 {
                     ModelState.AddModelError("", "该昵称已存在！");
                     return PartialView(model);
@@ -170,6 +169,68 @@ namespace KroMusic.Areas.User.Controllers
         {
             Session.Abandon();
             return RedirectToAction("index","Home",new { area=""});
+        }
+        [HttpGet]
+        [SigninAuthorize]
+        public ContentResult GetAccountInfo()
+        {
+            int id = int.Parse(Session["UserId"].ToString());
+            var model = new
+            {
+                State = true,
+                AccountInfo = manager.GetAccountMsg(id)
+            };
+            var accountInfo =JsonConvert.SerializeObject( model);
+            return Content(accountInfo);
+        }
+        [HttpPost]
+        public void ChangeHdimage(HttpPostedFileBase file)
+        {
+            string imgPath = "/Sourse/Head-image/" + Guid.NewGuid().ToString() + file.FileName;
+            string savepath = Server.MapPath(imgPath);
+            file.SaveAs(savepath);
+            int id = int.Parse(Session["UserId"].ToString());
+            manager.ChangeHdimage(imgPath,id);
+        }
+        [HttpPost]
+        public ActionResult ModifyMsg(ModifyMsgJsonModel model)
+        {
+            List<string> errorMsg = new List<string>();
+            int id= int.Parse(Session["UserId"].ToString());
+            if (ModelState.IsValid)
+            {
+                if(manager.ExistNickName(model.NickName,id))
+                {
+                    return Json(new { State = false, ErrorMsg = "该昵称已存在" });
+                }
+                else
+                {
+                    manager.ModifyMsg(model, id);
+                    return Json(new { State =true});
+                }
+
+            }
+            else
+            {
+                foreach(var item in ModelState.Values)
+                {
+                    if(item.Errors.Count>0)
+                    {
+                        foreach(var error in item.Errors)
+                        {
+                            
+                           errorMsg.Add(error.ErrorMessage);
+                        }
+                    }
+                }
+                string errormsg = "";
+                foreach(var item in errorMsg)
+                {
+                   errormsg= errormsg + item;
+                }
+                return Json(new { State = false, ErrorMsg = errormsg });
+            }
+            
         }
     }
 }

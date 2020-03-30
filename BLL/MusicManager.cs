@@ -8,16 +8,25 @@ using DAL;
 
 namespace BLL
 {
-   public class MusicManager:BaseManager<Music>
+    public class MusicJsonModel
+    {
+        public int Id { get; set; }
+        public string MusicName { get; set; }
+        public string SingerName { get; set; }
+        public string Path { get; set; }
+        public string ImagePath { get; set; }
+        public System.TimeSpan Span { get; set; }
+    }
+    public class MusicManager:BaseManager<Music>
     {
         KroMusicEntities entities = new KroMusicEntities();
         public override BaseService<Music> GetDAL()
         {
             return new MusicService(entities);
         }
-        public IEnumerable<Music> GetMusicsByKeywords(string keywords)
+        public List<Music> GetMusicsByKeywords(string keywords)
         {
-            return GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords));
+            return GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)).ToList<Music>();
         }
         public bool Collect(int musicId, int userId)
         {

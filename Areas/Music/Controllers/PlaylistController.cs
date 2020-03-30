@@ -17,20 +17,21 @@ namespace KroMusic.Areas.Music.Controllers
     {
 
         PlaylistManager manager = new PlaylistManager();
-        CategoryManager  categoryManager = new CategoryManager();
+        CategoryManager categoryManager = new CategoryManager();
+        FavoritePlaylistManager Favorite = new FavoritePlaylistManager();
         public ActionResult RcmdList()
         {
             return View();
         }
-        
-        public ActionResult SearchResult(string keywords)
+
+        public ActionResult Search(string keywords)
         {
             var result = manager.GetPlaylistsByKeywords(keywords);
             List<SearchResultModel> data = new List<SearchResultModel>();
             if (result != null)
                 foreach (var item in result)
                 {
-                    SearchResultModel u = new SearchResultModel() { Id = item.Id, Name = item.Name, Owner = item.User.NikName };
+                    SearchResultModel u = new SearchResultModel() { Id = item.Id, Name = item.Name, Owner = item.User.NickName };
                     data.Add(u);
                 }
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -42,9 +43,9 @@ namespace KroMusic.Areas.Music.Controllers
         public JsonResult GetCategories()
         {
             var all = categoryManager.GetAllCategories();
-  
-            return Json(all,JsonRequestBehavior.AllowGet);
-            
+
+            return Json(all, JsonRequestBehavior.AllowGet);
+
         }
         /// <summary>
         /// 获取某类型的指定页公开歌单
@@ -55,7 +56,7 @@ namespace KroMusic.Areas.Music.Controllers
         public JsonResult GetPlaylists(int id, int pageIndex, bool orderByHeat)
         {
             int pageSize = 15;
-            var data = manager.GetPlaylistsByType(id,  orderByHeat,pageIndex,pageSize);
+            var data = manager.GetPlaylistsByType(id, orderByHeat, pageIndex, pageSize);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
@@ -66,7 +67,7 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         public ContentResult PlaylistDetails(int id)
         {
-            var model =JsonConvert.SerializeObject( manager.GetPlaylist(id));
+            var model = JsonConvert.SerializeObject(manager.GetPlaylist(id));
             return Content(model);
         }
         /// <summary>
@@ -75,25 +76,56 @@ namespace KroMusic.Areas.Music.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [SigninAuthorize]
-        [AjaxSyncAction]
         public JsonResult PlaylistCollect(int id)
         {
-            int userId =int.Parse( Session["UserId"].ToString());
-            var result = manager.Collect(id, userId);  
-            return Json(result,JsonRequestBehavior.AllowGet);
+            int userId = int.Parse(Session["UserId"].ToString());
+            var result = manager.Collect(id, userId);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 歌单点赞
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [AjaxSyncAction]
         [SigninAuthorize]
         public JsonResult PlaylistLike(int id)
         {
             int userId = int.Parse(Session["UserId"].ToString());
-            var  result = manager.Like(id, userId);
+            var result = manager.Like(id, userId);
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 批量取消收藏歌单
+        /// </summary>
+        /// <returns></returns>
+        [SigninAuthorize]
+        public ActionResult CancelCollectPlaylists(List<int> playlists)
+        {
+            int userId = int.Parse(Session["UserId"].ToString());
+            Favorite.CancelCollectPlaylists(playlists, userId);
+            var model = new
+            {
+                State = true,
+                Playlists = manager.GetFavoritePlaylists(userId)
+
+            };
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 获取用户收藏歌单
+        /// </summary>
+        /// <returns></returns>
+        [SigninAuthorize]
+        public ActionResult GetFavoritePlaylists()
+        {
+            int userId = int.Parse(Session["UserId"].ToString());
+            var model = new
+            {
+                State = true,
+                Playlists = manager.GetFavoritePlaylists(userId)
+            };
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
     }
 }

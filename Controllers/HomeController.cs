@@ -31,18 +31,6 @@ namespace KroMusic.Controllers
         //        }
         //    }
         //}
-        public ActionResult Singer()
-        {
-            return View();
-        }
-        public ActionResult Ranking()
-        {
-            return View();
-        }
-        public ActionResult Category()
-        {
-            return View();
-        }
         public ActionResult Search()
         {
             var cok = Request.Cookies["historySearch"];
@@ -84,18 +72,6 @@ namespace KroMusic.Controllers
                 Response.AppendCookie(cok);
             }
             return new EmptyResult();
-        }
-        public ActionResult Error()
-        {
-            return View();
-        }
-        public ActionResult Error_404()
-        {
-            return Content("444444");
-        }
-        public ActionResult Error_500()
-        {
-            return Content("555555");
         }
     }
 }

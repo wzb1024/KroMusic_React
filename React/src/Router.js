@@ -8,7 +8,7 @@ import Playlist from "@/components/Playlist";
 const router = [
   {
     path: "/",
-    component: Account,
+    component: Search,
     exact: true
   },
   {

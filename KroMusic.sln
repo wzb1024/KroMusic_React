@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KroMusic", "KroMusic.csproj", "{D6257325-1066-402C-B116-E1728E987048}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Model\Entities.csproj", "{905962D5-C152-4A5E-8870-827EC071C420}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{905962D5-C152-4A5E-8870-827EC071C420}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{97FE6CD2-9D8E-41AA-BC95-79F895B2264E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{91C266EF-777D-4271-97AD-0FD2138892F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDAL", "IDAL\IDAL.csproj", "{77579309-05DE-4D1C-9BCA-6637C4D2F877}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{91C266EF-777D-4271-97AD-0FD2138892F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91C266EF-777D-4271-97AD-0FD2138892F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91C266EF-777D-4271-97AD-0FD2138892F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77579309-05DE-4D1C-9BCA-6637C4D2F877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77579309-05DE-4D1C-9BCA-6637C4D2F877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77579309-05DE-4D1C-9BCA-6637C4D2F877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77579309-05DE-4D1C-9BCA-6637C4D2F877}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

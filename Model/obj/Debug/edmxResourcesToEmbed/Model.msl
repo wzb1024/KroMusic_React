@@ -59,10 +59,23 @@
           <ScalarProperty Name="Likes" ColumnName="Likes" />
           <ScalarProperty Name="PlayTimes" ColumnName="PlayTimes" />
           <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Lyric" ColumnName="Lyric" />
           <ScalarProperty Name="Span" ColumnName="Span" />
           <ScalarProperty Name="Region" ColumnName="Region" />
           <ScalarProperty Name="DownloadTimes" ColumnName="DownloadTimes" />
           <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MusicComment">
+      <EntityTypeMapping TypeName="KroMusicModel.MusicComment">
+        <MappingFragment StoreEntitySet="MusicComment">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="MusicId" ColumnName="MusicId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TargetId" ColumnName="TargetId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -90,9 +103,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="PlaylistItems">
-      <EntityTypeMapping TypeName="KroMusicModel.PlaylistItems">
-        <MappingFragment StoreEntitySet="PlaylistItems">
+    <EntitySetMapping Name="PlaylistComment">
+      <EntityTypeMapping TypeName="KroMusicModel.PlaylistComment">
+        <MappingFragment StoreEntitySet="PlaylistComment">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="PlaylistId" ColumnName="PlaylistId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TargetId" ColumnName="TargetId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PlaylistItem">
+      <EntityTypeMapping TypeName="KroMusicModel.PlaylistItem">
+        <MappingFragment StoreEntitySet="PlaylistItem">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PlaylistId" ColumnName="PlaylistId" />
           <ScalarProperty Name="MusicId" ColumnName="MusicId" />
@@ -147,7 +172,7 @@
           <ScalarProperty Name="UserName" ColumnName="UserName" />
           <ScalarProperty Name="Hdimage" ColumnName="Hdimage" />
           <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="NikName" ColumnName="NikName" />
+          <ScalarProperty Name="NickName" ColumnName="NickName" />
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="Age" ColumnName="Age" />
           <ScalarProperty Name="Email" ColumnName="Email" />

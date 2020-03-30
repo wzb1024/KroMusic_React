@@ -106,7 +106,7 @@ class App extends Component {
                 </li>
               </ul>
             </div>
-            <div className="ue-bar-signin">
+            <div id="navbar_signin">
               <ul>
                 <li>
                   <AccountNav

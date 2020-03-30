@@ -150,6 +150,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Music\Controllers\PlaylistController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Filter\AjaxSyncActionAttribute.cs" />
     <Compile Include="Filter\MyExceptionAttribute.cs" />
     <Compile Include="Filter\SigninAuthorizeAttribute.cs" />
@@ -264,6 +265,7 @@
     <Folder Include="Models\" />
     <Folder Include="Sourse\Musics\" />
     <Folder Include="Views\Error\" />
+    <Folder Include="Views\Search\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -286,9 +288,9 @@
       <Project>{91c266ef-777d-4271-97ad-0fd2138892f5}</Project>
       <Name>BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="Model\Entities.csproj">
+    <ProjectReference Include="Model\Model.csproj">
       <Project>{905962d5-c152-4a5e-8870-827ec071c420}</Project>
-      <Name>Entities</Name>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

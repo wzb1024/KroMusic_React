@@ -8,6 +8,12 @@ using DAL;
 
 namespace BLL
 {
+    public class SingerJsonModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+    }
     public class SingerManager:BaseManager<Singer>
     {
         KroMusicEntities entities = new KroMusicEntities();

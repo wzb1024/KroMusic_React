@@ -13,7 +13,7 @@ body {
 #html_body {
   background-color: #f8fff0;
   width: 1920px;
-}   
+}
 li {
   list-style: none;
 }
@@ -27,9 +27,19 @@ a:active {
   outline: none;
   cursor: pointer;
 }
-
+.tag{
+  display: block;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 3px 5px;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  font-size: 14px;
+  width: fit-content;
+  background-color: white;
+}
 button {
   outline: none;
+  cursor: pointer;
 }
 
 em {
@@ -43,17 +53,16 @@ em {
 #renderBody {
   position: relative;
   padding-top: 70px;
-  min-height: 920px;
   width: 1920px;
-  height: 960px;
-  overflow: scroll;
+  height: 940px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .container {
   width: 1020px;
   margin: 0 auto;
   background-color: #ffffff;
-  min-height: 920px;
-  padding: 30px 40px;
+  min-height: 870px;
 }
 
 .ue-bar {
@@ -112,44 +121,42 @@ em {
   color: #7bed9f;
 }
 
-.ue-bar-signin {
+#navbar_signin {
   height: 70px;
   margin-right: 120px;
   float: right;
 }
 
-.ue-bar-signin ul {
+#navbar_signin ul {
   height: 70px;
   float: right;
 }
 
-.ue-bar-signin li {
+#navbar_signin li {
   height: 70px;
   float: right;
 }
 
-.ue-bar-signin a {
+#navbar_signin a {
   height: 100%;
   display: inline-block;
   padding-top: 20px;
   font-size: 18px;
 }
 
-.ue-bar-signin a:hover {
+#navbar_signin a:hover {
   color: #7bed9f;
 }
 
-.ue-bar-signin em {
+#navbar_signin em {
   font-size: 18px;
   padding-top: 8px;
 }
 
 /*登录*/
 
-
-
 /*注册框*/
-#signup_container{
+#signup_container {
   border: 1px solid rgba(0, 0, 0, 0.1);
   width: 360px;
   padding: 15px 3px;
@@ -266,70 +273,62 @@ em {
 /*搜索*/
 #search-container {
   position: relative;
-  min-height: 920px;
+  width: 100%;
+  height: 100%;
+  padding-top: 180px;
 }
-/*#search-box {
-    position: relative;
-    top: 66px;
-    margin: 0 auto;
-    padding: 0;
-    width: 520px;
-    height: 50px;
-    border: 2px #b2bec3 solid;
-    border-radius: 40px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-}*/
-#search-box {
+#search_box {
   position: relative;
-  top: 166px;
-  margin: 0 auto;
+  margin: auto;
   padding: 0;
-  width: 660px;
-  height: 80px;
-  border: 2px #b2bec3 solid;
-  border-radius: 40px;
+  width: 260px;
+  height: 40px;
+  border: 1px #b2bec3 solid;
+  border-radius: 15px;
   color: #576574;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-#search-input {
-  height: 100%;
-  width: 75%;
-  display: inline-block;
-  padding: 0 15px;
+#search_input {
+  height:100%;
+  width:100%;
+  padding: 3px 15px;
+  font-size: 14px;
+  outline: none;
+  border-radius: inherit;
+}
+.search_icon{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  cursor: pointer;
+}
+
+.search_icon>*{
   font-size: 20px;
-  outline: none;
-  border-top-left-radius: inherit;
-  border-bottom-left-radius: inherit;
+  color: #bfbfbf;
 }
 
-#search-box button {
-  display: inline-block;
-  height: 100%;
-  width: 25%;
-  font-size: 25px;
-  outline: none;
-  border-top-right-radius: inherit;
-  border-bottom-right-radius: inherit;
-}
-
-#search-result-box {
-  width: 520px;
+#result_box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  width: 480px;
   margin: 0 auto;
-  position: relative;
-  top: 90px;
   padding: 15px 30px;
-  border-radius: 40px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+  border: 1px #b2bec3 solid;
+  border-top: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   display: none;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 #search-section {
   width: 660px;
-  height: 600px;
   margin: 0 auto;
-  position: relative;
-  top: 180px;
   padding: 30px;
 }
 
@@ -504,82 +503,111 @@ element.style {
 
 /*账户*/
 #account_container {
-  padding: 3% 8%;
-  width: 65%;
-
-  margin: 0 auto;
+  padding: 30px 60px;
 }
 #account_msg {
-  width: 15%;
-  height: 60%;
-  position: fixed;
-  border: 1px solid black;
+  width: 300px;
+
+  float: left;
+  overflow: hidden;
 }
-#head_img{
-    text-align: center;
-    padding-top: 10px;
+#account_msg > img {
+  height: 800px;
+  transform: translateX(-20%);
+}
+#msg_hdimg {
+  width: 100px;
+  height: 150px;
+  position: absolute;
+  right: 0px;
+}
+#msg_hdimg button {
+  display: block;
+  width: 55px;
+  padding: 0;
+  color: #8c8c8c;
+  transition: all 0.01s;
+  position: relative;
+  left: 38%;
+}
+#msg_hdimg button:hover {
+  transform: scale(1.01);
+  color: #bfbfbf;
 }
 #account_taps {
   float: right;
-  width: 65%;
-  min-height: 720px;
-  border: 1px solid black;
+  width: 600px;
+  min-height: 800px;
 }
-
+.account_info {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.account_info>li {
+  line-height: 32.5px;
+  margin-top: 15px;
+}
+.account_input {
+  padding: 0px 5px;
+  min-width: 80px;
+  height: 25px;
+  font-size: 14px;
+}
+.account_input:focus{
+  outline: none;
+}
+.account_info  b{
+  font-size: 15px;
+}
 /*歌单*/
 
 #playlist_intro {
   width: 260px;
   border: 1px solid black;
-  padding: 20px 15px 5px; 
+  padding: 20px 15px 5px;
   position: fixed;
 }
-#playlist_cover
-{
+#playlist_cover {
   height: 160px;
   width: 160px;
   border: 1px solid black;
   margin-bottom: 15px;
-
 }
-#playlist_intro>ul>li{
+#playlist_intro > ul > li {
   margin-bottom: 8px;
   line-height: 16px;
 }
-#playlist_intro>ul>li>*{
+#playlist_intro > ul > li > * {
   font-size: 14px;
 }
-#playlist_intro>ul>li>p{
+#playlist_intro > ul > li > p {
   line-height: 20px;
   letter-spacing: 0.6px;
 }
 
-#playlist_content{
+#playlist_content {
   float: right;
   width: 670px;
   min-height: 830px;
   border: 1px solid black;
 }
 
-
-
 #playlist_operate {
   width: 180px;
-  height:30px;
-  margin: 0 auto  ;
+  height: 30px;
+  margin: 0 auto;
   margin-top: 20px;
 }
-#playlist_operate>button{
+#playlist_operate > button {
   width: 60px;
   line-height: 30px;
   cursor: pointer;
   background-color: white;
 }
-#playlist_operate>button svg{
-font-size: 24px;
+#playlist_operate > button svg {
+  font-size: 24px;
 }
-#playlist_operate>button:hover svg{
-
+#playlist_operate > button:hover svg {
   transform: scale(1.1);
 }
 

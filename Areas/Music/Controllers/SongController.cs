@@ -15,7 +15,7 @@ namespace KroMusic.Areas.Music.Controllers
 
         MusicManager manager = new MusicManager();
         [AjaxSyncAction]
-        public ActionResult SearchResult(string keywords)
+        public ActionResult Search(string keywords)
         {
             var results = manager.GetMusicsByKeywords(keywords);
             List<SearchResultModel> data = new List<SearchResultModel>();

@@ -12,13 +12,16 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PlaylistItems
+    public partial class PlaylistComment
     {
         public int Id { get; set; }
         public int PlaylistId { get; set; }
-        public int MusicId { get; set; }
+        public int UserId { get; set; }
+        public int TargetId { get; set; }
+        public string Content { get; set; }
+        public System.DateTime Time { get; set; }
     
-        public virtual Music Music { get; set; }
         public virtual Playlist Playlist { get; set; }
+        public virtual User User { get; set; }
     }
 }

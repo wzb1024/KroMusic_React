@@ -31,9 +31,11 @@ namespace Model
         public virtual DbSet<LikeMusic> LikeMusic { get; set; }
         public virtual DbSet<LikePlaylist> LikePlaylist { get; set; }
         public virtual DbSet<Music> Music { get; set; }
+        public virtual DbSet<MusicComment> MusicComment { get; set; }
         public virtual DbSet<MusicType> MusicType { get; set; }
         public virtual DbSet<Playlist> Playlist { get; set; }
-        public virtual DbSet<PlaylistItems> PlaylistItems { get; set; }
+        public virtual DbSet<PlaylistComment> PlaylistComment { get; set; }
+        public virtual DbSet<PlaylistItem> PlaylistItem { get; set; }
         public virtual DbSet<PlaylistType> PlaylistType { get; set; }
         public virtual DbSet<Singer> Singer { get; set; }
         public virtual DbSet<SubType> SubType { get; set; }

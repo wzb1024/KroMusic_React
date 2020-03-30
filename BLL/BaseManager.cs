@@ -16,7 +16,7 @@ namespace BLL
         {
             return dal.GetAll();
         }
-        public IQueryable<T> GetAllAsNoTracking()
+        public ParallelQuery<T> GetAllAsNoTracking()
         {
             return dal.GetAllAsNoTracking();
         }

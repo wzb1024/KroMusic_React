@@ -19,7 +19,8 @@ namespace Model
         {
             this.FavoritePlaylist = new HashSet<FavoritePlaylist>();
             this.LikePlaylist = new HashSet<LikePlaylist>();
-            this.PlaylistItems = new HashSet<PlaylistItems>();
+            this.PlaylistComment = new HashSet<PlaylistComment>();
+            this.PlaylistItem = new HashSet<PlaylistItem>();
             this.PlaylistType = new HashSet<PlaylistType>();
         }
     
@@ -32,7 +33,6 @@ namespace Model
         public int PlayTimes { get; set; }
         public string Cover { get; set; }
         public string Name { get; set; }
-        
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FavoritePlaylist> FavoritePlaylist { get; set; }
@@ -40,7 +40,9 @@ namespace Model
         public virtual ICollection<LikePlaylist> LikePlaylist { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlaylistItems> PlaylistItems { get; set; }
+        public virtual ICollection<PlaylistComment> PlaylistComment { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlaylistItem> PlaylistItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlaylistType> PlaylistType { get; set; }
     }

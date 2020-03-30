@@ -8,6 +8,13 @@ using Model;
 
 namespace BLL
 {
+    public class SelfPlaylistJsonModel
+    {
+        public int Id { get; set; }
+        public string Cover { get; set; }
+        public string Name { get; set; }
+        public bool IsPublic { get; set; }
+    }
     /// <summary>
     /// 歌单卡片展示页面数据
     /// </summary>
@@ -67,9 +74,9 @@ namespace BLL
         {
             return new PlaylistService(entities);
         }
-        public IEnumerable<Playlist> GetPlaylistsByKeywords(string keywords)
+        public List<Playlist> GetPlaylistsByKeywords(string keywords)
         {
-            return GetAllAsNoTracking().Where(u => u.Name.Contains(keywords));
+            return GetAllAsNoTracking().Where(u => u.Name.Contains(keywords)).OrderByDescending(i=>i.PlayTimes).ToList();
         }
         /// <summary>
         /// 获取某类型的全部公开歌单
@@ -111,7 +118,7 @@ namespace BLL
                 u.OwnerId = item.OwnerId;
                 u.Cover = item.Cover;
                 u.PlayTimes = item.PlayTimes;
-                u.NikName = item.User.NikName;
+                u.NikName = item.User.NickName;
                 u.Name = item.Name;
                 card.Add(u);
             }
@@ -132,7 +139,7 @@ namespace BLL
                 Description = model.Description,
                 CreateTime = model.CreateTime.ToShortDateString(),
                 Name = model.Name,
-                NickName = model.User.NikName,        
+                NickName = model.User.NickName,        
             };
             foreach (var item in model.PlaylistType)
             {
@@ -185,6 +192,46 @@ namespace BLL
                 return new LikeJsonModel { Like = false, Message = "取消点赞" };
             }
         }
+        public List<SelfPlaylistJsonModel> GetSelfPlaylists(int id)
+        {
+            List<SelfPlaylistJsonModel> model = new List<SelfPlaylistJsonModel>();
+            var user = GetById(id);
+            foreach (var item in entities.Playlist.Where(u => u.OwnerId == id))
+            {
+                SelfPlaylistJsonModel playlist = new SelfPlaylistJsonModel { Id = item.Id, Cover = item.Cover, Name = item.Name, IsPublic = item.IsPublic };
+                model.Add(playlist);
+            }
+            return model;
+        }
+        public List<PlaylistJsonModel> GetFavoritePlaylists(int id)
+        {
+            List<PlaylistJsonModel> model = new List<PlaylistJsonModel>();
+            var user = entities.User.Find(id);
+            foreach (var item in user.FavoritePlaylist)
+            {
+                PlaylistJsonModel playlist = new PlaylistJsonModel { Id = item.PlaylistId, Cover = item.Playlist.Cover, Name = item.Playlist.Name };
+                model.Add(playlist);
+            }
+            return model;
+        }
+
+    }
+    public class FavoritePlaylistManager : BaseManager<FavoritePlaylist>
+    {
+        KroMusicEntities entities = new KroMusicEntities();
+
+        public override BaseService<FavoritePlaylist> GetDAL()
+        {
+            return new FavoritePlaylistService(entities);
+        }
+        public void CancelCollectPlaylists(List<int> playlists, int id)
+        {
+            foreach (var item in playlists)
+            {
+                Remove(GetAll().First(u => u.PlaylistId == item && u.UserId == id).Id);
+            }
+        }
+
     }
     public class PlaylistTypeManager : BaseManager<PlaylistType>
     {

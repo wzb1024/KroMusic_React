@@ -192,3 +192,4 @@ D:\Project\KroMusic\obj\Debug\KroMusic.csprojAssemblyReference.cache
 D:\Project\KroMusic\obj\Debug\KroMusic.csproj.CopyComplete
 D:\Project\KroMusic\obj\Debug\KroMusic.dll
 D:\Project\KroMusic\obj\Debug\KroMusic.pdb
+D:\Project\KroMusic\obj\Debug\KroMusic.csproj.CoreCompileInputs.cache

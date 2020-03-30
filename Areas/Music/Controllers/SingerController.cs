@@ -13,14 +13,14 @@ namespace KroMusic.Areas.Music.Controllers
     {
         SingerManager manager = new SingerManager();
         [AjaxSyncAction]
-        public ActionResult SearchResult(string keywords)
+        public ActionResult Search(string keywords)
         {
              var results = manager.GetSingerByKeywords(keywords);
             List<SearchResultModel> data = new List<SearchResultModel>();
             if (results != null)
                 foreach (var item in results)
                 {
-                    SearchResultModel u = new SearchResultModel() { Name = item.Name, Owner = item.Image };
+                    SearchResultModel u = new SearchResultModel() {Id=item.Id, Name = item.Name,Owner = item.Image };
                     data.Add(u);
                 }
             return Json(data, JsonRequestBehavior.AllowGet);

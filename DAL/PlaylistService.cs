@@ -20,6 +20,18 @@ namespace DAL
             return u => u.Id == id;
         }
     }
+    public class FavoritePlaylistService : BaseService<FavoritePlaylist>
+    {
+        public FavoritePlaylistService(KroMusicEntities entities) : base(entities)
+        {
+
+        }
+
+        public override Expression<Func<FavoritePlaylist, bool>> GetByIdKey(int id)
+        {
+            return u => u.Id == id;
+        }
+    }
     public class PlaylistTypeService : BaseService<PlaylistType>
     {
         public PlaylistTypeService(KroMusicEntities entities) : base(entities)

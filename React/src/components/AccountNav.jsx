@@ -45,9 +45,9 @@ export default class AccountNav extends Component {
         return (
 
 
-            this.props.signinState ? (<Link to="/account">
-                <Avatar size="large" src={this.state.imgPath} />
-            </Link>) : (<>
+            this.props.signinState ? (<div id="nav_img"><Link to="/account">
+               <Avatar  size="large" src={this.state.imgPath} />
+            </Link></div>) : (<>
                     <Signin login={this.success} show={this.props.show} modultState={this.props.modultState}/>
                     <a id="signup_link" onClick={this.signup}>
                     <em>注册</em>
