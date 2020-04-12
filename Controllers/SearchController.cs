@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using KroMusic.Filter;
 
 namespace KroMusic.Controllers
 {
@@ -11,6 +12,7 @@ namespace KroMusic.Controllers
         public string Key { get; set; }
         public string Value { get; set; }
     }
+    [AjaxSyncAction]
     public class SearchController : Controller
     {
         // GET: Search

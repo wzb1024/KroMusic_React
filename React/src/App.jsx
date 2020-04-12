@@ -8,37 +8,46 @@ import {
   NavLink,
   Redirect,
   useHistory,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 import AccountNav from "@/components/AccountNav";
-import Playlist from "@/components/Playlist";
+import Player from "@/components/Player";
 import router from "@/Router";
+import Home from "@/components/HomeIndex";
+import Search from "@/components/SearchIndex";
+import SignUp from "@/components/SignUp";
+import Category from "@/components/CategoryIndex";
+import Account from "@/components/Account";
+import Playlist from "@/components/Playlist";
+import $ from "jquery";
 class App extends Component {
   constructor() {
     super();
     this.state = {
       homeIndex: true,
-      signinState: false,
-      modultState: false
+      mlist: [],
     };
-    this.showSigninBox = this.showSigninBox.bind(this);
     this.indexChange = this.indexChange.bind(this);
-    this.login = this.login.bind(this);
+    this.addToList = this.addToList.bind(this);
   }
   indexChange() {
     this.setState({
-      homeIndex: false
+      homeIndex: false,
     });
   }
-  login(result) {
+  addToList(list) {
+    var mlist = this.state.mlist.concat(result); //去重
+    var s = new Set(mlist);
+    var l = Array.from(s);
     this.setState({
-      signinState: result
+      mlist: l,
     });
   }
-  showSigninBox(result) {
-    this.setState({
-      modultState: result
-    });
+  handlePlay(mid) {
+    var l = [mid];
+    this.addToList(l);
+    var audio = document.getElementById("audio");
+    setTimeout(() => audio.play(), 100);
   }
   render() {
     return (
@@ -53,21 +62,13 @@ class App extends Component {
             <div className="ue-bar-nav">
               <ul ref="nav">
                 <li>
-                  <NavLink
-                    activeClassName="active"
-                    className={[
-                      "nav_link",
-                      this.state.homeIndex ? "active" : null
-                    ].join(" ")}
-                    to="/home"
-                  >
+                  <NavLink activeClassName="active" to="/home">
                     <em>首页</em>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink
                     activeClassName="active"
-                    className="nav_link"
                     to="/singer"
                     onClick={this.indexChange}
                   >
@@ -77,7 +78,6 @@ class App extends Component {
                 <li>
                   <NavLink
                     activeClassName="active"
-                    className="nav_link"
                     to="/ranking"
                     onClick={this.indexChange}
                   >
@@ -87,7 +87,6 @@ class App extends Component {
                 <li>
                   <NavLink
                     activeClassName="active"
-                    className="nav_link"
                     to="/category"
                     onClick={this.indexChange}
                   >
@@ -97,7 +96,6 @@ class App extends Component {
                 <li>
                   <NavLink
                     activeClassName="active"
-                    className="nav_link"
                     to="/search"
                     onClick={this.indexChange}
                   >
@@ -109,20 +107,20 @@ class App extends Component {
             <div id="navbar_signin">
               <ul>
                 <li>
-                  <AccountNav
-                    signin={this.login}
-                    signinState={this.state.signinState}
-                    show={this.showSigninBox}
-                    modultState={this.state.modultState}
-                  />
+                  <AccountNav />
                 </li>
               </ul>
             </div>
           </div>
         </div>
         <div id="renderBody">
+          <Player list={this.state.mlist.reverse()} />
           <Switch>
-            <Route path="/playlist" component={Playlist}></Route>
+            <Route
+              from="/playlist/:id"
+              component={()=><Playlist addToList={this.addToList} handlePlay={this.handlePlay}></Playlist>}
+              exact
+            ></Route>
             {router.map((route, i) => (
               <Route
                 key={i}

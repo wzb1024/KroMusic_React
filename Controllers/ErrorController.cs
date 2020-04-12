@@ -9,11 +9,11 @@ namespace KroMusic.Controllers
     public class ErrorController : Controller
     {
         // GET: Error
-        public ActionResult Error_404()
+        public ActionResult Error404()
         {
-            return View();
+            return PartialView();
         }
-        public ActionResult Error_500()
+        public ActionResult Error500()
         {
             return View();
         }

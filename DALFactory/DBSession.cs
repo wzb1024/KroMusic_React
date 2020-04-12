@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
+namespace DALFactory
 {
-    public class Class1
+    class DBSession
     {
     }
 }

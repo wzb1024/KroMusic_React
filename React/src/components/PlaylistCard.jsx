@@ -9,13 +9,13 @@ const PlaylistCard = ({ msg }) => {
       hoverable
       className="playlist_card"
       cover={
-        <Link to={{pathname:'/playlist',state:{id:msg.Id}}}>
+        <Link to={'/playlist/'+msg.Id}>
           <img height={180} width={180} alt="example" src={msg.Cover} />
         </Link>
       }
     >
       <div>
-        <Link to={{pathname:'/playlist',state:{id:msg.Id}}}> {msg.Name}</Link>
+        <Link to={'/playlist/'+msg.Id}> {msg.Name}</Link>
       </div>
       <div>
         <Link to={"/User/" + msg.OwnerId}>{msg.NikName}</Link>

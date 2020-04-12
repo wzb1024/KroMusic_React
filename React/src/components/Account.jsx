@@ -11,11 +11,11 @@ export default class Account extends Component {
     this.state = {
       isModify: false,
       error404: false,
-      Hdimage: "http://oss.krokro.top/img/20200320142052.png",
-      NickName: "krokro",
-      Gender: "男 ",
-      Age: 21,
-      Email: "1251652012@qq.com",
+      Hdimage: "",
+      NickName: "",
+      Gender: " ",
+      Age: 0,
+      Email: "",
     };
     this.handleHdimgChange = this.handleHdimgChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -28,12 +28,12 @@ export default class Account extends Component {
           NickName: this.state.NickName,
           Gender: this.state.Gender,
           Email: this.state.Email,
-          Age: this.state.Age
+          Age: this.state.Age,
         },
-        function(result) {
+        function (result) {
           if (result.State) {
             this.setState({ isModify: false });
-            $(".account_input").each(function() {
+            $(".account_input").each(function () {
               $(this).attr("readOnly", true);
               $(this).css("backgroundColor", "white");
             });
@@ -45,7 +45,7 @@ export default class Account extends Component {
       );
     } else {
       this.setState({ isModify: true });
-      $(".account_input").each(function() {
+      $(".account_input").each(function () {
         $(this).attr("readOnly", false);
         $(this).css("backgroundColor", "#d9f7be");
         $(this.focus());
@@ -67,9 +67,9 @@ export default class Account extends Component {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, imageUrl =>
+      this.getBase64(info.file.originFileObj, (imageUrl) =>
         this.setState({
-          Hdimage: imageUrl
+          Hdimage: imageUrl,
         })
       );
     }
@@ -88,18 +88,18 @@ export default class Account extends Component {
   componentDidMount() {
     $.getJSON(
       "/User/Account/GetAccountInfo",
-      function(result) {
+      function (result) {
         if (result.State) {
           this.setState({
             NickName: result.AccountInfo.NickName,
             Email: result.AccountInfo.Email,
             Age: result.AccountInfo.Age,
             Gender: result.AccountInfo.Gender,
-            Hdimage: result.AccountInfo.Hdimage          
+            Hdimage: result.AccountInfo.Hdimage,
           });
         } else {
           this.setState({
-            error404: true
+            error404: true,
           });
         }
       }.bind(this)
@@ -152,7 +152,9 @@ export default class Account extends Component {
                     type="text"
                     value={state.NickName}
                     readOnly={true}
-                    onChange={e => this.setState({ NickName: e.target.value })}
+                    onChange={(e) =>
+                      this.setState({ NickName: e.target.value })
+                    }
                   />
                 </li>
                 <li>
@@ -168,7 +170,7 @@ export default class Account extends Component {
                     type="text"
                     value={state.Age}
                     readOnly={true}
-                    onChange={e => this.setState({ Age: e.target.value })}
+                    onChange={(e) => this.setState({ Age: e.target.value })}
                   />
                 </li>
                 <li>
@@ -177,7 +179,7 @@ export default class Account extends Component {
                     className="account_input"
                     type="text"
                     value={state.Email}
-                    onChange={e => this.setState({ Email: e.target.value })}
+                    onChange={(e) => this.setState({ Email: e.target.value })}
                     readOnly={true}
                   />
                 </li>

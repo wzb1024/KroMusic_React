@@ -168,7 +168,7 @@ namespace KroMusic.Areas.User.Controllers
         public ActionResult Signout()
         {
             Session.Abandon();
-            return RedirectToAction("index","Home",new { area=""});
+            return Content("已退出登录");
         }
         [HttpGet]
         [SigninAuthorize]

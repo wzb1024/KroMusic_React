@@ -15,7 +15,7 @@ namespace BLL
         public string SingerName { get; set; }
         public string Path { get; set; }
         public string ImagePath { get; set; }
-        public System.TimeSpan Span { get; set; }
+        public string Span { get; set; }
     }
     public class MusicManager:BaseManager<Music>
     {

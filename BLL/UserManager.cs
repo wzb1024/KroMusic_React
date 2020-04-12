@@ -79,7 +79,7 @@ namespace BLL
             var user = GetById(id);
             foreach (var item in user.FavoriteMusic)
             {
-                MusicJsonModel music = new MusicJsonModel { Id = item.MusicId, ImagePath = item.Music.ImagePath, MusicName = item.Music.MusicName, Path = item.Music.Path, SingerName = item.Music.Singer.Name, Span = item.Music.Span };
+                MusicJsonModel music = new MusicJsonModel { Id = item.MusicId, ImagePath = item.Music.ImagePath, MusicName = item.Music.MusicName, Path = item.Music.Path, SingerName = item.Music.Singer.Name, Span = item.Music.Span.ToString().Remove(0, 3) };
                 model.Add(music);
             }
             return model;

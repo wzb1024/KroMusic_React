@@ -13,7 +13,7 @@ namespace KroMusic.Filter
         
             if(!filterContext.HttpContext.Request.IsAjaxRequest())
             {
-                filterContext.Result = new RedirectResult("/Home/Error");
+                filterContext.Result = new RedirectResult("/Error/Error"); 
             }
         }
     }

@@ -9,12 +9,12 @@ using KroMusic.Filter;
 
 namespace KroMusic.Areas.Music.Controllers
 {
+    [AjaxSyncAction]
     public class SongController : Controller
     {
         // GET: Music/Song
 
         MusicManager manager = new MusicManager();
-        [AjaxSyncAction]
         public ActionResult Search(string keywords)
         {
             var results = manager.GetMusicsByKeywords(keywords);
@@ -37,7 +37,6 @@ namespace KroMusic.Areas.Music.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [AjaxSyncAction]
         [SigninAuthorize]
         public ActionResult MusicCollect(int id)
         {
@@ -50,13 +49,21 @@ namespace KroMusic.Areas.Music.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [AjaxSyncAction]
         [SigninAuthorize]
         public ActionResult MusicLike(int id)
         {
             int userId = int.Parse(Session["UserId"].ToString());
             bool result = manager.Like(id, userId);
             return Content(result.ToString());
+        }
+        /// <summary>
+        /// 获取播放列表歌曲
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public ActionResult GetSongsList(List<int> list)
+        {
+            return new EmptyResult();
         }
     }
 }

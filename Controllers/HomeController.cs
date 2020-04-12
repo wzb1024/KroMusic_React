@@ -11,6 +11,14 @@ namespace KroMusic.Controllers
 {
     public class HomeController : Controller
     {
+        [Route()]
+        [Route("home")]
+        [Route("playlist/{id}")]
+        [Route("ranking")]
+        [Route("singer/{id}")]
+        [Route("category")]
+        [Route("song/{id}")]
+        [Route("search")]
         public ActionResult Index()
         {
             return PartialView();

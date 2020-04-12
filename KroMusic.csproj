@@ -244,15 +244,13 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Error_404.cshtml" />
-    <Content Include="Views\Home\Error_500.cshtml" />
     <Content Include="Views\Home\Singer.cshtml" />
     <Content Include="Views\Home\Ranking.cshtml" />
     <Content Include="Views\Home\Category.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Error\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Controllers\" />
@@ -264,7 +262,6 @@
     <Folder Include="Areas\Music\Views\Shared\" />
     <Folder Include="Models\" />
     <Folder Include="Sourse\Musics\" />
-    <Folder Include="Views\Error\" />
     <Folder Include="Views\Search\" />
   </ItemGroup>
   <ItemGroup>

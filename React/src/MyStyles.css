@@ -27,15 +27,18 @@ a:active {
   outline: none;
   cursor: pointer;
 }
-.tag{
-  display: block;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  padding: 3px 5px;
+.tag {
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1px 1px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  border-radius: 5px;
   font-size: 14px;
   width: fit-content;
   background-color: white;
+}
+.tag:hover {
+  background-color: rgba(0, 0, 0, 0.15);
 }
 button {
   outline: none;
@@ -52,7 +55,7 @@ em {
 
 #renderBody {
   position: relative;
-  padding-top: 70px;
+  padding-top: 60px;
   width: 1920px;
   height: 940px;
   overflow-y: scroll;
@@ -68,7 +71,7 @@ em {
 .ue-bar {
   position: fixed;
   width: 1920px;
-  height: 70px;
+  height: 60px;
   background-color: white;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
   z-index: 10;
@@ -76,7 +79,7 @@ em {
 
 .ue-bar-warp {
   width: 1060px;
-  height: 70px;
+  height: 60px;
   margin: 0 auto;
   position: relative;
 }
@@ -94,12 +97,12 @@ em {
 }
 
 .ue-bar-nav {
-  height: 70px;
+  height: 60px;
   float: left;
 }
 
 .ue-bar-nav li {
-  height: 70px;
+  height: 60px;
   float: left;
   padding: 0 10px;
   margin-right: 20px;
@@ -110,11 +113,20 @@ em {
 }
 
 .ue-bar-nav li a {
-  line-height: 70px;
+  line-height: 60px;
+  position: relative;
 }
 
 .ue-bar-nav a.active {
   color: #7bed9f;
+}
+.ue-bar-nav a.active::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 4px;
+  position: absolute;
+  background-color: #7bed9f;
 }
 
 .ue-bar-nav li a:hover {
@@ -122,25 +134,16 @@ em {
 }
 
 #navbar_signin {
-  height: 70px;
+  height: 60px;
   margin-right: 120px;
   float: right;
 }
 
-#navbar_signin ul {
-  height: 70px;
-  float: right;
-}
-
 #navbar_signin li {
-  height: 70px;
-  float: right;
+  line-height: 60px;
 }
 
 #navbar_signin a {
-  height: 100%;
-  display: inline-block;
-  padding-top: 20px;
   font-size: 18px;
 }
 
@@ -151,6 +154,13 @@ em {
 #navbar_signin em {
   font-size: 18px;
   padding-top: 8px;
+}
+.nav_signlist {
+  color: #000;
+  letter-spacing: 1.5px;
+}
+.nav_signlist:hover {
+  color: #7bed9f;
 }
 
 /*登录*/
@@ -288,44 +298,85 @@ em {
   color: #576574;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
 }
+#search_btn {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  height: 40px;
+  background-color: #69c0ff;
+  border-radius: 40px;
+  width: 72px;
+  visibility: hidden;
+  text-align: center;
+  line-height: 40px;
+  vertical-align: middle;
+}
+#search_btn:hover {
+  background-color: #91d5ff;
+  color: #40a9ff;
+}
+#search_btn * {
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 4px;
+}
 
 #search_input {
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 100%;
   padding: 3px 15px;
   font-size: 14px;
   outline: none;
   border-radius: inherit;
 }
-.search_icon{
+.search_icon {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   cursor: pointer;
 }
 
-.search_icon>*{
+.search_icon > * {
   font-size: 20px;
   color: #bfbfbf;
 }
 
 #result_box {
+  z-index: 10;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   background-color: white;
-  width: 480px;
+  width: 360px;
   margin: 0 auto;
-  padding: 15px 30px;
+  padding: 5px 15px;
   border: 1px #b2bec3 solid;
   border-top: none;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   display: none;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  text-align: center;
 }
-
+#result_box h4 {
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+#result_box li {
+  text-align: center;
+  background-color: #e6f7ff;
+  margin-top: 2px;
+}
+#result_box li:hover {
+  background-color: #e6fffb;
+}
+#result_box li > * {
+  color: #1f1f1f;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
 #search-section {
   width: 660px;
   margin: 0 auto;
@@ -485,7 +536,7 @@ element.style {
   text-align: center;
 }
 #playlistcards > :not(:nth-child(5n)) {
-  margin-right: 10px;
+  margin-right: 22.5px;
 }
 .playlist_card {
   width: 180px;
@@ -543,7 +594,7 @@ element.style {
   margin-top: 20px;
   margin-left: 20px;
 }
-.account_info>li {
+.account_info > li {
   line-height: 32.5px;
   margin-top: 15px;
 }
@@ -553,19 +604,27 @@ element.style {
   height: 25px;
   font-size: 14px;
 }
-.account_input:focus{
+.account_input:focus {
   outline: none;
 }
-.account_info  b{
+.account_info b {
   font-size: 15px;
 }
 /*歌单*/
-
+#playlist_container {
+  padding: 15px 35px;
+}
 #playlist_intro {
   width: 260px;
-  border: 1px solid black;
+  background-color: #f5f5f5;
   padding: 20px 15px 5px;
   position: fixed;
+  border-radius: 15px;
+  top:115px;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+}
+#playlist_intro:hover {
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
 }
 #playlist_cover {
   height: 160px;
@@ -589,7 +648,32 @@ element.style {
   float: right;
   width: 670px;
   min-height: 830px;
-  border: 1px solid black;
+}
+#playlist_content ul {
+  background-color: #fafafa;
+  padding: 8px 0px;
+  margin-bottom: 0;
+}
+#playlist_content ul li {
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: 1px;
+  width: 25%;
+}
+#playlist_content ul:nth-child(2n+1){
+  background-color: white;
+}
+.music_action{
+  padding: 0;
+  height: 0;
+  display: inline-block;
+  margin-left: 15px;
+}
+.music_action *:hover{
+  transform: scale(1.05);
+}
+.music_action *{
+  font-size: 16px;
 }
 
 #playlist_operate {
@@ -602,7 +686,7 @@ element.style {
   width: 60px;
   line-height: 30px;
   cursor: pointer;
-  background-color: white;
+  background-color: #f5f5f5;
 }
 #playlist_operate > button svg {
   font-size: 24px;
@@ -806,6 +890,166 @@ element.style {
   margin-bottom: 20px;
 }
 
+
+/*播放器*/
+#player_container{
+  position: fixed;
+  right: 50px;
+  top: 60px;
+  width: 320px;
+  height: 660px;
+  transition: all 0.5s;
+  z-index: 5;
+  text-align: center;
+}
+#player_container *{
+  user-select: none;
+}
+#blur{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  filter: blur(3px);
+}
+#player_show{
+  font-size: 20px;
+  height: 31px;
+  padding: 0px 20px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  cursor: pointer;
+  bottom: -31px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.p_show{
+  top: 60px !important;
+
+}
+.headBox{
+  position: absolute;
+  padding: 10px 15px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.3);
+}
+.discBox{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.volume{
+  position: absolute;
+  bottom: 120px;
+  left: 63px;
+  width: 2px;
+  height: 90px;
+  background: #ffffff;
+  visibility: hidden;
+}
+.v_show{
+  visibility: visible;
+}
+.volume .volumebar{
+  position: absolute;
+  bottom:0;
+  left: 0;
+  width: 2px;
+  background-color: #8c8c8c;
+}
+#volumearc{
+  position: absolute;
+  bottom: 100%;
+  transform: translate(-50%,50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #8c8c8c;
+  cursor: pointer;
+}
+#m_operate{
+  height: 30px;
+  width: 100%;
+  padding: 5px 30px;  
+  position: absolute;
+  top:-70px;
+}
+#m_operate>button{
+  height: 0;
+  margin: 0 20px;
+}
+.disc{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.border{
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border:  3px solid rgb(255,255,255,0.85);
+  background-color: #333;
+  background-image: repeating-linear-gradient(100deg,#000,#000 2px,#333 2px,#333 3px);
+
+}
+.controlBox{
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+}
+.progressBox{
+  position: absolute;
+  width: 60%;
+  height: 2px;
+  background-color: #8c8c8c;
+  bottom: 60px;
+  left: 50%;
+  transform: translatex(-50%);
+}
+.progressBar{
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: black;
+  left: 0;
+  top:0
+}
+#progressarc{
+  position: absolute;
+  left: 100%;
+  transform: translate(-50%,-50%);
+  width: 16px;
+  height: 16px;
+  border-radius:50%;
+  background-color: black;
+  cursor: pointer;
+}
+.m_action{
+  display: inline;
+  padding: 20px;
+  vertical-align: middle;
+}
+.m_action *:hover {
+  transform: scale(1.05);
+}
+.main{
+  border: 1px solid #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height:100%;
+}
+
 /*组件样式*/
 #components-form-demo-normal-login .login-form {
   max-width: 300px;
@@ -815,4 +1059,8 @@ element.style {
 }
 #components-form-demo-normal-login .login-form-button {
   width: 100%;
+}
+
+.ant-drawer-content-wrapper {
+  width: 1060px !important;
 }

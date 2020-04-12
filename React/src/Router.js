@@ -8,7 +8,7 @@ import Playlist from "@/components/Playlist";
 const router = [
   {
     path: "/",
-    component: Search,
+    component: Home,
     exact: true
   },
   {
@@ -44,11 +44,6 @@ const router = [
   {
     path: "/ranking",
     component: Home,
-    exact: true
-  },
-  {
-    path: "/:any",
-    component: SignUp,
     exact: true
   }
 ];

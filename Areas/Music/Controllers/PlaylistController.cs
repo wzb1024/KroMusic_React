@@ -15,7 +15,6 @@ namespace KroMusic.Areas.Music.Controllers
     [AjaxSyncAction]
     public class PlaylistController : Controller
     {
-
         PlaylistManager manager = new PlaylistManager();
         CategoryManager categoryManager = new CategoryManager();
         FavoritePlaylistManager Favorite = new FavoritePlaylistManager();
@@ -77,9 +76,8 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         [SigninAuthorize]
         public JsonResult PlaylistCollect(int id)
-        {
-            int userId = int.Parse(Session["UserId"].ToString());
-            var result = manager.Collect(id, userId);
+        {          
+            var result = manager.Collect(id);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -90,8 +88,8 @@ namespace KroMusic.Areas.Music.Controllers
         [SigninAuthorize]
         public JsonResult PlaylistLike(int id)
         {
-            int userId = int.Parse(Session["UserId"].ToString());
-            var result = manager.Like(id, userId);
+         
+            var result = manager.Like(id);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -101,12 +99,12 @@ namespace KroMusic.Areas.Music.Controllers
         [SigninAuthorize]
         public ActionResult CancelCollectPlaylists(List<int> playlists)
         {
-            int userId = int.Parse(Session["UserId"].ToString());
-            Favorite.CancelCollectPlaylists(playlists, userId);
+           
+            Favorite.CancelCollectPlaylists(playlists);
             var model = new
             {
                 State = true,
-                Playlists = manager.GetFavoritePlaylists(userId)
+                Playlists = manager.GetFavoritePlaylists()
 
             };
 
@@ -119,12 +117,21 @@ namespace KroMusic.Areas.Music.Controllers
         [SigninAuthorize]
         public ActionResult GetFavoritePlaylists()
         {
-            int userId = int.Parse(Session["UserId"].ToString());
             var model = new
             {
                 State = true,
-                Playlists = manager.GetFavoritePlaylists(userId)
+                Playlists = manager.GetFavoritePlaylists()
             };
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 获取歌单的歌曲
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult GetSongs(int id)
+        {
+            var model = manager.GetSongList(id);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
     }

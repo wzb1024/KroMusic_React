@@ -7,13 +7,15 @@ export default class Signin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      visible:false,
       errorMsg: null
     };
     this.onFinish = this.onFinish.bind(this);
   }
 
   componentDidMount() {
-    $.ajax("User/Account/Signin", {
+    $.ajax({
+      url:"/User/Account/Signin",
       type: "get",
       success: function(result) {
         this.setState({
@@ -28,7 +30,8 @@ export default class Signin extends React.Component {
   }
   
   onFinish(values) {
-    $.ajax("User/Account/Signin", {
+    $.ajax({
+      url:"/User/Account/Signin",
       type: "post",
       data: {
         UserName: values.username,
@@ -37,7 +40,7 @@ export default class Signin extends React.Component {
       },
       success: function(result) {
           if (result.Status) {
-              this.props.login(result.NikName, result.Hdimg);
+             window.location.reload();
           }
           else {
               alert(result.ErrorMsg)
@@ -48,11 +51,11 @@ export default class Signin extends React.Component {
   render() {
     return (
       <>
-        <a onClick={() => this.props.show(true)}>登录</a>
+        <a onClick={() => this.setState({visible:true})}>登录</a>
         <Modal
-          visible={this.props.modultState}
+          visible={this.state.visible}
           title="登录"
-          onCancel={() => this.props.show(false)}
+          onCancel={() => this.setState({visible:false})}
           footer={null}
         >
           <Form

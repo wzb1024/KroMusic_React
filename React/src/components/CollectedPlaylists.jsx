@@ -5,7 +5,7 @@ import $ from "jquery";
 const gridStyle = {
   width: "25%",
   padding: "0",
-  paddingBottom: "5px"
+  paddingBottom: "5px",
 };
 var deleteList = new Array();
 export default class CollectedPlaylists extends Component {
@@ -13,14 +13,14 @@ export default class CollectedPlaylists extends Component {
     super();
     this.state = {
       isEdit: false,
-      playlists: []
+      playlists: [],
     };
     this.handleEditClick = this.handleEditClick.bind(this);
   }
   componentDidMount() {
     $.getJSON(
       "/Music/Playlist/GetFavoritePlaylists",
-      function(result) {
+      function (result) {
         if (result.State) {
           this.setState({ playlists: result.Playlists });
         }
@@ -34,7 +34,7 @@ export default class CollectedPlaylists extends Component {
         type: "get",
         data: { playlists: deleteList },
         traditional: true,
-        success: function(result) {
+        success: function (result) {
           if (result.State) {
             message.success("成功取消收藏！");
             deleteList = new Array();
@@ -42,7 +42,7 @@ export default class CollectedPlaylists extends Component {
           } else {
             message.error(result.ErrorMsg);
           }
-        }.bind(this)
+        }.bind(this),
       });
       this.setState({ isEdit: false });
       e.target.innerHTML = "编辑";
@@ -66,7 +66,7 @@ export default class CollectedPlaylists extends Component {
             style={{
               width: "100%",
               padding: "10px 0px",
-              borderBottom: "0.5px solid rgba(0,0,0,0.4)"
+              borderBottom: "0.5px solid rgba(0,0,0,0.4)",
             }}
           >
             <b style={{ fontSize: "16px" }}>全部收藏歌曲</b>
@@ -86,8 +86,8 @@ export default class CollectedPlaylists extends Component {
         )}
 
         {this.state.playlists.length > 0 ? (
-          this.state.playlists.map(Item => (
-            <Card>
+          <Card>
+            {this.state.playlists.map((Item) => (
               <Card.Grid key={Item.Id} style={gridStyle}>
                 <Checkbox
                   onChange={this.handleChange}
@@ -99,22 +99,28 @@ export default class CollectedPlaylists extends Component {
                       : { display: "none", position: "absolute" }
                   }
                 ></Checkbox>
-                <Link to={{ pathname: "/playlist", state: { id: Item.Id } }}>
+                <Link to={"/playlist/" + Item.Id}>
                   <img src={Item.Cover} height="120" width="120" />
                 </Link>
                 <div>
                   <Link
                     style={{ fontSize: "12px" }}
-                    to={{ pathname: "/playlist", state: { id: Item.Id } }}
+                    to={"/playlist/" + Item.Id}
                   >
                     {Item.Name}
                   </Link>
                 </div>
-              </Card.Grid>{" "}
-            </Card>
-          ))
+              </Card.Grid>
+            ))}
+          </Card>
         ) : (
-          <div style={{textAlign:"center",fontSize:"18px",fontWeight:"bold"}}>
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "18px",
+              fontWeight: "bold",
+            }}
+          >
             啥也没有~
           </div>
         )}
