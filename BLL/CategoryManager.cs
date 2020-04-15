@@ -18,7 +18,7 @@ namespace BLL
     public class CategoryManager : BaseManager<Type>
     {
         KroMusicEntities entities = new KroMusicEntities();
-        public override BaseService<Type> GetDAL()
+        public override SqlBaseService<Type> GetDAL()
         {
             return new CategoryService(entities);
         }
@@ -49,7 +49,7 @@ namespace BLL
     public class SubTypeManager : BaseManager<SubType>
     {
         KroMusicEntities entities = new KroMusicEntities();
-        public override BaseService<SubType> GetDAL()
+        public override SqlBaseService<SubType> GetDAL()
         {
             return new SubTypeService(entities);
         }

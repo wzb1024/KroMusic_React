@@ -8,7 +8,7 @@ using Model;
 
 namespace DAL
 {
-    public class SingerService : BaseService<Singer>
+    public class SingerService : SqlBaseService<Singer>
     {
         public SingerService(KroMusicEntities entities):base(entities)
         {

@@ -35,19 +35,41 @@ class App extends Component {
       homeIndex: false,
     });
   }
-  addToList(list) {
-    var mlist = this.state.mlist.concat(result); //去重
-    var s = new Set(mlist);
-    var l = Array.from(s);
-    this.setState({
-      mlist: l,
+  removeRepeat(list) {
+    var obj = {};
+    list = list.reduce(function (item, next) {
+      obj[next.Id] ? "" : (obj[next.Id] = true && item.push(next));
+      return item;
+    }, []);
+    return list;
+  }
+  addToList(list, play = false) {
+    $.ajax("/music/song/GetSongsList", {
+      data: { list: list },
+      dataType: "json",
+      traditional: true,
+      success: function (result) {
+        let mlist = this.state.mlist;
+        result.reverse().forEach((item) => {
+          mlist.unshift(item);
+        });
+        var list = this.removeRepeat(mlist); //去重
+        console.log(list);
+        this.setState(
+          {
+            mlist: list,
+          },
+          () => {
+            if (play) {
+              this.handlePlay();
+            }
+          }
+        );
+      }.bind(this),
     });
   }
-  handlePlay(mid) {
-    var l = [mid];
-    this.addToList(l);
-    var audio = document.getElementById("audio");
-    setTimeout(() => audio.play(), 100);
+  handlePlay() {
+    document.getElementById("audio").play();
   }
   render() {
     return (
@@ -114,11 +136,16 @@ class App extends Component {
           </div>
         </div>
         <div id="renderBody">
-          <Player list={this.state.mlist.reverse()} />
+          <Player mlist={this.removeRepeat(this.state.mlist)} />
           <Switch>
             <Route
               from="/playlist/:id"
-              component={()=><Playlist addToList={this.addToList} handlePlay={this.handlePlay}></Playlist>}
+              component={() => (
+                <Playlist
+                  addToList={this.addToList}
+                  handlePlay={this.handlePlay}
+                ></Playlist>
+              )}
               exact
             ></Route>
             {router.map((route, i) => (

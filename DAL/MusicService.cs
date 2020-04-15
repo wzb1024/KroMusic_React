@@ -8,7 +8,7 @@ using Model;
 
 namespace DAL
 {
-    public class MusicService : BaseService<Music>
+    public class MusicService : SqlBaseService<Music>
     {
         public MusicService(KroMusicEntities entities) : base(entities) { }
         public override Expression<Func<Music, bool>> GetByIdKey(int id)

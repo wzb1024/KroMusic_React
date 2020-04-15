@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class CategoryService : BaseService<Model.Type>
+    public class CategoryService : SqlBaseService<Model.Type>
     {
         public CategoryService(KroMusicEntities entities) : base(entities)
         {
@@ -15,7 +15,7 @@ namespace DAL
             return u => u.Id == id;
         }
     }
-    public class SubTypeService : BaseService<Model.SubType>
+    public class SubTypeService : SqlBaseService<Model.SubType>
     {
         public SubTypeService(KroMusicEntities entities) : base(entities)
         {

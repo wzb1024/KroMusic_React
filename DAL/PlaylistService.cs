@@ -8,7 +8,7 @@ using Model;
 
 namespace DAL
 {
-    public class PlaylistService:BaseService<Playlist>
+    public class PlaylistService:SqlBaseService<Playlist>
     {
         public PlaylistService(KroMusicEntities entities):base(entities)
         {
@@ -20,7 +20,7 @@ namespace DAL
             return u => u.Id == id;
         }
     }
-    public class FavoritePlaylistService : BaseService<FavoritePlaylist>
+    public class FavoritePlaylistService : SqlBaseService<FavoritePlaylist>
     {
         public FavoritePlaylistService(KroMusicEntities entities) : base(entities)
         {
@@ -32,7 +32,7 @@ namespace DAL
             return u => u.Id == id;
         }
     }
-    public class PlaylistTypeService : BaseService<PlaylistType>
+    public class PlaylistTypeService : SqlBaseService<PlaylistType>
     {
         public PlaylistTypeService(KroMusicEntities entities) : base(entities)
         {

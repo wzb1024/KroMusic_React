@@ -17,7 +17,7 @@ namespace BLL
     public class SingerManager:BaseManager<Singer>
     {
         KroMusicEntities entities = new KroMusicEntities();
-        public override BaseService<Singer> GetDAL()
+        public override SqlBaseService<Singer> GetDAL()
         {
             return new SingerService(entities);
         }

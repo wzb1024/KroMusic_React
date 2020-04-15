@@ -5,8 +5,8 @@ namespace BLL
 {
     public abstract partial class BaseManager<T> where T : class
     {
-        BaseService<T> dal;
-        public abstract BaseService<T> GetDAL();
+        SqlBaseService<T> dal;
+        public abstract SqlBaseService<T> GetDAL();
         public BaseManager()
         {
             dal = GetDAL();
@@ -23,6 +23,10 @@ namespace BLL
         public T GetById(int id)
         {
             return dal.GetById(id);
+        }
+        public T GetByIdAsNoTracking(int id)
+        {
+            return dal.GetByIdAsNoTracking(id);
         }
 
         public bool Add(T model)

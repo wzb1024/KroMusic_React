@@ -14,7 +14,7 @@ namespace KroMusic.Areas.Music.Controllers
     {
         // GET: Music/Song
 
-        MusicManager manager = new MusicManager();
+        SongManager manager = new SongManager();
         public ActionResult Search(string keywords)
         {
             var results = manager.GetMusicsByKeywords(keywords);
@@ -39,9 +39,8 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         [SigninAuthorize]
         public ActionResult MusicCollect(int id)
-        {
-            int userId = int.Parse(Session["UserId"].ToString());
-            bool result = manager.Collect(id, userId);
+        {         
+            bool result = manager.Collect(id);
             return Content(result.ToString());
         }
         /// <summary>
@@ -51,9 +50,8 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         [SigninAuthorize]
         public ActionResult MusicLike(int id)
-        {
-            int userId = int.Parse(Session["UserId"].ToString());
-            bool result = manager.Like(id, userId);
+        {           
+            bool result = manager.Like(id);
             return Content(result.ToString());
         }
         /// <summary>
@@ -63,7 +61,8 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         public ActionResult GetSongsList(List<int> list)
         {
-            return new EmptyResult();
+            var model = manager.GetSongsList(list);
+            return Json(model,JsonRequestBehavior.AllowGet);
         }
     }
 }

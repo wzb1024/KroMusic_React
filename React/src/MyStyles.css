@@ -1,4 +1,4 @@
-﻿* {
+* {
   margin: 0;
   padding: 0;
   border: 0;
@@ -620,7 +620,7 @@ element.style {
   padding: 20px 15px 5px;
   position: fixed;
   border-radius: 15px;
-  top:115px;
+  top: 115px;
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
 }
 #playlist_intro:hover {
@@ -660,19 +660,19 @@ element.style {
   letter-spacing: 1px;
   width: 25%;
 }
-#playlist_content ul:nth-child(2n+1){
+#playlist_content ul:nth-child(2n + 1) {
   background-color: white;
 }
-.music_action{
+.music_action {
   padding: 0;
   height: 0;
   display: inline-block;
   margin-left: 15px;
 }
-.music_action *:hover{
+.music_action *:hover {
   transform: scale(1.05);
 }
-.music_action *{
+.music_action * {
   font-size: 16px;
 }
 
@@ -890,164 +890,193 @@ element.style {
   margin-bottom: 20px;
 }
 
-
 /*播放器*/
-#player_container{
+#player_container {
   position: fixed;
   right: 50px;
-  top: 60px;
+  top: -600px;
   width: 320px;
   height: 660px;
+  padding: 0;
   transition: all 0.5s;
   z-index: 5;
+  border: 0;
+  text-align: center;
+  background-color:white;
+}
+#player_container * {
+  user-select: none;
   text-align: center;
 }
-#player_container *{
-  user-select: none;
-}
-#blur{
+#blur {
   position: absolute;
   width: 100%;
-  height: 100%;
-  filter: blur(3px);
+  height: 80%;
+  filter: blur(10px);
+  overflow: hidden;
 }
-#player_show{
-  font-size: 20px;
-  height: 31px;
-  padding: 0px 20px;
+#blur>img{
+  height:100%;
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+}
+#player_show {
+  line-height:35px;
+  vertical-align:middle;
+  height: 35px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-  position: absolute;
   cursor: pointer;
-  bottom: -31px;
-  left: 50%;
-  transform: translateX(-50%);
 }
-.p_show{
+#player_show span{
+    font-size: 15px;
+}
+.p_show {
   top: 60px !important;
+}
+.headBox {
+  position: relative;
+  width: 100%;
+  height: 15%;
+  padding-top: 15px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.discBox {
+  position: relative;
+  width: 100%;
+  height: 70%;
+}
+.volume {
+  width: 30px;
+  height: 2px;
+  background: red;
 
 }
-.headBox{
-  position: absolute;
-  padding: 10px 15px;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  border-bottom: 1px solid rgba(255,255,255,0.3);
-  background: rgba(255,255,255,0.3);
-}
-.discBox{
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.volume{
-  position: absolute;
-  bottom: 120px;
-  left: 63px;
-  width: 2px;
-  height: 90px;
-  background: #ffffff;
-  visibility: hidden;
-}
-.v_show{
+.v_show {
   visibility: visible;
 }
-.volume .volumebar{
+.volume .volumebar {
   position: absolute;
-  bottom:0;
+  bottom: 0;
   left: 0;
   width: 2px;
   background-color: #8c8c8c;
 }
-#volumearc{
+#volumearc {
   position: absolute;
   bottom: 100%;
-  transform: translate(-50%,50%);
+  transform: translate(-50%, 50%);
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background-color: #8c8c8c;
   cursor: pointer;
 }
-#m_operate{
+#m_operate {
   height: 30px;
   width: 100%;
-  padding: 5px 30px;  
-  position: absolute;
-  top:-70px;
+  margin-bottom: 8px;
 }
-#m_operate>button{
+#m_operate > button {
   height: 0;
-  margin: 0 20px;
+  margin: 0 15px;
 }
-.disc{
+.disc {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
-.border{
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+#border {
   position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  top:25%;
+  left: 22%;
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  border:  3px solid rgb(255,255,255,0.85);
+  border: 3px solid rgba(255, 255, 255, 0.85);
   background-color: #333;
-  background-image: repeating-linear-gradient(100deg,#000,#000 2px,#333 2px,#333 3px);
+  background-image: repeating-linear-gradient(
+    100deg,
+    #000,
+    #000 2px,
+    #333 2px,
+    #333 3px
+  );
+}
+.rotate{
+  animation: rotation 6s linear infinite;
+}
 
+.controlBox {
+  position: relative;
+  width: 100%;
+  height: 15%;
 }
-.controlBox{
-  position: absolute;
-  bottom: 30px;
-  left: 0;
-  right: 0;
+/* #progress_container {
+  height: 16px;
+  line-height: 16px;
+  vertical-align: middle;
 }
-.progressBox{
-  position: absolute;
-  width: 60%;
+#progress_container > div {
+  display: inline-block;
+  font-size: 16px;
+} */
+#progressBox {
+  width: 100%;
+  height: 3px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  overflow:hidden;
+}
+#progressBox:hover{
+  transform:scaleY(3);
+  overflow: visible;
+}
+.progressBar {
+  position: relative;
+  width: 20%;
   height: 2px;
   background-color: #8c8c8c;
-  bottom: 60px;
-  left: 50%;
-  transform: translatex(-50%);
 }
-.progressBar{
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  background-color: black;
-  left: 0;
-  top:0
-}
-#progressarc{
-  position: absolute;
+#progressarc {
+  display: block;
+  position: relative;
   left: 100%;
-  transform: translate(-50%,-50%);
-  width: 16px;
-  height: 16px;
-  border-radius:50%;
-  background-color: black;
+  transform: translateY( -25%);
+  width: 8px;
+  height: 4px;
+  border-radius: 20%;
+  background-color: #434343;
   cursor: pointer;
 }
-.m_action{
+.m_action {
   display: inline;
   padding: 20px;
   vertical-align: middle;
 }
-.m_action *:hover {
-  transform: scale(1.05);
-}
-.main{
-  border: 1px solid #fff;
+    .m_action>button{
+        height:0;
+    }
+    .m_action *:hover {
+        transform: scale(1.05);
+    }
+.main {
+  /* border: 1px solid #fff; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   width: 100%;
-  height:100%;
+  height: 100%;
 }
 
 /*组件样式*/

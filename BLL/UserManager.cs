@@ -30,9 +30,9 @@ namespace BLL
     public partial class UserManager : BaseManager<User>
     {
         KroMusicEntities entities = new KroMusicEntities();
-        public override BaseService<User> GetDAL()
+        public override SqlBaseService<User> GetDAL()
         {
-            return new UserService(entities);
+            return new SqlUserService(entities);
         }
         public bool Success(string userName, string password)
         {
@@ -73,13 +73,13 @@ namespace BLL
             model = new AccountInfoJsonModel { NickName = user.NickName, Age = user.Age, Email = user.Email, Gender = user.Gender, Hdimage = user.Hdimage };        
             return model;
         }
-        public List<MusicJsonModel> GetFavoriteMusics(int id)
+        public List<SongJsonModel> GetFavoriteMusics(int id)
         {
-            List<MusicJsonModel> model = new List<MusicJsonModel>();
+            List<SongJsonModel> model = new List<SongJsonModel>();
             var user = GetById(id);
             foreach (var item in user.FavoriteMusic)
             {
-                MusicJsonModel music = new MusicJsonModel { Id = item.MusicId, ImagePath = item.Music.ImagePath, MusicName = item.Music.MusicName, Path = item.Music.Path, SingerName = item.Music.Singer.Name, Span = item.Music.Span.ToString().Remove(0, 3) };
+                SongJsonModel music = new SongJsonModel { Id = item.MusicId, ImagePath = item.Music.ImagePath, MusicName = item.Music.MusicName, Path = item.Music.Path, SingerName = item.Music.Singer.Name, Span = item.Music.Span.ToString().Remove(0, 3) };
                 model.Add(music);
             }
             return model;

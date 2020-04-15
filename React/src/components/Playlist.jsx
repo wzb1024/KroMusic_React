@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Pagination, Spin, message, Button } from "antd";
+import Player from "@/components/Player";
 import $ from "jquery";
 import {
   LikeTwoTone,
@@ -15,7 +16,7 @@ class Playlist extends Component {
     super();
     this.state = {
       loading: true,
-      details: {},
+      details: {Tags:[]},
       songs: [],
     };
 
@@ -47,12 +48,16 @@ class Playlist extends Component {
       }.bind(this)
     );
   }
-  playAll() {
+  playAll() {  
     var list = new Array();
     this.state.songs.forEach((item) => {
       list.push(parseInt(item.Id));
     });
-    this.props.addToList(list);
+    this.props.addToList(list,true);
+  }
+  handlePlay(id){
+    var list=[id];
+    this.props.addToList(list,true);
   }
   handleLike() {
     $.getJSON(
@@ -131,9 +136,9 @@ class Playlist extends Component {
                 </li>
                 <li>
                   <label>标签:&nbsp;</label>
-                  {/* {details.Tags.map((item, i) => (
+                  {details.Tags.map((item, i) => (
                     <span key={i}>{item}</span>
-                  ))} */}
+                  ))}
                 </li>
                 <li>
                   <label>播放量:&nbsp;</label>

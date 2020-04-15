@@ -186,7 +186,7 @@ class CatrgoryIndex extends Component {
             )}
           </div>
           <Pagination
-            hideOnSinglePage={true}
+            hideOnSinglePage={false}
             className="pagination"
             defaultPageSize={15}
             defaultCurrent={1}

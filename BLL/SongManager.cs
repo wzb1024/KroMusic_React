@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Model;
 using DAL;
+using System.Web;
 
 namespace BLL
 {
-    public class MusicJsonModel
+    public class SongJsonModel
     {
         public int Id { get; set; }
         public string MusicName { get; set; }
@@ -17,10 +18,11 @@ namespace BLL
         public string ImagePath { get; set; }
         public string Span { get; set; }
     }
-    public class MusicManager:BaseManager<Music>
+    public class SongManager:BaseManager<Music>
     {
+        string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
         KroMusicEntities entities = new KroMusicEntities();
-        public override BaseService<Music> GetDAL()
+        public override SqlBaseService<Music> GetDAL()
         {
             return new MusicService(entities);
         }
@@ -28,13 +30,14 @@ namespace BLL
         {
             return GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)).ToList<Music>();
         }
-        public bool Collect(int musicId, int userId)
+        public bool Collect(int musicId)
         {
-            var e = entities.Set<FavoriteMusic>().FirstOrDefault(u => u.MusicId== musicId && u.UserId == userId);
+            int uid = int.Parse(userId);
+            var e = entities.Set<FavoriteMusic>().FirstOrDefault(u => u.MusicId== musicId && u.UserId == uid);
             if (e == null)
             {
                 FavoriteMusic s = new FavoriteMusic();
-                s.UserId = userId;
+                s.UserId = uid;
                 s.MusicId = musicId;
                 entities.Set<FavoriteMusic>().Add(s);
                 entities.SaveChanges();
@@ -47,14 +50,15 @@ namespace BLL
                 return false;
             }
         }
-        public bool Like(int musicId, int userId)
+        public bool Like(int musicId)
         {
-            var e = entities.Set<LikeMusic>().FirstOrDefault(u => u.MusicId == musicId && u.UserId == userId);
+            int uid = int.Parse(userId);
+            var e = entities.Set<LikeMusic>().FirstOrDefault(u => u.MusicId == musicId && u.UserId == uid);
             var n = GetById(musicId);
             if (e == null)
             {
                 LikeMusic s = new LikeMusic();
-                s.UserId = userId;
+                s.UserId = uid;
                 s.MusicId = musicId;
                 s.Time = DateTime.Now;
                 entities.Set<LikeMusic>().Add(s);
@@ -71,6 +75,26 @@ namespace BLL
                 Edit(n);
                 return false;
             }
+        }
+        public List<SongJsonModel> GetSongsList(List<int> list)
+        {
+            List<SongJsonModel> mlist = new List<SongJsonModel>();
+            foreach (var item in list)
+            {
+                var m = GetByIdAsNoTracking(item);
+                SongJsonModel u = new SongJsonModel
+                {
+                    Id = m.Id,
+                    ImagePath = m.ImagePath,
+                    MusicName = m.MusicName,
+                    Path = m.Path,
+                    SingerName = m.Singer.Name,
+                    Span = m.Span.TotalSeconds.ToString()
+                };
+                mlist.Add(u);
+            }
+            return mlist;
+
         }
     }
 }

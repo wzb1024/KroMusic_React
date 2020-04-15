@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DALFactory
+namespace IDAL
 {
-    class AbstractFactory
+    public interface IBaseService<T> where T:class,new()
     {
+
     }
 }

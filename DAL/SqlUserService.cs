@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class UserService : BaseService<User>
+    public class SqlUserService : SqlBaseService<User>
     {
-        public UserService(KroMusicEntities entities):base(entities)
+        public SqlUserService(KroMusicEntities entities):base(entities)
         {
 
         }

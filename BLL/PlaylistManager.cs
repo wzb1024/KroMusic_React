@@ -71,7 +71,7 @@ namespace BLL
     {
         KroMusicEntities entities = new KroMusicEntities();
         string userId = HttpContext.Current.Session["UserId"]==null?null: HttpContext.Current.Session["UserId"].ToString();
-        public override BaseService<Playlist> GetDAL()
+        public override SqlBaseService<Playlist> GetDAL()
         {
             return new PlaylistService(entities);
         }
@@ -224,14 +224,19 @@ namespace BLL
             }
             return model;
         }
-        public List<MusicJsonModel> GetSongList(int id)
+        /// <summary>
+        /// 获取歌单歌曲
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<SongJsonModel> GetSongList(int id)
         {
             var u = GetById(id);
-            List<MusicJsonModel> data = new List<MusicJsonModel>();
+            List<SongJsonModel> data = new List<SongJsonModel>();
             foreach (var item in u.PlaylistItem)
             {
                 var m=item.Music;
-                MusicJsonModel model = new MusicJsonModel { Id = item.Id, ImagePath = m.ImagePath, MusicName = m.MusicName, Path = m.Path, SingerName = item.Music.Singer.Name, Span = m.Span.ToString().Remove(0,3)};
+                SongJsonModel model = new SongJsonModel { Id = item.MusicId, ImagePath = m.ImagePath, MusicName = m.MusicName, Path = m.Path, SingerName = item.Music.Singer.Name, Span = m.Span.ToString().Remove(0,3)};
                 data.Add(model);
             }
             return data;
@@ -241,7 +246,7 @@ namespace BLL
     {
         KroMusicEntities entities = new KroMusicEntities();
         string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
-        public override BaseService<FavoritePlaylist> GetDAL()
+        public override SqlBaseService<FavoritePlaylist> GetDAL()
         {
             return new FavoritePlaylistService(entities);
         }
@@ -259,7 +264,7 @@ namespace BLL
     {
         KroMusicEntities entities = new KroMusicEntities();
 
-        public override BaseService<PlaylistType> GetDAL()
+        public override SqlBaseService<PlaylistType> GetDAL()
         {
             return new PlaylistTypeService(entities);
         }

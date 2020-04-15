@@ -152,7 +152,7 @@ class SearchIndex extends Component {
         playlists.push(
           <li key={item.Id}>
             <Link
-              to={{ pathname: "/playlist", state: { id: item.Id } }}
+              to={ "/playlist/"+ item.Id }
               onClick={() => this.handleSearch(item.Name)}
             >
               <span>{item.Name}</span>
@@ -166,7 +166,7 @@ class SearchIndex extends Component {
         singers.push(
           <li key={item.id}>
             <Link
-              to={{ pathname: "/singer", state: { id: item.Id } }}
+              to={"/singer/"+ item.Id }
               onClick={() => this.handleSearch(item.Name)}
             >
               <span>{item.Name}</span>
@@ -183,7 +183,7 @@ class SearchIndex extends Component {
         songs.push(
           <li key={item.Id}>
             <Link
-              to={{ pathname: "/song", state: { id: item.Id } }}
+              to={"/song/"+ item.Id }
               onClick={() => this.handleSearch(item.Name)}
             >
               <span>{item.Name}</span>
