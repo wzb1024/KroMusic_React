@@ -1,4 +1,5 @@
 ﻿using DAL;
+using IDAL;
 using Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,21 +16,18 @@ namespace BLL
         public int Id { get; set; }
         public string Name { get; set; }
     }
-    public class CategoryManager : BaseManager<Type>
+    public class CategoryManager 
     {
-        KroMusicEntities entities = new KroMusicEntities();
-        public override SqlBaseService<Type> GetDAL()
-        {
-            return new CategoryService(entities);
-        }
+
         /// <summary>
         /// 获取全部分类，用于json数据
         /// </summary>
         /// <returns></returns>
         public List<SubTypeModel> GetAllCategories()
         {
+            ITypeService service = DALFactory.DataAccess.CreateTypeService();
             List<SubTypeModel> model = new List<SubTypeModel>();
-            var all = GetAllAsNoTracking().ToList();
+            var all = service.GetAllAsNoTracking().ToList();
             foreach (var item in all)
             {
                 SubTypeModel n = new SubTypeModel();
@@ -45,14 +43,5 @@ namespace BLL
             }
             return model;
         }
-    }
-    public class SubTypeManager : BaseManager<SubType>
-    {
-        KroMusicEntities entities = new KroMusicEntities();
-        public override SqlBaseService<SubType> GetDAL()
-        {
-            return new SubTypeService(entities);
-        }
-
     }
 }

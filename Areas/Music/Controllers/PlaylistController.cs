@@ -17,7 +17,6 @@ namespace KroMusic.Areas.Music.Controllers
     {
         PlaylistManager manager = new PlaylistManager();
         CategoryManager categoryManager = new CategoryManager();
-        FavoritePlaylistManager Favorite = new FavoritePlaylistManager();
         public ActionResult RcmdList()
         {
             return View();
@@ -100,7 +99,7 @@ namespace KroMusic.Areas.Music.Controllers
         public ActionResult CancelCollectPlaylists(List<int> playlists)
         {
            
-            Favorite.CancelCollectPlaylists(playlists);
+            manager.CancelCollectPlaylists(playlists);
             var model = new
             {
                 State = true,

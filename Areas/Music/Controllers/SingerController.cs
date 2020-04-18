@@ -25,10 +25,5 @@ namespace KroMusic.Areas.Music.Controllers
                 }
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult SingerDetails(int id)
-        {
-            var model = manager.GetById(id);
-            return View(model);
-        }
     }
 }

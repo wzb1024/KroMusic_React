@@ -10,7 +10,7 @@ namespace DAL
 {
     public class DBContextFactory
     {
-        public static KroMusicEntities CreateContext()
+        public static KroMusicEntities GetContext()
         {
             KroMusicEntities dbContext = (KroMusicEntities)CallContext.GetData("dbContext");
             if(dbContext==null)

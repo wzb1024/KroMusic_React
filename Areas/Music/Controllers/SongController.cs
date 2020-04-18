@@ -14,7 +14,7 @@ namespace KroMusic.Areas.Music.Controllers
     {
         // GET: Music/Song
 
-        SongManager manager = new SongManager();
+        MusicManager manager = new MusicManager();
         public ActionResult Search(string keywords)
         {
             var results = manager.GetMusicsByKeywords(keywords);
@@ -29,7 +29,7 @@ namespace KroMusic.Areas.Music.Controllers
         }
         public ActionResult MusicDetails(int id)
         {
-            var model = manager.GetById(id);
+            var model = manager.GetMusicById(id);
             return View(model);
         }
         /// <summary>

@@ -3,16 +3,12 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-
+using IDAL;
 namespace DAL
 {
-    public abstract partial class SqlBaseService<T> where T :class,new()
+    public abstract partial class SqlBaseService<T>: IBaseService<T> where T :class,new()
     {
-        private readonly KroMusicEntities _db;
-        public SqlBaseService(KroMusicEntities db)
-        {
-            _db = db;
-        }
+        private KroMusicEntities _db = DBContextFactory.GetContext();
         public int Create(T model)
         {
             _db.Set<T>().Add(model);

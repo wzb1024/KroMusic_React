@@ -20,7 +20,7 @@ namespace KroMusic.Areas.User.Controllers
         }
         public ActionResult UserMsg(int id)
         {
-            var user = manager.GetById(id);
+            var user = manager.GetUserById(id);
             return View(user);
         }
     }

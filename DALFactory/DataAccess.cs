@@ -18,5 +18,30 @@ namespace DALFactory
             string className = AssemblyName + "." + db + "UserService";
             return (IUserService)Assembly.Load(AssemblyName).CreateInstance(className);
         }
+        public static ISingerService CreateSingerrService()
+        {
+            string className = AssemblyName + "." + db + "SingerService";
+            return (ISingerService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IMusicService CreateMusicService()
+        {
+            string className = AssemblyName + "." + db + "MusicService";
+            return (IMusicService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IPlaylistService CreatePlaylistService()
+        {
+            string className = AssemblyName + "." + db + "PlaylistService";
+            return (IPlaylistService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static ITypeService CreateTypeService()
+        {
+            string className = AssemblyName + "." + db + "TypeService";
+            return (ITypeService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IFavoritePlaylistService CreateFavoritePlaylistService()
+        {
+            string className = AssemblyName + "." + db + "FavoritePlaylist";
+            return (IFavoritePlaylistService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Model;
 using DAL;
+using IDAL;
 
 namespace BLL
 {
@@ -14,16 +15,12 @@ namespace BLL
         public string Name { get; set; }
         public string Image { get; set; }
     }
-    public class SingerManager:BaseManager<Singer>
+    public class SingerManager
     {
-        KroMusicEntities entities = new KroMusicEntities();
-        public override SqlBaseService<Singer> GetDAL()
-        {
-            return new SingerService(entities);
-        }
+        ISingerService service = DALFactory.DataAccess.CreateSingerrService();
         public IEnumerable<Singer> GetSingerByKeywords(string keywords)
         {
-            return GetAllAsNoTracking().Where(u => u.Name.Contains(keywords));
+            return service.GetAllAsNoTracking().Where(u => u.Name.Contains(keywords));
         }
     }
 }

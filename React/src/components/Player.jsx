@@ -39,7 +39,6 @@ class Player extends Component {
       });
     }
   }
-
   componentWillReceiveProps(nextProps) {
     var mlist = nextProps.mlist;
     this.init(mlist);
@@ -49,14 +48,22 @@ class Player extends Component {
     this.setState({
       volume: this.audio.volume,
     });
-    $("#favolumntag").click(function () {
-      $("#volume").hasClass("v_show")
-        ? $("#volume").removeClass("v_show")
-        : $("#volume").addClass("v_show");
-    });
+    $("#favolumntag").click(
+      function () {
+        if (this.state.volume == 0) {
+          this.setState({
+            volume: 0.4,
+          });
+        } else {
+          this.setState({
+            volume: 0,
+          });
+        }
+      }.bind(this)
+    );
     this.handleProgessDrag();
     this.handleVolumeDrag();
-    var mlist = this.props.mlist;
+    const mlist = this.props.mlist;
     this.init(mlist);
   }
 
@@ -109,7 +116,7 @@ class Player extends Component {
   handleNext() {
     if (this.props.mlist.length > 0) {
       this.audio.pause();
-      var index = this.state.index;
+      let index = this.state.index;
       var list = this.props.mlist;
       var m = null;
       var len = list.length;
@@ -135,18 +142,23 @@ class Player extends Component {
   handleVolumeDrag() {
     var $arc = $("#volumearc");
     var drag = false;
-    var tot = $("#volume").height();
-    var inity = $("#discBox").height() - tot;
-    var $container = $("#discBox");
+    var tot = $("#volume").width();
+    var initx = $("#volume").offset().left;
+    var $container = $("#m_operate");
     $arc.mousedown(() => {
       drag = true;
       $arc.width("14px").height("14px");
     });
     $container.mousemove((e) => {
-      let cury = e.offsetY;
-      var progs = 1 - (cury - inity) / tot;
+      let curx = e.clientX;
+      var progs = (curx - initx) / tot;
       if (drag && progs >= 0 && progs <= 1) {
-        this.audio.volume = progs;
+        this.setState(
+          {
+            volume: progs,
+          },
+          () => (this.audio.volume = this.state.volume)
+        );
       }
     });
     $container.mouseup(() => {
@@ -166,8 +178,21 @@ class Player extends Component {
     var $arc = $("#progressarc");
     var initx = $("#progressBox").offset().left;
     var tot = $("#progressBox").width();
-    var $container = $("#player_container");
+    var $container = $("#progressBox");
     var drag = false;
+    $container.mousedown((e) => {
+      drag = true;
+      var curx = e.clientX;
+      var progs = (curx - initx) / tot;
+      if (drag && progs >= 0 && progs <= 1) {
+        this.audio.pause();
+        var t = this.state.current.Span * progs;
+        this.setState(
+          { currentTime: t },
+          () => (this.audio.currentTime = this.state.currentTime)
+        );
+      }
+    });
     $arc.mousedown(() => {
       drag = true;
     });
@@ -232,37 +257,38 @@ class Player extends Component {
             </div>
           </div>
           <div className="controlBox" id="controlBox">
-              <div className="progressBox" id="progressBox">
-                <div
-                  className="progressBar"
-                  style={{ width: (currentTime / Span) * 100 + "%" }}
-                >
-                  <span id="progressarc"></span>
-                </div>
-              </div>
-            {/* <div className="volume" id="volume">
+            <div className="progressBox" id="progressBox">
               <div
-                className="volumebar"
-                id="volumebar"
-                style={{ height: this.state.volume * 100 + "%" }}
+                className="progressBar"
+                style={{ width: (currentTime / Span) * 100 + "%" }}
               >
-                <span id="volumearc"></span>
+                <span id="progressarc"></span>
               </div>
-            </div> */}
+            </div>
+
             <div id="m_operate">
-              <button>
+              <button className="operation">
                 <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
               </button>
 
-              <button>
+              <button className="operation">
                 <i className="fa fa-list fa-2x" aria-hidden="true"></i>
               </button>
-              <button>
+              <button className="operation">
                 <i className="fa fa-info-circle fa-2x" aria-hidden="true"></i>
               </button>
-              <button id="favolumntag">
+              <button id="favolumntag" className="operation">
                 <i className="fa fa-volume-up fa-2x" aria-hidden="true"></i>
               </button>
+              <div className="volume operation" id="volume">
+                <div
+                  className="volumebar"
+                  id="volumebar"
+                  style={{ width: this.state.volume * 100 + "%" }}
+                >
+                  <span id="volumearc"></span>
+                </div>
+              </div>
             </div>
             <div id="progress_container">
               {/* <div>
@@ -274,7 +300,7 @@ class Player extends Component {
                   ? "0" + Math.floor(currentTime % 60)
                   : Math.floor(currentTime % 60)}
               </div> */}
-            
+
               {/* <div>
                 {Span / 60 < 10
                   ? "0" + Math.floor(Span / 60)
@@ -284,7 +310,7 @@ class Player extends Component {
                   ? "0" + Math.floor(Span % 60)
                   : Math.floor(Span % 60)}
               </div>*/}
-            </div> 
+            </div>
 
             <div className="prev m_action">
               <button onClick={this.handlePrev}>
@@ -312,10 +338,54 @@ class Player extends Component {
             </div>
           </div>
         </div>
-        <div id="player_show" onClick={this.handleShow}>
-          <span style={{ marginLeft: "5px" }}>
-            {this.state.playing ? <>正在播放:{MusicName}</> : <>暂无音乐播放</>}
+        <div id="player_show">
+          <span
+            style={{
+              position: "absolute",
+              left: "5px",
+              top: "3px",
+              color: "#bdc3c7",
+            }}
+          >
+            <button onClick={this.handleShow}>
+              {this.state.visible ? (
+                <i
+                  className="fa fa-angle-double-up fa-2x"
+                  aria-hidden="true"
+                ></i>
+              ) : (
+                <i
+                  className="fa fa-angle-double-down fa-2x"
+                  aria-hidden="true"
+                ></i>
+              )}
+            </button>
           </span>
+          <span>
+            {this.state.playing ? <>{MusicName} </> : <>暂无音乐播放</>}
+          </span>
+          {this.state.visible ? (
+            ""
+          ) : (
+            <>
+              <div className="playBox m_action">
+                {this.state.playing ? (
+                  <button onClick={() => this.audio.pause()}>
+                    <i className="fa fa-pause " aria-hidden="true"></i>
+                  </button>
+                ) : (
+                  <button onClick={this.handlePlay}>
+                    <i className="fa fa-play"></i>
+                  </button>
+                )}
+              </div>
+              <div className="next m_action">
+                <button onClick={this.handleNext}>
+                  <i className="fa fa-step-forward"></i>
+                </button>
+              </div>
+            </>
+          )}
         </div>
         <audio
           id="audio"

@@ -49,8 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseManager.cs" />
-    <Compile Include="SongManager.cs" />
+    <Compile Include="MusicManager.cs" />
     <Compile Include="PlaylistManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingerManager.cs" />
@@ -58,9 +57,17 @@
     <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DALFactory\DALFactory.csproj">
+      <Project>{5cc73022-35e3-47da-aa6c-b0fcd9150454}</Project>
+      <Name>DALFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{97fe6cd2-9d8e-41aa-bc95-79f895b2264e}</Project>
       <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IDAL\IDAL.csproj">
+      <Project>{77579309-05de-4d1c-9bca-6637c4d2f877}</Project>
+      <Name>IDAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{905962d5-c152-4a5e-8870-827ec071c420}</Project>

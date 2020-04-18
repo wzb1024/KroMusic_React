@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
+using IDAL;
+using DALFactory;
 
 namespace BLL
 {
@@ -27,32 +29,32 @@ namespace BLL
         public int Age { get; set; }
         public string Email { get; set; }
     }
-    public partial class UserManager : BaseManager<User>
+    public partial class UserManager
     {
-        KroMusicEntities entities = new KroMusicEntities();
-        public override SqlBaseService<User> GetDAL()
+        IUserService service = DataAccess.CreateUserService();
+        public User GetUserById(int id)
         {
-            return new SqlUserService(entities);
+            return service.GetById(id);
         }
         public bool Success(string userName, string password)
         {
-            return GetAll().Any(m => m.UserName == userName && m.Password == password);
+            return service.GetAll().Any(m => m.UserName == userName && m.Password == password);
         }
         public int GetId(string userName)
         {
-            return GetAll().First(m => m.UserName == userName).Id;
+            return service.GetAll().First(m => m.UserName == userName).Id;
         }
         public User CheckName(string userName)
         {
-            return GetAll().FirstOrDefault(m => m.UserName == userName);
+            return service.GetAll().FirstOrDefault(m => m.UserName == userName);
         }
         public bool ExistNickName(string nickName)
         {
-            return GetAll().FirstOrDefault(m => m.NickName == nickName) != null;
+            return service.GetAll().FirstOrDefault(m => m.NickName == nickName) != null;
         }
         public bool ExistNickName(string nickName, int id)
         {
-            return GetAll().FirstOrDefault(m => m.NickName == nickName && m.Id != id) != null;
+            return service.GetAll().FirstOrDefault(m => m.NickName == nickName && m.Id != id) != null;
         }
         public bool Create(string userName, string password, string nikName, string gender, int age, string email, string path)
         {
@@ -64,19 +66,19 @@ namespace BLL
             user.Gender = gender;
             user.Age = age;
             user.Email = email;
-            return Add(user);
+            return service.Create(user)>0;
         }
         public AccountInfoJsonModel GetAccountMsg(int id)
         {
             AccountInfoJsonModel model;
-            var user = GetById(id);
+            var user = service.GetById(id);
             model = new AccountInfoJsonModel { NickName = user.NickName, Age = user.Age, Email = user.Email, Gender = user.Gender, Hdimage = user.Hdimage };        
             return model;
         }
         public List<SongJsonModel> GetFavoriteMusics(int id)
         {
             List<SongJsonModel> model = new List<SongJsonModel>();
-            var user = GetById(id);
+            var user = service.GetById(id);
             foreach (var item in user.FavoriteMusic)
             {
                 SongJsonModel music = new SongJsonModel { Id = item.MusicId, ImagePath = item.Music.ImagePath, MusicName = item.Music.MusicName, Path = item.Music.Path, SingerName = item.Music.Singer.Name, Span = item.Music.Span.ToString().Remove(0, 3) };
@@ -88,7 +90,7 @@ namespace BLL
         public List<SingerJsonModel> GetAttendSingers(int id)
         {
             List<SingerJsonModel> model = new List<SingerJsonModel>();
-            var user = GetById(id);
+            var user = service.GetById(id);
             foreach (var item in user.Attention)
             {
                 SingerJsonModel singer = new SingerJsonModel { Id = item.SingerId, Image = item.Singer.Image, Name = item.Singer.Name };
@@ -98,18 +100,18 @@ namespace BLL
         }
         public void ChangeHdimage(string path,int id)
         {
-            var user = GetById(id);             
+            var user = service.GetById(id);             
             File.Delete(HttpContext.Current.Server.MapPath(user.Hdimage));
             user.Hdimage = path;
-            Edit(user);
+            service.Edit(user);
         }
         public bool ModifyMsg(ModifyMsgJsonModel model,int id)
         {
-            var user = GetById(id);
+            var user = service.GetById(id);
             user.Age = model.Age;
             user.Email = model.Email;
             user.NickName = model.NickName;
-            return Edit(user);
+            return service.Edit(user)>0;
         }
     }
 }

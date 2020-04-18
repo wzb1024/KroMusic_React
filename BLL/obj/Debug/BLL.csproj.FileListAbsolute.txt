@@ -37,3 +37,7 @@ D:\Project\KroMusic\BLL\obj\Debug\BLL.csproj.CopyComplete
 D:\Project\KroMusic\BLL\obj\Debug\BLL.dll
 D:\Project\KroMusic\BLL\obj\Debug\BLL.pdb
 D:\Project\KroMusic\BLL\obj\Debug\BLL.csproj.CoreCompileInputs.cache
+D:\Project\KroMusic\BLL\bin\Debug\DALFactory.dll
+D:\Project\KroMusic\BLL\bin\Debug\IDAL.dll
+D:\Project\KroMusic\BLL\bin\Debug\DALFactory.pdb
+D:\Project\KroMusic\BLL\bin\Debug\IDAL.pdb

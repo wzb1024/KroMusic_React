@@ -31,3 +31,5 @@ D:\Project\KroMusic\DAL\obj\Debug\DAL.csproj.CopyComplete
 D:\Project\KroMusic\DAL\obj\Debug\DAL.dll
 D:\Project\KroMusic\DAL\obj\Debug\DAL.pdb
 D:\Project\KroMusic\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+D:\Project\KroMusic\DAL\bin\Debug\IDAL.dll
+D:\Project\KroMusic\DAL\bin\Debug\IDAL.pdb

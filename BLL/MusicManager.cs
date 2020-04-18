@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Model;
 using DAL;
 using System.Web;
+using IDAL;
 
 namespace BLL
 {
@@ -18,17 +19,20 @@ namespace BLL
         public string ImagePath { get; set; }
         public string Span { get; set; }
     }
-    public class SongManager:BaseManager<Music>
+    public class MusicManager
     {
+        IMusicService service = DALFactory.DataAccess.CreateMusicService();
+        KroMusicEntities entities = DBContextFactory.GetContext();
+
+
         string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
-        KroMusicEntities entities = new KroMusicEntities();
-        public override SqlBaseService<Music> GetDAL()
+        public Music GetMusicById(int id)
         {
-            return new MusicService(entities);
+            return service.GetById(id);
         }
         public List<Music> GetMusicsByKeywords(string keywords)
         {
-            return GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)).ToList<Music>();
+            return service.GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)).ToList<Music>();
         }
         public bool Collect(int musicId)
         {
@@ -54,7 +58,7 @@ namespace BLL
         {
             int uid = int.Parse(userId);
             var e = entities.Set<LikeMusic>().FirstOrDefault(u => u.MusicId == musicId && u.UserId == uid);
-            var n = GetById(musicId);
+            var n = service.GetById(musicId);
             if (e == null)
             {
                 LikeMusic s = new LikeMusic();
@@ -64,7 +68,7 @@ namespace BLL
                 entities.Set<LikeMusic>().Add(s);
                 entities.SaveChanges();
                 n.Likes = n.LikeMusic.Count();
-                Edit(n);
+                service.Edit(n);
                 return true;
             }
             else
@@ -72,7 +76,7 @@ namespace BLL
                 entities.Set<LikeMusic>().Remove(e);
                 entities.SaveChanges();
                 n.Likes = n.LikeMusic.Count();
-                Edit(n);
+                service.Edit(n);
                 return false;
             }
         }
@@ -81,7 +85,7 @@ namespace BLL
             List<SongJsonModel> mlist = new List<SongJsonModel>();
             foreach (var item in list)
             {
-                var m = GetByIdAsNoTracking(item);
+                var m = service.GetByIdAsNoTracking(item);
                 SongJsonModel u = new SongJsonModel
                 {
                     Id = m.Id,

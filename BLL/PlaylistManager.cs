@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DAL;
+using IDAL;
 using Model;
 
 namespace BLL
@@ -67,17 +68,15 @@ namespace BLL
         public string Message { get; set; }
         public bool Like { get; set; }
     }
-    public class PlaylistManager : BaseManager<Playlist>
+    public class PlaylistManager
     {
-        KroMusicEntities entities = new KroMusicEntities();
+        KroMusicEntities entities = DBContextFactory.GetContext();
+        IPlaylistService service = DALFactory.DataAccess.CreatePlaylistService();
         string userId = HttpContext.Current.Session["UserId"]==null?null: HttpContext.Current.Session["UserId"].ToString();
-        public override SqlBaseService<Playlist> GetDAL()
-        {
-            return new PlaylistService(entities);
-        }
+
         public List<Playlist> GetPlaylistsByKeywords(string keywords)
         {
-            return GetAllAsNoTracking().Where(u => u.Name.Contains(keywords)).OrderByDescending(i=>i.PlayTimes).ToList();
+            return service.GetAllAsNoTracking().Where(u => u.Name.Contains(keywords)).OrderByDescending(i=>i.PlayTimes).ToList();
         }
         /// <summary>
         /// 获取某类型的全部公开歌单
@@ -93,7 +92,7 @@ namespace BLL
 
             if (id == 0)
             {
-                var these = GetAllAsNoTracking().Where(u => u.IsPublic);
+                var these = service.GetAllAsNoTracking().Where(u => u.IsPublic);
                 data.Total = these.Count();
                 if (orderByHeat)
 
@@ -104,7 +103,7 @@ namespace BLL
             }
             else
             {
-                var these = GetAllAsNoTracking().Where(u => u.IsPublic && u.PlaylistType.Any(n => n.SubTypeId == id));
+                var these = service.GetAllAsNoTracking().Where(u => u.IsPublic && u.PlaylistType.Any(n => n.SubTypeId == id));
                 data.Total = these.Count();
 
                 if (orderByHeat)
@@ -128,7 +127,7 @@ namespace BLL
         }
         public PlaylistJsonModel GetPlaylist(int id)
         {           
-            var model = GetById(id);
+            var model = service.GetById(id);
             List<String> subs = new List<string>();
             PlaylistJsonModel jsonModel = new PlaylistJsonModel
             {
@@ -179,7 +178,7 @@ namespace BLL
         {
             int uid = int.Parse(userId);
             var e = entities.Set<LikePlaylist>().FirstOrDefault(u => u.PlaylistId == playlistId && u.UserId == uid);
-            var n = GetById(playlistId);
+            var n = service.GetById(playlistId);
             if (e == null)
             {
                 LikePlaylist s = new LikePlaylist();
@@ -189,7 +188,7 @@ namespace BLL
                 entities.Set<LikePlaylist>().Add(s);
                 entities.SaveChanges();
                 n.Likes = n.LikePlaylist.Count();
-                Edit(n);
+                service.Edit(n);
                 return new LikeJsonModel { Like = true, Message = "点赞成功" };
             }
             else
@@ -197,14 +196,14 @@ namespace BLL
                 entities.Set<LikePlaylist>().Remove(e);
                 entities.SaveChanges();
                 n.Likes = n.LikePlaylist.Count();
-                Edit(n);
+                service.Edit(n);
                 return new LikeJsonModel { Like = false, Message = "取消点赞" };
             }
         }
         public List<SelfPlaylistJsonModel> GetSelfPlaylists(int id)
         {
             List<SelfPlaylistJsonModel> model = new List<SelfPlaylistJsonModel>();
-            var user = GetById(id);
+            var user = service.GetById(id);
             foreach (var item in entities.Playlist.Where(u => u.OwnerId == id))
             {
                 SelfPlaylistJsonModel playlist = new SelfPlaylistJsonModel { Id = item.Id, Cover = item.Cover, Name = item.Name, IsPublic = item.IsPublic };
@@ -231,7 +230,7 @@ namespace BLL
         /// <returns></returns>
         public List<SongJsonModel> GetSongList(int id)
         {
-            var u = GetById(id);
+            var u = service.GetById(id);
             List<SongJsonModel> data = new List<SongJsonModel>();
             foreach (var item in u.PlaylistItem)
             {
@@ -241,34 +240,19 @@ namespace BLL
             }
             return data;
         }
-    }
-    public class FavoritePlaylistManager : BaseManager<FavoritePlaylist>
-    {
-        KroMusicEntities entities = new KroMusicEntities();
-        string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
-        public override SqlBaseService<FavoritePlaylist> GetDAL()
-        {
-            return new FavoritePlaylistService(entities);
-        }
+        /// <summary>
+        /// 取消收藏歌单
+        /// </summary>
+        /// <param name="playlists"></param>
         public void CancelCollectPlaylists(List<int> playlists)
         {
+            var service = DALFactory.DataAccess.CreateFavoritePlaylistService();
             int uid = int.Parse(userId);
             foreach (var item in playlists)
             {
-                Remove(GetAll().First(u => u.PlaylistId == item && u.UserId ==uid).Id);
+                service.Remove(service.GetAll().First(u => u.PlaylistId == item && u.UserId == uid).Id);
             }
         }
-
-    }
-    public class PlaylistTypeManager : BaseManager<PlaylistType>
-    {
-        KroMusicEntities entities = new KroMusicEntities();
-
-        public override SqlBaseService<PlaylistType> GetDAL()
-        {
-            return new PlaylistTypeService(entities);
-        }
-
     }
 }
 

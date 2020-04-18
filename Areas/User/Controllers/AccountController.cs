@@ -62,7 +62,7 @@ namespace KroMusic.Areas.User.Controllers
                     }
                     int id= manager.GetId(model.UserName);
                     Session["UserId"] = id;
-                    var self = manager.GetById(id);
+                    var self = manager.GetUserById(id);
                     result.Status = true;
                     result.NikName = self.NickName;
                     result.Hdimg = self.Hdimage; 
@@ -94,7 +94,7 @@ namespace KroMusic.Areas.User.Controllers
             
             else
             {
-                var user = manager.GetById(int.Parse(Session["UserId"].ToString()));
+                var user = manager.GetUserById(int.Parse(Session["UserId"].ToString()));
                 return Json(new { SigninState = true, NikName = user.NickName, Hdimg = user.Hdimage },JsonRequestBehavior.AllowGet);
             }
         }

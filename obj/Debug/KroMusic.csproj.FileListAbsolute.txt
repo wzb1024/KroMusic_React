@@ -193,3 +193,7 @@ D:\Project\KroMusic\obj\Debug\KroMusic.csproj.CopyComplete
 D:\Project\KroMusic\obj\Debug\KroMusic.dll
 D:\Project\KroMusic\obj\Debug\KroMusic.pdb
 D:\Project\KroMusic\obj\Debug\KroMusic.csproj.CoreCompileInputs.cache
+D:\Project\KroMusic\bin\IDAL.dll
+D:\Project\KroMusic\bin\DALFactory.dll
+D:\Project\KroMusic\bin\IDAL.pdb
+D:\Project\KroMusic\bin\DALFactory.pdb

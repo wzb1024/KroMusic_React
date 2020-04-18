@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class SqlUserService : SqlBaseService<User>,IUserService
+    public class SqlTypeService : SqlBaseService<Model.Type>,ITypeService
     {
-        public override Expression<Func<User, bool>> GetByIdKey(int id)
+        public override Expression<Func<Model.Type, bool>> GetByIdKey(int id)
         {
             return u => u.Id == id;
         }
