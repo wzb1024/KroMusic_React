@@ -18,9 +18,14 @@ namespace BLL
         public string Path { get; set; }
         public string ImagePath { get; set; }
         public string Span { get; set; }
+        public bool Favorite { get; set; } = false;
     }
     public class MusicManager
     {
+        //private MusicManager() { }                                       //单例模式
+        //private static MusicManager instance = new MusicManager();
+        //public static MusicManager Instance { get { return instance; } }
+
         IMusicService service = DALFactory.DataAccess.CreateMusicService();
         KroMusicEntities entities = DBContextFactory.GetContext();
 

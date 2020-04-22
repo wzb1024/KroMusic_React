@@ -3,19 +3,21 @@ import { Avatar, message } from "antd";
 import $ from "jquery";
 
 class Player extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       visible: true,
+      mlist: [],
       current: {
-        Id: 0,
+        Id: -1,
         MusicName: "暂无可播放音乐",
         SingerName: "",
-        favorate: false,
-        Span: 0,
+        Favorite: false,
+        Span: 1,
         ImagePath: "",
         Path: "",
       },
+      showList: true,
       currentTime: 0,
       index: 0,
       volume: 0,
@@ -28,33 +30,131 @@ class Player extends Component {
     this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
     this.handleProgessDrag = this.handleProgessDrag.bind(this);
     this.handleVolumeDrag = this.handleVolumeDrag.bind(this);
+    this.playSingle = this.playSingle.bind(this);
+    this.removeSingle = this.removeSingle.bind(this);
+    this.handleEmpty = this.handleEmpty.bind(this);
+    this.init = this.init.bind(this);
+    this.handleListChange = this.handleListChange.bind(this);
+    this.handleCollect = this.handleCollect.bind(this);
   }
-  init(mlist) {
-    if (mlist.length > 0) {
-      var m = mlist[0];
-      this.setState({
-        index: 0,
-        currentTime: 0,
-        current: m,
+  //对象数组去重
+  // removeRepeat(list) {
+  //   var obj = {};
+  //   list = list.reduce(function (item, next) {
+  //     obj[next.Id] ? "" : (obj[next.Id] = true && item.push(next));
+  //     return item;
+  //   }, []);
+  //   return list;
+  // }
+  // shouldComponentUpdate(nextProps,nextState){
+  //   console.log(nextState,this.state)
+  //   return  !(nextProps.updateList==this.props.updateList)
+  // }
+  componentDidUpdate(prevProps, provState) {
+    // let updateList = prevProps.updateList;
+    // let play = prevProps.play;
+    // if (updateList.length>0) this.init(updateList, play);
+    const exheight = $("#listBox").height();
+    const totheight = $("#list_ul").height();
+    if (totheight > exheight) {
+      const inity = $("#listBox").offset().top;
+      $("#listBox").mousemove(function (e) {
+        let span = totheight - exheight;
+        let rate = (e.clientY - inity) / exheight;
+        let distance = "-" + rate * span + "px";
+        $("#list_ul").css("top", distance);
       });
     }
   }
   componentWillReceiveProps(nextProps) {
-    var mlist = nextProps.mlist;
-    this.init(mlist);
+    let updateList = Array.from(nextProps.updateList);
+    if (updateList.length > 0) this.init(updateList);
   }
+  //对象数组差集
+  // getDifferenceSet(arr1, arr2) {
+  //   arr1 = arr1.map(JSON.stringify);
+  //   arr2 = arr2.map(JSON.stringify);
+  //   return arr1
+  //     .filter(function (v, i, arr) {
+  //       return !arr2.includes(v);
+  //     })
+  //     .map(JSON.parse);
+  // }
+  handleListChange(result) {
+    var updateList = result;
+    //var list = this.getDifferenceSet(this.state.mlist, updateList);   无法赋值？？？
+    var getDifferenceSet = function (arr1, arr2) {
+      arr1 = arr1.map(JSON.stringify);
+      arr2 = arr2.map(JSON.stringify);
+      return arr1
+        .filter(function (v, i, arr) {
+          return !arr2.includes(v);
+        })
+        .map(JSON.parse);
+    };
+    var list = getDifferenceSet(this.state.mlist, updateList);
+    let index = list
+      .map(JSON.stringify)
+      .indexOf(JSON.stringify(this.state.current));
+    if (index == -1) {
+      list = updateList.concat(list);
+      this.setState(
+        {
+          current: list[0],
+          index: 0,
+          currentTime: 0,
+          mlist: list,
+        },
+        () => {
+          if (this.props.play) this.handlePlay();
+        }
+      );
+    } else {
+      var i = index;
+      updateList.forEach((item) => {
+        list.splice(i + 1, 0, item);
+        i++;
+      });
+      this.setState(
+        {
+          index: index,
+          mlist: list,
+        },
+        () => {
+          if (this.props.play) this.handleNext();
+        }
+      );
+    }
+  }
+  init(list) {
+    list.forEach((item, i) => {
+      if (item === this.state.current.Id) list.splice(i, 1);
+    });
+    $.ajax("/music/song/GetSongsList", {
+      data: { list: list },
+      dataType: "json",
+      traditional: true,
+      success: function (result) {
+        this.handleListChange(result);
+      }.bind(this),
+    }); //异步！！！
+  }
+
   componentDidMount() {
     this.audio = document.getElementById("audio");
+    this.audio.volume = 0.4;
     this.setState({
       volume: this.audio.volume,
     });
     $("#favolumntag").click(
       function () {
         if (this.state.volume == 0) {
+          this.audio.volume = 0.4;
           this.setState({
             volume: 0.4,
           });
         } else {
+          this.audio.volume = 0;
           this.setState({
             volume: 0,
           });
@@ -63,8 +163,9 @@ class Player extends Component {
     );
     this.handleProgessDrag();
     this.handleVolumeDrag();
-    const mlist = this.props.mlist;
-    this.init(mlist);
+    if (this.state.mlist.length == 0) {
+      this.handleEmpty();
+    }
   }
 
   handleShow() {
@@ -78,19 +179,37 @@ class Player extends Component {
       });
     }
   }
+  handleEmpty() {
+    let cur = {
+      Id: -1,
+      MusicName: "暂无可播放音乐",
+      SingerName: "",
+      Favorite: false,
+      Span: 1,
+      ImagePath: "",
+      Path: "",
+    };
+    this.setState({
+      index: -1,
+      currentTime: 0,
+      current: cur,
+      playing: false,
+    });
+  }
   handlePlay() {
-    if (this.props.mlist.length > 0) {
+    if (this.state.mlist.length > 0) {
       this.audio.play();
     } else {
+      this.handleEmpty();
       message.error("暂无可播放音乐");
     }
   }
 
   handlePrev() {
-    if (this.props.mlist.length > 0) {
+    if (this.state.mlist.length > 0) {
       this.audio.pause();
       var index = this.state.index;
-      var list = this.props.mlist;
+      var list = this.state.mlist;
       var len = list.length;
       var m = null;
       if (index > 0) {
@@ -109,15 +228,16 @@ class Player extends Component {
         () => this.handlePlay()
       );
     } else {
+      this.handleEmpty();
       message.error("暂无可播放音乐");
     }
   }
 
   handleNext() {
-    if (this.props.mlist.length > 0) {
+    if (this.state.mlist.length > 0) {
       this.audio.pause();
       let index = this.state.index;
-      var list = this.props.mlist;
+      var list = this.state.mlist;
       var m = null;
       var len = list.length;
       if (index < len - 1) {
@@ -136,6 +256,7 @@ class Player extends Component {
         () => this.handlePlay()
       );
     } else {
+      this.handleEmpty();
       message.error("暂无可播放音乐");
     }
   }
@@ -227,6 +348,65 @@ class Player extends Component {
       currentTime: this.audio.currentTime,
     });
   }
+  playSingle(index) {
+    let cur = this.state.mlist[index];
+    this.setState(
+      {
+        current: cur,
+        index: index,
+      },
+      () => this.handlePlay()
+    );
+  }
+
+  removeSingle(index) {
+    if (index == this.state.index) {
+      this.handleNext();
+    }
+    this.setState(
+      {
+        mlist: this.state.mlist.filter((item, i) => index !== i),
+      },
+      () => {
+        let i = -1;
+        let j = 0;
+        while (j < this.state.mlist.length) {
+          if (this.state.mlist[j].Id == this.state.current.Id) {
+            i = j;
+            break;
+          }
+          j++;
+        }
+        this.setState({
+          index: i,
+        });
+      }
+    );
+  }
+  handleCollect() {
+    $.getJSON(
+      "/Music/Song/SongCollect",
+      {
+        id: this.state.current.Id,
+      },
+      function (result) {
+        if (result.State) {
+          var cur = this.state.current;
+          if (result.Collected) {
+            cur.Favorite = true;
+          } else {
+            cur.Favorite = false;
+          }
+          this.setState({
+            current: cur,
+          });
+          message.success(result.Message);
+        } else {
+          message.error(result.Message);
+        }
+      }.bind(this)
+    );
+  }
   render() {
     const { Span, MusicName, SingerName } = this.state.current;
     const { currentTime } = this.state;
@@ -247,15 +427,46 @@ class Player extends Component {
               {SingerName}
             </h3>
           </div>
-          <div className="discBox" id="discBox">
-            <div id="border" className={this.state.playing ? "rotate" : ""}>
-              <Avatar
-                className="disc"
-                size={140}
-                src={this.state.current.ImagePath}
-              />
+          {this.state.showList ? (
+            <div
+              id="listBox"
+              className="discBox"
+              style={{ background: "rgba(255,255,255,0.2)" }}
+            >
+              <ul id="list_ul">
+                {this.state.mlist.map((item, i) => (
+                  <li
+                    className="listItem"
+                    key={item.Id}
+                    style={
+                      i == this.state.index
+                        ? { color: "#7bed9f" }
+                        : { color: "#fafafa" }
+                    }
+                  >
+                    <span onClick={() => this.playSingle(i)}>
+                      {item.MusicName}
+                    </span>
+                    <i
+                      className="fa fa-times listDelete"
+                      aria-hidden="true"
+                      onClick={() => this.removeSingle(i)}
+                    ></i>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          ) : (
+            <div className="discBox">
+              <div id="border" className={this.state.playing ? "rotate" : ""}>
+                <Avatar
+                  className="disc"
+                  size={140}
+                  src={this.state.current.ImagePath}
+                />
+              </div>
+            </div>
+          )}
           <div className="controlBox" id="controlBox">
             <div className="progressBox" id="progressBox">
               <div
@@ -265,13 +476,33 @@ class Player extends Component {
                 <span id="progressarc"></span>
               </div>
             </div>
-
             <div id="m_operate">
-              <button className="operation">
-                <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
+              <button className="operation" onClick={this.handleCollect}>
+                {this.state.current.Favorite ? (
+                  <i
+                    class="fa fa-heart"
+                    style={{ color: "red" }}
+                    aria-hidden="true"
+                  ></i>
+                ) : (
+                  <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
+                )}
               </button>
 
-              <button className="operation">
+              <button
+                className="operation"
+                onClick={() => {
+                  if (this.state.showList) {
+                    this.setState({
+                      showList: false,
+                    });
+                  } else {
+                    this.setState({
+                      showList: true,
+                    });
+                  }
+                }}
+              >
                 <i className="fa fa-list fa-2x" aria-hidden="true"></i>
               </button>
               <button className="operation">

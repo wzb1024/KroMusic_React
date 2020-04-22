@@ -135,7 +135,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Mall\MallAreaRegistration.cs" />
     <Compile Include="Areas\Music\Controllers\SingerController.cs" />
     <Compile Include="Areas\Music\Controllers\SongController.cs" />
     <Compile Include="Areas\Music\Model\PlaylistModel.cs" />
@@ -213,7 +212,6 @@
     <Content Include="Areas\Music\Views\web.config" />
     <Content Include="Areas\Music\Views\Playlist\RcmdList.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Mall\Views\web.config" />
     <Content Include="Areas\Music\Views\Playlist\CategoryNavbar.cshtml" />
     <Content Include="Areas\Music\Views\Playlist\PlaylistDetails.cshtml" />
     <Content Include="Areas\User\Views\AccountMsg\UserMsg.cshtml" />
@@ -256,9 +254,6 @@
     <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Mall\Controllers\" />
-    <Folder Include="Areas\Mall\Data\" />
-    <Folder Include="Areas\Mall\Views\Shared\" />
     <Folder Include="Areas\Music\Views\Shared\" />
     <Folder Include="Models\" />
     <Folder Include="Sourse\Musics\" />

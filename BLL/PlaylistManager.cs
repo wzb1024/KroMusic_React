@@ -70,6 +70,11 @@ namespace BLL
     }
     public class PlaylistManager
     {
+        //private PlaylistManager() { }                                       //单例模式
+        //private static PlaylistManager instance = new PlaylistManager();
+        //public static PlaylistManager Instance { get { return instance; } }
+
+
         KroMusicEntities entities = DBContextFactory.GetContext();
         IPlaylistService service = DALFactory.DataAccess.CreatePlaylistService();
         string userId = HttpContext.Current.Session["UserId"]==null?null: HttpContext.Current.Session["UserId"].ToString();
@@ -103,7 +108,7 @@ namespace BLL
             }
             else
             {
-                var these = service.GetAllAsNoTracking().Where(u => u.IsPublic && u.PlaylistType.Any(n => n.SubTypeId == id));
+                var these = service.GetAll().Where(u => u.IsPublic && u.PlaylistType.Any(n => n.SubTypeId == id));
                 data.Total = these.Count();
 
                 if (orderByHeat)

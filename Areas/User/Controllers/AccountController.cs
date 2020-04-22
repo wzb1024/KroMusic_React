@@ -14,7 +14,7 @@ namespace KroMusic.Areas.User.Controllers
     public class AccountController : Controller
     {
         // GET: User/Account
-        UserManager manager = new UserManager();
+        UserManager manager =UserManager.Instance;
         [HttpGet]
         [AjaxSyncAction]
         public JsonResult Signin()

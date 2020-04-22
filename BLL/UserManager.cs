@@ -31,6 +31,10 @@ namespace BLL
     }
     public partial class UserManager
     {
+        private UserManager() { }                                       //单例模式
+        private static UserManager instance = new UserManager();
+        public static UserManager Instance { get { return instance; } }
+
         IUserService service = DataAccess.CreateUserService();
         public User GetUserById(int id)
         {

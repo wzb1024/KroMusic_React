@@ -204,7 +204,7 @@ class Playlist extends Component {
                   <li style={{ width: "10%" }}>{item.Span}</li>
                   <li style={{ textAlign: "center" }}>
                     <button
-                      onClick={() => this.props.handlePlay(item.Id)}
+                      onClick={() =>this.handlePlay(item.Id)}
                       className="music_action"
                     >
                       <PlayCircleOutlined />
