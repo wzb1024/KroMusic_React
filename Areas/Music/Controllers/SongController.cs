@@ -18,11 +18,11 @@ namespace KroMusic.Areas.Music.Controllers
         public ActionResult Search(string keywords)
         {
             var results = manager.GetMusicsByKeywords(keywords);
-            List<SearchResultModel> data = new List<SearchResultModel>();
+            List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
             if (results != null)
                 foreach (var item in results)
                 {
-                    SearchResultModel u = new SearchResultModel() { Id = item.Id, Name = item.MusicName, Owner = item.Singer.Name };
+                    SearchResultItemJsonModel u = new SearchResultItemJsonModel() { Id = item.Id, Name = item.MusicName, Owner = item.Singer.Name };
                     data.Add(u);
                 }
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -38,10 +38,10 @@ namespace KroMusic.Areas.Music.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [SigninAuthorize]
-        public ActionResult MusicCollect(int id)
+        public ActionResult SongCollect(int id)
         {         
-            bool result = manager.Collect(id);
-            return Content(result.ToString());
+            var result = manager.Collect(id);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 歌曲点赞
@@ -49,7 +49,7 @@ namespace KroMusic.Areas.Music.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [SigninAuthorize]
-        public ActionResult MusicLike(int id)
+        public ActionResult SongLike(int id)
         {           
             bool result = manager.Like(id);
             return Content(result.ToString());

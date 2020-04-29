@@ -9,43 +9,43 @@ const router = [
   {
     path: "/",
     component: Home,
-    exact: true
+    exact: true,
   },
   {
     path: "/home",
     component: Home,
-    exact: true
+    exact: true,
   },
   {
     path: "/search",
     component: Search,
-    exact: true
+    exact: true,
   },
   {
     path: "/category",
     component: Category,
-    exact: true
+    exact: true,
   },
   {
     path: "/account",
     component: Account,
-    exact: true
+    exact: true,
   },
   {
     path: "/singer",
     component: Home,
-    exact: true
+    exact: true,
   },
   {
     path: "/signUp",
     component: SignUp,
-    exact: true
+    exact: true,
   },
   {
     path: "/ranking",
     component: Home,
-    exact: true
-  }
+    exact: true,
+  },
 ];
 
 export default router;

@@ -6,7 +6,7 @@ class Player extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: true,
+      visible: false,
       mlist: [],
       current: {
         Id: -1,
@@ -17,12 +17,15 @@ class Player extends Component {
         ImagePath: "",
         Path: "",
       },
-      showList: true,
+      showList: false,
       currentTime: 0,
       index: 0,
       volume: 0,
       playing: false,
     };
+
+    this.props.onRef(this);
+
     this.handleShow = this.handleShow.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
     this.handleNext = this.handleNext.bind(this);
@@ -50,96 +53,6 @@ class Player extends Component {
   //   console.log(nextState,this.state)
   //   return  !(nextProps.updateList==this.props.updateList)
   // }
-  componentDidUpdate(prevProps, provState) {
-    // let updateList = prevProps.updateList;
-    // let play = prevProps.play;
-    // if (updateList.length>0) this.init(updateList, play);
-    const exheight = $("#listBox").height();
-    const totheight = $("#list_ul").height();
-    if (totheight > exheight) {
-      const inity = $("#listBox").offset().top;
-      $("#listBox").mousemove(function (e) {
-        let span = totheight - exheight;
-        let rate = (e.clientY - inity) / exheight;
-        let distance = "-" + rate * span + "px";
-        $("#list_ul").css("top", distance);
-      });
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    let updateList = Array.from(nextProps.updateList);
-    if (updateList.length > 0) this.init(updateList);
-  }
-  //对象数组差集
-  // getDifferenceSet(arr1, arr2) {
-  //   arr1 = arr1.map(JSON.stringify);
-  //   arr2 = arr2.map(JSON.stringify);
-  //   return arr1
-  //     .filter(function (v, i, arr) {
-  //       return !arr2.includes(v);
-  //     })
-  //     .map(JSON.parse);
-  // }
-  handleListChange(result) {
-    var updateList = result;
-    //var list = this.getDifferenceSet(this.state.mlist, updateList);   无法赋值？？？
-    var getDifferenceSet = function (arr1, arr2) {
-      arr1 = arr1.map(JSON.stringify);
-      arr2 = arr2.map(JSON.stringify);
-      return arr1
-        .filter(function (v, i, arr) {
-          return !arr2.includes(v);
-        })
-        .map(JSON.parse);
-    };
-    var list = getDifferenceSet(this.state.mlist, updateList);
-    let index = list
-      .map(JSON.stringify)
-      .indexOf(JSON.stringify(this.state.current));
-    if (index == -1) {
-      list = updateList.concat(list);
-      this.setState(
-        {
-          current: list[0],
-          index: 0,
-          currentTime: 0,
-          mlist: list,
-        },
-        () => {
-          if (this.props.play) this.handlePlay();
-        }
-      );
-    } else {
-      var i = index;
-      updateList.forEach((item) => {
-        list.splice(i + 1, 0, item);
-        i++;
-      });
-      this.setState(
-        {
-          index: index,
-          mlist: list,
-        },
-        () => {
-          if (this.props.play) this.handleNext();
-        }
-      );
-    }
-  }
-  init(list) {
-    list.forEach((item, i) => {
-      if (item === this.state.current.Id) list.splice(i, 1);
-    });
-    $.ajax("/music/song/GetSongsList", {
-      data: { list: list },
-      dataType: "json",
-      traditional: true,
-      success: function (result) {
-        this.handleListChange(result);
-      }.bind(this),
-    }); //异步！！！
-  }
-
   componentDidMount() {
     this.audio = document.getElementById("audio");
     this.audio.volume = 0.4;
@@ -167,6 +80,115 @@ class Player extends Component {
       this.handleEmpty();
     }
   }
+  addToList(list, play = false) {
+    this.init(list, play);
+  }
+
+  init(list, play) {
+    list.forEach((item, i) => {
+      if (item === this.state.current.Id) list.splice(i, 1);
+    });
+    $.ajax("/music/song/GetSongsList", {
+      data: { list: list },
+      dataType: "json",
+      traditional: true,
+      success: function (result) {
+        this.handleListChange(result, play);
+      }.bind(this),
+    }); //异步！！！
+  }
+
+  handleListChange(result, play) {
+    var updateList = result;
+    //var list = this.getDifferenceSet(this.state.mlist, updateList);   无法赋值？？？
+    var getDifferenceSet = function (arr1, arr2) {
+      arr1 = arr1.map(JSON.stringify);
+      arr2 = arr2.map(JSON.stringify);
+      return arr1
+        .filter(function (v, i, arr) {
+          return !arr2.includes(v);
+        })
+        .map(JSON.parse);
+    };
+    var list = getDifferenceSet(this.state.mlist, updateList);
+    let index = list
+      .map(JSON.stringify)
+      .indexOf(JSON.stringify(this.state.current));
+    if (index == -1) {
+      list = updateList.concat(list);
+      this.setState(
+        {
+          current: list[0],
+          index: 0,
+          currentTime: 0,
+          mlist: list,
+        },
+        () => {
+          if (play) this.handlePlay();
+          this.handleListSlide();
+        }
+      );
+    } else {
+      var i = index;
+      updateList.forEach((item) => {
+        list.splice(i + 1, 0, item);
+        i++;
+      });
+      this.setState(
+        {
+          index: index,
+          mlist: list,
+        },
+        () => {
+          if (play) this.handleNext();
+          this.handleListSlide();
+        }
+      );
+    }
+  }
+  handleListSlide() {
+    const exheight = $("#listBox").height();
+    const totheight = $("#list_ul").height();
+    if (totheight > exheight) {
+      const inity = $("#listBox").offset().top;
+      $("#listBox").mousemove(function (e) {
+        let span = totheight - exheight;
+        let rate = (e.clientY - inity) / exheight;
+        let distance = "-" + rate * span + "px";
+        $("#list_ul").css("top", distance);
+      });
+    }
+  }
+  // componentDidUpdate(prevProps, provState) {
+  //   // let updateList = prevProps.updateList;
+  //   // let play = prevProps.play;
+  //   // if (updateList.length>0) this.init(updateList, play);
+  //   const exheight = $("#listBox").height();
+  //   const totheight = $("#list_ul").height();
+  //   if (totheight > exheight) {
+  //     const inity = $("#listBox").offset().top;
+  //     $("#listBox").mousemove(function (e) {
+  //       let span = totheight - exheight;
+  //       let rate = (e.clientY - inity) / exheight;
+  //       let distance = "-" + rate * span + "px";
+  //       $("#list_ul").css("top", distance);
+  //     });
+  //   }
+  // }
+  // componentWillReceiveProps(nextProps) {
+  //   let updateList = Array.from(nextProps.updateList);
+  //   if (updateList.length > 0) this.init(updateList);
+  // }
+  //对象数组差集
+  // getDifferenceSet(arr1, arr2) {
+  //   arr1 = arr1.map(JSON.stringify);
+  //   arr2 = arr2.map(JSON.stringify);
+  //   return arr1
+  //     .filter(function (v, i, arr) {
+  //       return !arr2.includes(v);
+  //     })
+  //     .map(JSON.parse);
+  // }
 
   handleShow() {
     if (this.state.visible) {
@@ -384,6 +406,10 @@ class Player extends Component {
     );
   }
   handleCollect() {
+    if (this.state.current.Id < 0) {
+      message.error("请添加音乐");
+      return;
+    }
     $.getJSON(
       "/Music/Song/SongCollect",
       {
@@ -412,7 +438,7 @@ class Player extends Component {
     const { currentTime } = this.state;
     return (
       <div id="player_container" className={this.state.visible ? "p_show" : ""}>
-        <div id="blur">
+        <div id="blur" className="blur">
           <img
             src={this.state.current.ImagePath}
             style={{ height: "100%" }}
@@ -480,8 +506,8 @@ class Player extends Component {
               <button className="operation" onClick={this.handleCollect}>
                 {this.state.current.Favorite ? (
                   <i
-                    class="fa fa-heart"
-                    style={{ color: "red" }}
+                    class="fa fa-heart  fa-2x"
+                    style={{ color: "#ff7875" }}
                     aria-hidden="true"
                   ></i>
                 ) : (

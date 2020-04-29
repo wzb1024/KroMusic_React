@@ -9,6 +9,7 @@ namespace DAL
     public abstract partial class SqlBaseService<T>: IBaseService<T> where T :class,new()
     {
         private KroMusicEntities _db = DBContextFactory.GetContext();
+        //private KroMusicEntities _db = new KroMusicEntities();
         public int Create(T model)
         {
             _db.Set<T>().Add(model);
@@ -28,9 +29,13 @@ namespace DAL
         {
             return _db.Set<T>().AsNoTracking().AsParallel();//并行查询，提高效率
         }
+        //public IQueryable<T> GetAllAsNoTracking()
+        //{
+        //    return _db.Set<T>().AsNoTracking();
+        //}
         public T GetById(int id)
         {
-            return _db.Set<T>().FirstOrDefault(GetByIdKey(id));
+            return _db.Set<T>().Find(id);
         }
         public T GetByIdAsNoTracking(int id)
         {

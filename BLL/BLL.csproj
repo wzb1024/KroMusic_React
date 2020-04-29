@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonModel.cs" />
     <Compile Include="MusicManager.cs" />
     <Compile Include="PlaylistManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -30,6 +30,7 @@ class App extends Component {
     };
     this.indexChange = this.indexChange.bind(this);
     this.addToList = this.addToList.bind(this);
+    this.onRef = this.onRef.bind(this);
   }
   indexChange() {
     this.setState({
@@ -38,15 +39,16 @@ class App extends Component {
   }
 
   addToList(list, play = false) {
-    this.setState({
-      updateList:list,
-      play:play
-    })
+    this.player.addToList(list, play);
+  }
+  //父组件调用子组件player方法
+  onRef(ref) {
+    this.player = ref;
   }
   render() {
     return (
       <BrowserRouter history={history}>
-        <div className="ue-bar" >
+        <div className="ue-bar">
           <div className="ue-bar-warp">
             <div className="ue-bar-logo">
               <a href="#">
@@ -108,19 +110,11 @@ class App extends Component {
           </div>
         </div>
         <div id="renderBody">
-          <Player
-           updateList={this.state.updateList}
-           play={this.state.play}
-          />
+          <Player onRef={this.onRef} />
           <Switch>
             <Route
               from="/playlist/:id"
-              component={() => (
-                <Playlist
-                  addToList={this.addToList}
-                  handlePlay={this.handlePlay}
-                ></Playlist>
-              )}
+              component={() => <Playlist addToList={this.addToList}></Playlist>}
               exact
             ></Route>
             {router.map((route, i) => (

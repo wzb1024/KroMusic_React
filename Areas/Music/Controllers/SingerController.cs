@@ -16,11 +16,11 @@ namespace KroMusic.Areas.Music.Controllers
         public ActionResult Search(string keywords)
         {
              var results = manager.GetSingerByKeywords(keywords);
-            List<SearchResultModel> data = new List<SearchResultModel>();
+            List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
             if (results != null)
                 foreach (var item in results)
                 {
-                    SearchResultModel u = new SearchResultModel() {Id=item.Id, Name = item.Name,Owner = item.Image };
+                    SearchResultItemJsonModel u = new SearchResultItemJsonModel() {Id=item.Id, Name = item.Name,Owner = item.Image };
                     data.Add(u);
                 }
             return Json(data, JsonRequestBehavior.AllowGet);

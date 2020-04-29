@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Pagination, Spin, message, Button } from "antd";
+import { Comment, Avatar, Form, List, Input, Tooltip } from "antd";
+import moment from "moment";
 import Player from "@/components/Player";
 import $ from "jquery";
 import {
@@ -10,20 +12,24 @@ import {
   PlusCircleOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
-
+moment.locale("zh-cn");
 class Playlist extends Component {
   constructor() {
     super();
     this.state = {
-      loading: true,
-      details: {Tags:[]},
+      loading: false,
+      details: { Tags: [] },
       songs: [],
+      comments: [],
     };
 
     this.handleLike = this.handleLike.bind(this);
     this.handleCollect = this.handleCollect.bind(this);
     this.playAll = this.playAll.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReply = this.handleReply.bind(this);
   }
+
   componentDidMount() {
     var url = window.location.href;
     var id = url.slice(url.lastIndexOf("/") + 1);
@@ -47,17 +53,31 @@ class Playlist extends Component {
         });
       }.bind(this)
     );
+    $.getJSON(
+      "/Music/Playlist/GetComments",
+      { id: id },
+      function (data) {
+        this.setState({
+          comments: data,
+          loading: false,
+        });
+      }.bind(this)
+    );
   }
-  playAll() {  
+  playAll() {
     var list = new Array();
     this.state.songs.forEach((item) => {
       list.push(parseInt(item.Id));
     });
-    this.props.addToList(list,true);
+    if (list.length == 0) {
+      message.error("暂无可播放音乐");
+      return;
+    }
+    this.props.addToList(list, true);
   }
-  handlePlay(id){
-    var list=[id];
-    this.props.addToList(list,true);
+  handlePlay(id) {
+    var list = [id];
+    this.props.addToList(list, true);
   }
   handleLike() {
     $.getJSON(
@@ -108,8 +128,57 @@ class Playlist extends Component {
       }.bind(this)
     );
   }
+  handleSubmit(e) {
+    if (e != "")
+      $.post(
+        "/Music/Playlist/Comment",
+        { id: this.state.details.Id, value: e },
+        function (result) {
+          if (result.State) {
+            this.setState({
+              comments: [result.Model, ...this.state.comments],
+            });
+          } else {
+            message.error(result.Message);
+          }
+        }.bind(this)
+      );
+  }
+  handleReply(targetId, value, position) {
+    if (value != "") {
+      var com = this.state.comments;
+      var sub = com[position].SubComments;
+      $.post(
+        "/Music/Playlist/Reply",
+        { id: this.state.details.Id, value: value, targetId: targetId },
+        function (result) {
+          if (result.State) {
+            sub = [result.Model].concat(sub);
+            com[position].SubComments = sub;
+            this.setState({
+              comments: com,
+            });
+          } else {
+            message.error(result.Message);
+          }
+        }.bind(this)
+      );
+      this.setState({
+        comments: com,
+      });
+    }
+  }
+  handleShow() {
+    var $div = $(event.target);
+    var dis = $div.next().css("display");
+    if (dis == "none") {
+      $div.next().css("display", "block");
+    } else {
+      $div.next().css("display", "none");
+    }
+  }
   render() {
-    const { details } = this.state;
+    const { details, comments } = this.state;
     return (
       <div id="playlist_container" className="container">
         {this.state.loading ? (
@@ -204,7 +273,7 @@ class Playlist extends Component {
                   <li style={{ width: "10%" }}>{item.Span}</li>
                   <li style={{ textAlign: "center" }}>
                     <button
-                      onClick={() =>this.handlePlay(item.Id)}
+                      onClick={() => this.handlePlay(item.Id)}
                       className="music_action"
                     >
                       <PlayCircleOutlined />
@@ -216,6 +285,103 @@ class Playlist extends Component {
                 </ul>
               ))}
             </div>
+            <div id="playlist_comment">
+              <div>
+                <Comment
+                  avatar={
+                    <Avatar
+                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                      alt="Han Solo"
+                    />
+                  }
+                  content={<Editor onSubmit={this.handleSubmit} />}
+                />
+                <h3
+                  style={{
+                    padding: "10px 0px",
+                    borderBottom: "1px solid gray",
+                    marginBottom: "20px",
+                  }}
+                >
+                  全部评论&nbsp;<small>共{comments.length}条评论</small>
+                </h3>
+                {comments.map((item, i) => (
+                  <div key={item.Id}>
+                    <Comment
+                      actions={[
+                        <SubEditor
+                          position={i}
+                          targetId={item.Id}
+                          onSubmit={this.handleReply}
+                        />,
+                      ]}
+                      author={<a>{item.NickName}</a>}
+                      avatar={
+                        <a href="https://www.baidu.com">
+                          <Avatar src={item.Hdimg} alt="Han Solo" />
+                        </a>
+                      }
+                      content={<p>{item.Content}</p>}
+                      datetime={
+                        <Tooltip
+                          title={moment(item.Time).format(
+                            "YYYY-MM-DD HH:mm:ss"
+                          )}
+                        >
+                          <span>{moment(item.Time).fromNow()}</span>
+                        </Tooltip>
+                      }
+                    />
+                    <div
+                      onClick={this.handleShow}
+                      style={{ cursor: "pointer", marginLeft: "45px" }}
+                    >
+                      共{item.SubComments.length}条回复
+                    </div>
+                    <div style={{ display: "none" }}>
+                      {item.SubComments.map((it) => (
+                        <Comment
+                          style={{ marginLeft: "40px" }}
+                          key={it.Id}
+                          actions={[
+                            <SubEditor
+                              position={i}
+                              targetId={it.Id}
+                              onSubmit={this.handleReply}
+                            />,
+                          ]}
+                          author={
+                            <span>
+                              <a>{it.NickName}</a>&nbsp;
+                              {it.TargetId !== item.Id && (
+                                <span>
+                                  回复&nbsp;
+                                  <a>
+                                    <Avatar size="small" src={it.TarHdimg} />
+                                    {it.TarName}
+                                  </a>
+                                </span>
+                              )}
+                            </span>
+                          }
+                          avatar={<Avatar src={it.Hdimg} alt="Han Solo" />}
+                          content={<p>{it.Content}</p>}
+                          datetime={
+                            <Tooltip
+                              title={moment(it.Time).format(
+                                "YYYY-MM-DD HH:mm:ss"
+                              )}
+                            >
+                              <span>{moment(it.Time).fromNow()}</span>
+                            </Tooltip>
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </>
         )}
       </div>
@@ -223,3 +389,77 @@ class Playlist extends Component {
   }
 }
 export default Playlist;
+
+const Editor = ({ onSubmit }) => {
+  const [value, setValue] = useState("");
+
+  return (
+    <div>
+      <Input.TextArea
+        rows={4}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+
+      <Button
+        htmlType="submit"
+        type="primary"
+        onClick={(e) => {
+          onSubmit(value);
+          $(e.target).prev().val("");
+        }}
+        style={{ marginTop: "5px" }}
+      >
+        确认
+      </Button>
+    </div>
+  );
+};
+const SubEditor = (props) => {
+  const [value, setValue] = useState("");
+
+  return (
+    <div>
+      <span style={{ marginRight: "15px" }}>
+        <button
+          onClick={(e) => {
+            $(e.target).parent().next().css("display", "inline");
+          }}
+        >
+          回复
+        </button>
+      </span>
+      <span style={{ display: "none" }}>
+        <Input.TextArea
+          rows={1}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          style={{ width: "480px" }}
+        />
+        <Button
+          htmlType="submit"
+          type="link"
+          onClick={(e) => {
+            props.onSubmit(props.targetId, value, props.position);
+            $(e.target).parent().css("display", "none");
+            $(e.target).prev().val("");
+          }}
+          style={{ padding: "0px", marginLeft: "5px" }}
+        >
+          确认
+        </Button>
+        <Button
+          htmlType="submit"
+          type="link"
+          onClick={(e) => {
+            $(e.target).parent().css("display", "none");
+            $(e.target).prev().prev().val("");
+          }}
+          style={{ padding: "0px", marginLeft: "5px" }}
+        >
+          取消
+        </Button>
+      </span>
+    </div>
+  );
+};

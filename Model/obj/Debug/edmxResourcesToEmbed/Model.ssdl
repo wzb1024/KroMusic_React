@@ -100,9 +100,10 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="PlaylistId" Type="int" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="TargetId" Type="int" Nullable="false" />
+    <Property Name="TargetId" Type="int" />
     <Property Name="Content" Type="nvarchar" MaxLength="400" Nullable="false" />
     <Property Name="Time" Type="datetime" Nullable="false" />
+    <Property Name="ReplyId" Type="int" />
   </EntityType>
   <EntityType Name="PlaylistItem">
     <Key>
@@ -273,7 +274,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LikePlaylist_Playlist">
-    <End Role="Playlist" Type="Self.Playlist" Multiplicity="1" />
+    <End Role="Playlist" Type="Self.Playlist" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="LikePlaylist" Type="Self.LikePlaylist" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Playlist">
@@ -285,9 +288,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LikePlaylist_User">
-    <End Role="User" Type="Self.User" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
+    <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="LikePlaylist" Type="Self.LikePlaylist" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
@@ -391,6 +392,30 @@
       </Principal>
       <Dependent Role="PlaylistComment">
         <PropertyRef Name="PlaylistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PlaylistComment_PlaylistComment1">
+    <End Role="PlaylistComment" Type="Self.PlaylistComment" Multiplicity="0..1" />
+    <End Role="PlaylistComment1" Type="Self.PlaylistComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PlaylistComment">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PlaylistComment1">
+        <PropertyRef Name="ReplyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PlaylistComment_PlaylistComment2">
+    <End Role="PlaylistComment" Type="Self.PlaylistComment" Multiplicity="0..1" />
+    <End Role="PlaylistComment1" Type="Self.PlaylistComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PlaylistComment">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PlaylistComment1">
+        <PropertyRef Name="TargetId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -560,6 +585,14 @@
     <AssociationSet Name="FK_PlaylistComment_PlaylistComment" Association="Self.FK_PlaylistComment_PlaylistComment">
       <End Role="Playlist" EntitySet="Playlist" />
       <End Role="PlaylistComment" EntitySet="PlaylistComment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PlaylistComment_PlaylistComment1" Association="Self.FK_PlaylistComment_PlaylistComment1">
+      <End Role="PlaylistComment" EntitySet="PlaylistComment" />
+      <End Role="PlaylistComment1" EntitySet="PlaylistComment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PlaylistComment_PlaylistComment2" Association="Self.FK_PlaylistComment_PlaylistComment2">
+      <End Role="PlaylistComment" EntitySet="PlaylistComment" />
+      <End Role="PlaylistComment1" EntitySet="PlaylistComment" />
     </AssociationSet>
     <AssociationSet Name="FK_PlaylistComment_User" Association="Self.FK_PlaylistComment_User">
       <End Role="User" EntitySet="User" />

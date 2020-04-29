@@ -112,6 +112,7 @@
           <ScalarProperty Name="TargetId" ColumnName="TargetId" />
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

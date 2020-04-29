@@ -8,6 +8,7 @@ using BLL;
 using KroMusic.Areas.Music.Data;
 using Model;
 using Newtonsoft.Json;
+using Microsoft.Ajax.Utilities;
 
 namespace KroMusic.Areas.Music.Controllers
 {
@@ -15,24 +16,17 @@ namespace KroMusic.Areas.Music.Controllers
     [AjaxSyncAction]
     public class PlaylistController : Controller
     {
-        PlaylistManager manager = new PlaylistManager();
+        PlaylistManager manager =new PlaylistManager();
         CategoryManager categoryManager = new CategoryManager();
         public ActionResult RcmdList()
         {
             return View();
         }
-
-        public ActionResult Search(string keywords)
+        public ActionResult Search(string keywords,int pageIndex)
         {
-            var result = manager.GetPlaylistsByKeywords(keywords);
-            List<SearchResultModel> data = new List<SearchResultModel>();
-            if (result != null)
-                foreach (var item in result)
-                {
-                    SearchResultModel u = new SearchResultModel() { Id = item.Id, Name = item.Name, Owner = item.User.NickName };
-                    data.Add(u);
-                }
-            return Json(data, JsonRequestBehavior.AllowGet);
+            int pageSize = 15;
+            var result = manager.GetPlaylistsByKeywords(keywords,pageIndex,pageSize);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// json格式返回全部分类
@@ -133,5 +127,42 @@ namespace KroMusic.Areas.Music.Controllers
             var model = manager.GetSongList(id);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 获取评论
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult GetComments(int id)
+        {
+            var result = manager.GetComments(id);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult Comment(int id,string value)
+        {
+
+            var model = manager.Comment(id,value);
+            var result = new
+            {
+                State = true,
+                Model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult Reply(int id, string value,int targetId)
+        {
+
+            var model = manager.Reply(id, value,targetId);
+            var result = new
+            {
+                State = true,
+                Model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

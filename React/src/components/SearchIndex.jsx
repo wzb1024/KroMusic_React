@@ -4,6 +4,7 @@ import { Tag, Button, Drawer } from "antd";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { Avatar } from "antd";
+import { Pagination } from "antd";
 
 class SearchIndex extends Component {
   constructor(props) {
@@ -12,14 +13,19 @@ class SearchIndex extends Component {
       history: [],
       songs: [],
       singers: [],
-      playlists: [],
+      playlist: {
+        total: 0,
+        pageIndex: 1,
+        result: [],
+      },
       visible: false,
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.clearHistory = this.clearHistory.bind(this);
     this.clickHistory = this.clickHistory.bind(this);
+    this.handlePlaylistPageChange = this.handlePlaylistPageChange.bind(this);
     this.search = this.search.bind(this); //延迟ajax
-    this.handleGetmore = this.handleGetmore.bind(this);
+    //this.handleGetmore = this.handleGetmore.bind(this);
   }
   clear() {
     this.setState({
@@ -29,11 +35,10 @@ class SearchIndex extends Component {
     });
   }
   search(keyword) {
-    $("#result_box").slideDown();
-    $("#more").show();
+    //$("#result_box").slideDown();
     $.getJSON(
       "/Music/Song/Search",
-      { keywords: keyword },
+      { keywords: keyword, pageIndex: 1 },
       function (data) {
         this.setState({
           songs: data,
@@ -42,7 +47,7 @@ class SearchIndex extends Component {
     );
     $.getJSON(
       "/Music/Singer/Search",
-      { keywords: keyword },
+      { keywords: keyword, pageIndex: 1 },
       function (data) {
         this.setState({
           singers: data,
@@ -51,10 +56,13 @@ class SearchIndex extends Component {
     );
     $.getJSON(
       "/Music/Playlist/Search",
-      { keywords: keyword },
+      { keywords: keyword, pageIndex: 1 },
       function (data) {
+        var model = this.state.playlist;
+        model.result = data.List;
+        model.total = data.Total;
         this.setState({
-          playlists: data,
+          playlist: model,
         });
       }.bind(this)
     );
@@ -68,6 +76,7 @@ class SearchIndex extends Component {
       $input.focus();
     });
     var timer = null; //定义定时器
+    var timeOut = null;
     $input.bind(
       "propertychange input",
       function (e) {
@@ -75,37 +84,47 @@ class SearchIndex extends Component {
         if (keyword != "") {
           if (timer != null) clearTimeout(timer);
           timer = setTimeout(() => {
+            $("#search_blur").addClass("active");
+            timeOut = setTimeout(
+              () => $("#result_box").addClass("active"),
+              500
+            );
+
+            $search.animate({
+              top: "20px",
+            });
             this.search(keyword);
           }, 300);
         } else {
+          if (timer != null) clearTimeout(timer);
+          if (timeOut != null) clearTimeout(timeOut);
+          $("#search_blur").removeClass("active");
+          $("#result_box").removeClass("active");
+          $search.animate({
+            top: "180px",
+          });
           $("#result_box").slideUp("fast");
           this.clear();
         }
       }.bind(this)
     );
+    $input.blur(function () {
+      if (!$("#result_box").hasClass("active")) {
+        $search.animate({
+          width: "260px",
+          borderRadius: "15px",
+        });
+        $icon.css("display", "block");
+      }
+    });
     $input.focus(function () {
-      $icon.fadeOut();
-      $("#search_btn").css("visibility", "visible");
+      $icon.css("display", "none");
+
       $search.animate({
         width: "600px",
         borderRadius: "40px",
       });
     });
-    $input.blur(
-      function () {
-        $("#search_btn").css("visibility", "hidden");
-        if (timer != null) clearTimeout(timer);
-        $input.val("");
-        $("#result_box").slideUp("fast");
-        this.clear();
-        $icon.fadeIn();
-        $search.animate({
-          width: "260px",
-          borderRadius: "15px",
-        });
-      }.bind(this)
-    );
-
     $.getJSON(
       "/Search/GetHistory",
       function (result) {
@@ -140,63 +159,31 @@ class SearchIndex extends Component {
       }.bind(this),
     });
   }
-  handleGetmore() {
-    this.setState({ visible: true });
+  handlePlaylistPageChange(page, pageSize) {
+    $.getJSON(
+      "/Music/Playlist/GetPlaylists",
+      {
+        id: this.state.currentTypeId,
+        pageIndex: page,
+        orderByHeat: this.state.popsort,
+      },
+      function (data) {
+        this.setState({
+          pageIndex: page,
+          playlists: data.Playlists,
+          total: data.Total,
+        });
+      }.bind(this)
+    );
   }
+  // handleGetmore() {
+  //   this.setState({ visible: true });
+  //}
   render() {
-    const playlists = [];
-    const singers = [];
-    const songs = [];
-    this.state.playlists.forEach((item, i) => {
-      if (i < 5) {
-        playlists.push(
-          <li key={item.Id}>
-            <Link
-              to={ "/playlist/"+ item.Id }
-              onClick={() => this.handleSearch(item.Name)}
-            >
-              <span>{item.Name}</span>
-            </Link>
-          </li>
-        );
-      }
-    });
-    this.state.singers.forEach((item, i) => {
-      if (i < 5) {
-        singers.push(
-          <li key={item.id}>
-            <Link
-              to={"/singer/"+ item.Id }
-              onClick={() => this.handleSearch(item.Name)}
-            >
-              <span>{item.Name}</span>
-              <span>
-                <Avatar src={item.Owner} size="small" icon={<UserOutlined />} />
-              </span>
-            </Link>
-          </li>
-        );
-      }
-    });
-    this.state.songs.forEach((item, i) => {
-      if (i < 5) {
-        songs.push(
-          <li key={item.Id}>
-            <Link
-              to={"/song/"+ item.Id }
-              onClick={() => this.handleSearch(item.Name)}
-            >
-              <span>{item.Name}</span>
-              <span>{item.Owner}</span>
-            </Link>
-          </li>
-        );
-      }
-    });
-
     return (
       <div id="search-container">
-        <Drawer
+        <div id="search_blur"></div>
+        {/* <Drawer
           getContainer={false}
           height="100%"
           zIndex={8}
@@ -213,7 +200,7 @@ class SearchIndex extends Component {
           <p>Some contents...</p>
           <p>Some contents...</p>
           <p>Some contents...</p>
-        </Drawer>
+        </Drawer> */}
         <div id="search_box">
           <SearchOutlined className="search_icon" />
           <input
@@ -221,49 +208,113 @@ class SearchIndex extends Component {
             id="search_input"
             onKeyPress={(e) => {
               if (e.target.value != "" && event.keyCode == 13) {
-                this.handleGetmore();
+                this.search(e.target.value);
               }
             }}
           />
         </div>
         <div id="result_box">
           <div id="search-result-songs">
-            <h4>歌曲</h4>
+            <h4>相关歌曲</h4>
             <ul>
-              {songs.length == 0 ? (
+              {this.state.songs.length == 0 ? (
                 <li>
                   <span>未找到相关歌曲</span>
                 </li>
               ) : (
-                songs
+                this.state.songs.map((item, i) => {
+                  if (i < 5) {
+                    return (
+                      <Link
+                        to={"/song/" + item.Id}
+                        onClick={() => this.handleSearch(item.Name)}
+                      >
+                        <li key={item.Id}>
+                          <span>{item.Name}</span>
+                          <span>{item.Owner}</span>
+                        </li>
+                      </Link>
+                    );
+                  }
+                })
               )}
             </ul>
           </div>
           <div id="search-result-singers">
-            <h4>歌手</h4>
+            <h4>相关歌手</h4>
             <ul>
-              {singers.length == 0 ? (
+              {this.state.singers.length == 0 ? (
                 <li>
                   <span>未找到相关歌手</span>
                 </li>
               ) : (
-                singers
+                this.state.singers.map((item, i) => {
+                  if (i < 5) {
+                    return (
+                      <Link
+                        to={"/singer/" + item.Id}
+                        onClick={() => this.handleSearch(item.Name)}
+                      >
+                        <li key={item.id}>
+                          <span>{item.Name}</span>
+                          <span>
+                            <Avatar
+                              src={item.Owner}
+                              size="small"
+                              icon={<UserOutlined />}
+                            />
+                          </span>
+                        </li>
+                      </Link>
+                    );
+                  }
+                })
               )}
             </ul>
           </div>
           <div id="search-result-playlists">
-            <h4>歌单</h4>
+            <h4>相关歌单</h4>
             <ul>
-              {playlists.length == 0 ? (
+              {this.state.playlist.result.length == 0 ? (
                 <li>
                   <span>未找到相关歌单</span>
                 </li>
               ) : (
-                playlists
+                <>
+                  <li>
+                    <span>歌单名</span>
+                    <span style={{ float: "right", fontSize: "13px" }}>
+                      创建者
+                    </span>
+                  </li>
+                  {this.state.playlist.result.map((item, i) => {
+                    return (
+                      <Link
+                        to={"/playlist/" + item.Id}
+                        onClick={() => this.handleSearch(item.Name)}
+                      >
+                        <li key={item.Id}>
+                          <span>{item.Name}</span>
+                          <span style={{ float: "right", fontSize: "13px" }}>
+                            {item.Owner}
+                          </span>
+                        </li>
+                      </Link>
+                    );
+                  })}
+                </>
               )}
             </ul>
+            <Pagination
+              hideOnSinglePage={true}
+              defaultPageSize={15}
+              simple
+              defaultCurrent={1}
+              current={this.state.playlist.pageIndex}
+              total={this.state.playlist.total}
+              onChange={this.handlePlaylistPageChange}
+            />
           </div>
-          <div></div>
         </div>
         <div id="search-section">
           <div id="searc-history">
@@ -273,7 +324,7 @@ class SearchIndex extends Component {
                 fontSize: "15px",
                 fontWeight: "bold",
                 color: "rgba(0, 0, 0, 0.5)",
-                marginRight: "6px",
+                marginRight: "15px",
               }}
             >
               历史搜索

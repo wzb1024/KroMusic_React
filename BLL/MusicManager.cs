@@ -39,7 +39,7 @@ namespace BLL
         {
             return service.GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)).ToList<Music>();
         }
-        public bool Collect(int musicId)
+        public CollectJsonModel Collect(int musicId)
         {
             int uid = int.Parse(userId);
             var e = entities.Set<FavoriteMusic>().FirstOrDefault(u => u.MusicId== musicId && u.UserId == uid);
@@ -50,13 +50,13 @@ namespace BLL
                 s.MusicId = musicId;
                 entities.Set<FavoriteMusic>().Add(s);
                 entities.SaveChanges();
-                return true;
+                return new CollectJsonModel { Collected = true, Message = "已添加" };
             }
             else
             {
                 entities.Set<FavoriteMusic>().Remove(e);
                 entities.SaveChanges();
-                return false;
+                return new CollectJsonModel { Collected = false, Message = "已取消" };
             }
         }
         public bool Like(int musicId)
@@ -99,11 +99,16 @@ namespace BLL
                     Path = m.Path,
                     SingerName = m.Singer.Name,
                     Span = m.Span.TotalSeconds.ToString()
+
                 };
+                if (userId != null)
+                {
+                    int uid = int.Parse(userId);
+                    u.Favorite = m.FavoriteMusic.Any(it => it.UserId == uid);
+                }
                 mlist.Add(u);
             }
             return mlist;
-
         }
     }
 }
