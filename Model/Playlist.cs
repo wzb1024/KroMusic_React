@@ -25,13 +25,13 @@ namespace Model
         }
     
         public int Id { get; set; }
-        public int Likes { get; set; }
+        public int Likes { get; set; } = 0;
         public int OwnerId { get; set; }
-        public bool IsPublic { get; set; }
-        public string Description { get; set; }
-        public System.DateTime CreateTime { get; set; }
-        public int PlayTimes { get; set; }
-        public string Cover { get; set; }
+        public bool IsPublic { get; set; } = true;
+        public string Description { get; set; } = "啥也没写~";
+        public System.DateTime CreateTime { get; set; } = DateTime.Now;
+        public int PlayTimes { get; set; } = 0;
+        public string Cover { get; set; } = "\\Sourse\\PlaylistCover\\Default.png";
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

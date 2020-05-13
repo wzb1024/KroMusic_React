@@ -17,8 +17,9 @@ namespace KroMusic.Controllers
         [Route("ranking")]
         [Route("singer/{id}")]
         [Route("category")]
-        [Route("song/{id}")]
         [Route("search")]
+        [Route("signup")]
+        [Route("song/{id}")]
         public ActionResult Index()
         {
             return PartialView();

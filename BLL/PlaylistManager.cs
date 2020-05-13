@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using DAL;
 using IDAL;
@@ -163,17 +164,6 @@ namespace BLL
                 return new LikeJsonModel { Like = false, Message = "取消点赞" };
             }
         }
-        public List<SelfPlaylistJsonModel> GetSelfPlaylists(int id)
-        {
-            List<SelfPlaylistJsonModel> model = new List<SelfPlaylistJsonModel>();
-            var user = service.GetById(id);
-            foreach (var item in entities.Playlist.Where(u => u.OwnerId == id))
-            {
-                SelfPlaylistJsonModel playlist = new SelfPlaylistJsonModel { Id = item.Id, Cover = item.Cover, Name = item.Name, IsPublic = item.IsPublic };
-                model.Add(playlist);
-            }
-            return model;
-        }
         public List<PlaylistJsonModel> GetFavoritePlaylists()
         {
             int uid = int.Parse(userId);
@@ -308,6 +298,82 @@ namespace BLL
             model.TarHdimg = target.User.Hdimage;
             model.TargetId = target.Id;
             return model;
+        }
+        public PlaylistJsonModel CreatePlaylist(string name)
+        {
+            int uid = int.Parse(userId);
+            var u = service.GetAllAsNoTracking().FirstOrDefault(n => n.OwnerId == uid && n.Name == name);
+            if (u != null)
+                return null;
+            else
+            {
+                Playlist model = new Playlist();
+                model.Name = name;
+                model.OwnerId = uid;
+                service.Create(model);
+                var o= service.GetByIdAsNoTracking(model.Id);
+                PlaylistJsonModel model1 = new PlaylistJsonModel();
+                model1.Id = o.Id;
+                model1.Description = o.Description;
+                model1.Cover = o.Cover;
+                model1.CreateTime = o.CreateTime.ToString();
+                model1.Likes = 0;
+                model1.PlayTimes = 0;
+                model1.Tags = new List<string>();
+                model1.NickName = o.User.NickName;
+                model.IsPublic = o.IsPublic;
+                return model1;
+                
+            }
+        }
+        public bool DelPlaylist(int id)
+        {
+           return service.Remove(id)>0;
+        }
+        public void RmItems(int[] items)
+        {
+            var sev = DALFactory.DataAccess.CreatePlaylistItemService();
+            foreach (var item in items)
+            {
+                sev.Remove(item);
+            }
+        }
+        public void Modify(int id,string desc,string Tags,bool ispublic,string name, HttpPostedFileBase file)
+        {
+            
+            var model = service.GetById(id);
+            model.Description = desc;
+            model.IsPublic = ispublic;
+            model.Name = name;
+            if (file != null)
+            {
+                string imgPath = "/Sourse/PlaylistCover/" + Guid.NewGuid().ToString() + file.FileName;
+                string savepath = HttpContext.Current.Server.MapPath(imgPath);
+                file.SaveAs(savepath);
+                model.Cover = imgPath;
+            }
+            service.Edit(model);
+            
+            if(Tags!=null)
+            {
+                var sev = DALFactory.DataAccess.CreatePlaylistTypeService();
+                var list=sev.GetAll().Where(n => n.PlaylistId == id).ToList();              
+                var ids = Tags.Split(',');
+                foreach (var it in list)
+                {
+                    sev.Remove(it.Id);
+                }
+                foreach (var item in ids)
+                {
+                    int i = int.Parse(item);
+                    PlaylistType k = new PlaylistType();
+                    k.SubTypeId = i;
+                    k.PlaylistId = id;
+                    sev.Create(k);
+                }
+            }
+            
+
         }
     }
 }

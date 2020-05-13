@@ -1,14 +1,15 @@
 import Home from "@/components/HomeIndex";
 import Search from "@/components/SearchIndex";
-import SignUp from "@/components/SignUp";
+import Signup from "@/components/SignUp";
 import Category from "@/components/CategoryIndex";
 import Account from "@/components/Account";
 import Playlist from "@/components/Playlist";
+import Song from "@/components/Song";
 
 const router = [
   {
     path: "/",
-    component: Home,
+    component: Song,
     exact: true,
   },
   {
@@ -37,8 +38,8 @@ const router = [
     exact: true,
   },
   {
-    path: "/signUp",
-    component: SignUp,
+    path: "/signup",
+    component: Signup,
     exact: true,
   },
   {

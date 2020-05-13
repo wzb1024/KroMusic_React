@@ -17,7 +17,7 @@ namespace DAL
             return u => u.Id == id;
         }
     }
-    public class FavoritePlaylistService : SqlBaseService<FavoritePlaylist>,IFavoritePlaylistService
+    public class SqlFavoritePlaylistService : SqlBaseService<FavoritePlaylist>,IFavoritePlaylistService
     {
 
         public override Expression<Func<FavoritePlaylist, bool>> GetByIdKey(int id)
@@ -25,7 +25,7 @@ namespace DAL
             return u => u.Id == id;
         }
     }
-    public class PlaylistTypeService : SqlBaseService<PlaylistType>
+    public class SqlPlaylistTypeService : SqlBaseService<PlaylistType>, IPlaylistTypeService
     {
 
         public override Expression<Func<PlaylistType, bool>> GetByIdKey(int id)

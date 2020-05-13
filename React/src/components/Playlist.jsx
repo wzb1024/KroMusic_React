@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { Pagination, Spin, message, Button } from "antd";
 import { Comment, Avatar, Form, List, Input, Tooltip } from "antd";
 import moment from "moment";
-import Player from "@/components/Player";
+import Add from "@/components/Add";
 import $ from "jquery";
 import {
   LikeTwoTone,
@@ -12,6 +12,7 @@ import {
   PlusCircleOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 moment.locale("zh-cn");
 class Playlist extends Component {
   constructor() {
@@ -267,7 +268,7 @@ class Playlist extends Component {
                 <ul type="1" key={item.Id}>
                   <li style={{ width: "35 %" }}>
                     <i> {i + 1}&nbsp;</i>
-                    {item.MusicName}
+                    <Link to={"/song/" + item.Id}>{item.MusicName}</Link>
                   </li>
                   <li style={{ width: "25%" }}>{item.SingerName}</li>
                   <li style={{ width: "10%" }}>{item.Span}</li>
@@ -279,7 +280,7 @@ class Playlist extends Component {
                       <PlayCircleOutlined />
                     </button>
                     <button className="music_action">
-                      <PlusCircleOutlined />
+                      <Add id={item.Id} addToList={this.props.addToList}></Add>
                     </button>
                   </li>
                 </ul>

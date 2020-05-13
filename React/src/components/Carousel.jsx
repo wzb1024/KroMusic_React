@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 class Carousel extends Component {
-  componentDidMount() {
+  handleMove() {
     var windowWidth = $("#carousel_window").width();
     var num1 = $("#carousel_nav>li").length;
     var boxWidth = $("#carousel_box").width(windowWidth * num1 + "px");
@@ -24,16 +24,26 @@ class Carousel extends Component {
       if (index == num1) index = 0;
     }
 
-    var timer = setInterval(change, 3000);
+    var timer = setInterval(change, 5000);
 
     //鼠标悬浮切换
     $("#carousel_nav>li").hover(function () {
       clearInterval(timer);
       index = $(this).index();
       change();
-      timer = setInterval(change, 3000);
     });
-
+    $("#carousel_nav>li").mouseover(function () {
+      clearInterval(timer);
+    });
+    $("#carousel_nav>li").mouseleave(function () {
+      timer = setInterval(change, 5000);
+    });
+    $("#carousel_box>li").mouseover(function () {
+      clearInterval(timer);
+    });
+    $("#carousel_box>li").mouseleave(function () {
+      timer = setInterval(change, 5000);
+    });
     //鼠标滑动调整位置
     $("#carousel_box>li").mousemove(function (e) {
       clearInterval(timer);
@@ -44,15 +54,17 @@ class Carousel extends Component {
       var rate = (e.clientX - initx) / windowWidth;
       var scroll = "-" + tot * rate + "px";
       it.css("left", scroll);
-      timer = setInterval(change, 3000);
     });
+  }
+  componentDidMount() {
+    this.handleMove();
   }
 
   render() {
     return (
       <div id="carousel_container">
         <ul id="carousel_nav">
-          <li>标题一</li>
+          <li className="active">标题一</li>
           <li>标题二</li>
           <li>标题三</li>
           <li>标题四</li>

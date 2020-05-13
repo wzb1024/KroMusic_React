@@ -12,7 +12,7 @@ namespace KroMusic.Areas.User.Controllers
     public class AccountMsgController : Controller
     {
         // GET: User/AccountMsg
-        UserManager manager = UserManager.Instance;
+        UserManager manager =new UserManager();
         [SigninAuthorize]
         public ActionResult SelfMsg()
         {

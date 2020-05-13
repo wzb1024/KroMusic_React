@@ -69,7 +69,7 @@ export default class CollectedPlaylists extends Component {
               borderBottom: "0.5px solid rgba(0,0,0,0.4)",
             }}
           >
-            <b style={{ fontSize: "16px" }}>全部收藏歌曲</b>
+            <b style={{ fontSize: "16px" }}>全部收藏歌单</b>
             <div className="edit_collected" style={{ float: "right" }}>
               <button onClick={this.handleEditClick}>编辑</button>
               <button

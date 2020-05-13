@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using IDAL;
 using System.Configuration;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using IDAL;
 
 namespace DALFactory
 {
@@ -47,6 +42,16 @@ namespace DALFactory
         {
             string className = AssemblyName + "." + db + "PlaylistCommentService";
             return (IPlaylistCommentService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IPlaylistItemService CreatePlaylistItemService()
+        {
+            string className = AssemblyName + "." + db + "PlaylistItemService";
+            return (IPlaylistItemService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IPlaylistTypeService CreatePlaylistTypeService()
+        {
+            string className = AssemblyName + "." + db + "PlaylistTypeService";
+            return (IPlaylistTypeService)Assembly.Load(AssemblyName).CreateInstance(className);
         }
     }
 }

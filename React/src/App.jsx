@@ -19,6 +19,7 @@ import SignUp from "@/components/SignUp";
 import Category from "@/components/CategoryIndex";
 import Account from "@/components/Account";
 import Playlist from "@/components/Playlist";
+import Song from "@/components/Song";
 import $ from "jquery";
 class App extends Component {
   constructor() {
@@ -115,6 +116,11 @@ class App extends Component {
             <Route
               from="/playlist/:id"
               component={() => <Playlist addToList={this.addToList}></Playlist>}
+              exact
+            ></Route>
+            <Route
+              from="/song/:id"
+              component={() => <Song addToList={this.addToList}></Song>}
               exact
             ></Route>
             {router.map((route, i) => (

@@ -13,7 +13,6 @@ export default class AccountNav extends Component {
       nikName: null,
       imgPath: null,
     };
-    this.signup = this.signup.bind(this);
     this.success = this.success.bind(this);
   }
   componentDidMount() {
@@ -33,16 +32,6 @@ export default class AccountNav extends Component {
       signinState: true,
       nikName: nikname,
       imgPath: imgpath,
-    });
-  }
-  signup() {
-    $.ajax({
-      url: "/User/Account/Signup",
-      type: "get",
-      dataType: "html",
-      success: function (result) {
-        $("#sign_box").html(result);
-      },
     });
   }
   signout() {
@@ -86,9 +75,7 @@ export default class AccountNav extends Component {
     ) : (
       <>
         <Signin login={this.success} />
-        <a id="signup_link" onClick={this.signup}>
-          <em>注册</em>
-        </a>
+        <Link to="/signup">注册</Link>
       </>
     );
   }

@@ -11,7 +11,7 @@ namespace IDAL
         int Create(T model);
         int Edit(T model);
         IQueryable<T> GetAll();
-        ParallelQuery<T> GetAllAsNoTracking();
+        IQueryable<T> GetAllAsNoTracking();
         T GetById(int id);
         T GetByIdAsNoTracking(int id);
         int Remove(int id);

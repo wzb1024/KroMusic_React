@@ -232,6 +232,12 @@
     <Content Include="Scripts\MyScripts.js" />
     <Content Include="Sourse\bkg-imgs\11.jpg" />
     <Content Include="Sourse\Head-image\default.jpg" />
+    <Content Include="Sourse\MusicCover\20200319191256.jpg" />
+    <Content Include="Sourse\MusicCover\20200320142052.png" />
+    <Content Include="Sourse\MusicCover\T002R300x300M000004V4ERp3tRm8A.jpg" />
+    <Content Include="Sourse\PlaylistCover\300.jpg" />
+    <Content Include="Sourse\PlaylistCover\301.png" />
+    <Content Include="Sourse\PlaylistCover\Default.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

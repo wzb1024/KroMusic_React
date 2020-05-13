@@ -164,5 +164,56 @@ namespace KroMusic.Areas.Music.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult CreatePlaylist(string name)
+        { 
+            var model = manager.CreatePlaylist(name);
+            if (model == null)
+            {
+                var result = new
+                {
+                    State = false,
+                    ErrorMsg = "创建失败，有同名歌单"
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new
+                {
+                    State = true,
+                    Model = model
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        [SigninAuthorize]
+        public ActionResult DelPlaylist(int id)
+        {
+            bool result = manager.DelPlaylist(id);
+            return Json(new { State = result },JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult RmItems(int[] items)
+        {
+            manager.RmItems(items);
+            return new EmptyResult();
+        }
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult ModifyPlaylist(HttpPostedFileBase cover)
+        {
+            var id = int.Parse(Request["Id"]);
+            var desc = Request["Description"];
+            var tags = Request["Tags"];
+            var isPublic =bool.Parse( Request["IsPublic"]);
+            var name = Request["Name"];
+            manager.Modify(id, desc, tags, isPublic, name, cover);
+
+            return new EmptyResult();
+        }
     }
 }

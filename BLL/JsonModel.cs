@@ -6,6 +6,31 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
+    public class SongJsonModel
+    {
+        public int Id { get; set; }
+        public int PlayTimes { get; set; }
+
+        public string MusicName { get; set; }
+        public int SingerId { get; set; }
+        public string SingerName { get; set; }
+        public string Path { get; set; }
+        public string ImagePath { get; set; }
+        public string Span { get; set; }
+        public bool Like { get; set; } = false;
+        public bool Favorite { get; set; } = false;
+        public string Lyric { get; set; }
+        public string Region { get; set; }
+        public string ReleaseTime { get; set; }
+        public string Size { get; set; }
+        public List<string> Tags { get; set; }
+    }
+    public class SingerJsonModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+    }
     public class CommentJsonModel
     {
         public int Id { get; set; }
@@ -39,13 +64,6 @@ namespace BLL
     {
         public List<SearchResultItemJsonModel> List { get; set; }
         public int Total { get; set; }
-    }
-    public class SelfPlaylistJsonModel
-    {
-        public int Id { get; set; }
-        public string Cover { get; set; }
-        public string Name { get; set; }
-        public bool IsPublic { get; set; }
     }
     /// <summary>
     /// 歌单卡片展示页面数据
@@ -81,6 +99,9 @@ namespace BLL
         public List<string> Tags { get; set; }
         public bool IsLiked { get; set; } = false;
         public bool IsCollected { get; set; } = false;
+        public bool IsPublic { get; set; } = true;
+        public List<SongJsonModel> Songs { get; set; }
+        public List<int> TagId { get; set; }
     }
     /// <summary>
     /// 收藏行为数据模型

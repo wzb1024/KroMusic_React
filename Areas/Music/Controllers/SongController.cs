@@ -27,10 +27,16 @@ namespace KroMusic.Areas.Music.Controllers
                 }
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult MusicDetails(int id)
+        [HttpPost]
+        public ActionResult AddToPlaylist(int mid,int pid)
         {
-            var model = manager.GetMusicById(id);
-            return View(model);
+            bool suc = manager.AddToPlaylist(mid,pid);
+            return Json(new { State = suc });
+        }
+        public ActionResult GetSongDetails(int id)
+        {
+            var model = manager.GetSongDetails(id);
+            return Json(model,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 歌曲加入我喜欢
@@ -51,8 +57,8 @@ namespace KroMusic.Areas.Music.Controllers
         [SigninAuthorize]
         public ActionResult SongLike(int id)
         {           
-            bool result = manager.Like(id);
-            return Content(result.ToString());
+            var  result = manager.Like(id);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 获取播放列表歌曲

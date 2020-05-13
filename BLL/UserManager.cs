@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using IDAL;
 using DALFactory;
+using System;
 
 namespace BLL
 {
@@ -31,11 +32,18 @@ namespace BLL
     }
     public partial class UserManager
     {
-        private UserManager() { }                                       //单例模式
-        private static UserManager instance = new UserManager();
-        public static UserManager Instance { get { return instance; } }
+        //private UserManager() { }                                       //单例模式
+        //private static UserManager instance = new UserManager();
+        //public static UserManager Instance { get { return instance; } }
 
         IUserService service = DataAccess.CreateUserService();
+        string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
+        User self = null;
+        public UserManager()
+        {
+            if (userId != null)
+                self = service.GetById(int.Parse(userId));
+        }
         public User GetUserById(int id)
         {
             return service.GetById(id);
@@ -48,13 +56,13 @@ namespace BLL
         {
             return service.GetAll().First(m => m.UserName == userName).Id;
         }
-        public User CheckName(string userName)
+        public bool CheckName(string userName)
         {
-            return service.GetAll().FirstOrDefault(m => m.UserName == userName);
+            return service.GetAllAsNoTracking().FirstOrDefault(m => m.UserName == userName)!=null;
         }
         public bool ExistNickName(string nickName)
         {
-            return service.GetAll().FirstOrDefault(m => m.NickName == nickName) != null;
+            return service.GetAllAsNoTracking().FirstOrDefault(m => m.NickName == nickName) != null;
         }
         public bool ExistNickName(string nickName, int id)
         {
@@ -102,12 +110,53 @@ namespace BLL
             }
             return model;
         }
-        public void ChangeHdimage(string path,int id)
+        public List<PlaylistJsonModel> GetSelfPlaylists()
         {
-            var user = service.GetById(id);             
-            File.Delete(HttpContext.Current.Server.MapPath(user.Hdimage));
-            user.Hdimage = path;
-            service.Edit(user);
+            List<PlaylistJsonModel> model = new List<PlaylistJsonModel>();
+            var all = self.Playlist.ToList();
+            foreach (var item in all)
+            {
+                PlaylistJsonModel playlist = new PlaylistJsonModel();
+                playlist.Id = item.Id;
+                playlist.Name = item.Name;
+                playlist.Description = item.Description;
+                playlist.Cover = item.Cover;
+                playlist.CreateTime = item.CreateTime.ToString();
+                playlist.Likes = 0;
+                playlist.PlayTimes = 0;       
+                playlist.NickName = item.User.NickName;
+                playlist.IsPublic = item.IsPublic;
+                var tag = item.PlaylistType.ToList();
+                List<String> subs = new List<string>();
+                List<int> ids = new List<int>();
+                foreach (var it in tag)
+                {
+                    subs.Add(it.SubType.Name);
+                    ids.Add(it.SubTypeId);
+                }
+                playlist.Tags = subs;
+                playlist.TagId = ids;
+                var songs = item.PlaylistItem.ToList();
+                var items = new List<SongJsonModel>();
+                foreach ( var i in songs)
+                {
+                    SongJsonModel m = new SongJsonModel();
+                    m.Id = i.Id;
+                    m.SingerName = i.Music.Singer.Name;
+                    m.MusicName = i.Music.MusicName;
+                    items.Add(m);
+                }
+                playlist.Songs = items;
+                model.Add(playlist);
+            }
+
+            return model;
+        }
+        public void ChangeHdimage(string path)
+        {            
+            File.Delete(HttpContext.Current.Server.MapPath(self.Hdimage));
+            self.Hdimage = path;
+            service.Edit(self);
         }
         public bool ModifyMsg(ModifyMsgJsonModel model,int id)
         {

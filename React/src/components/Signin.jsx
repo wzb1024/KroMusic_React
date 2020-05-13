@@ -7,55 +7,54 @@ export default class Signin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible:false,
-      errorMsg: null
+      visible: false,
+      errorMsg: null,
     };
     this.onFinish = this.onFinish.bind(this);
   }
 
   componentDidMount() {
     $.ajax({
-      url:"/User/Account/Signin",
+      url: "/User/Account/Signin",
       type: "get",
-      success: function(result) {
+      success: function (result) {
         this.setState({
           info: {
             username: result.UserName,
             password: result.Password,
-            remember: result.RememberMe
-          }
+            remember: result.RememberMe,
+          },
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
-  
+
   onFinish(values) {
     $.ajax({
-      url:"/User/Account/Signin",
+      url: "/User/Account/Signin",
       type: "post",
       data: {
         UserName: values.username,
         Password: values.password,
-        RememberMe: values.remember
+        RememberMe: values.remember,
       },
-      success: function(result) {
-          if (result.Status) {
-             window.location.reload();
-          }
-          else {
-              alert(result.ErrorMsg)
-          }
-      }.bind(this)
+      success: function (result) {
+        if (result.Status) {
+          window.location.reload();
+        } else {
+          alert(result.ErrorMsg);
+        }
+      }.bind(this),
     });
   }
   render() {
     return (
       <>
-        <a onClick={() => this.setState({visible:true})}>登录</a>
+        <a onClick={() => this.setState({ visible: true })}>登录</a>
         <Modal
           visible={this.state.visible}
           title="登录"
-          onCancel={() => this.setState({visible:false})}
+          onCancel={() => this.setState({ visible: false })}
           footer={null}
         >
           <Form
@@ -69,8 +68,8 @@ export default class Signin extends React.Component {
               rules={[
                 {
                   required: true,
-                  message: "Please input your Username!"
-                }
+                  message: "Please input your Username!",
+                },
               ]}
             >
               <Input
@@ -83,8 +82,8 @@ export default class Signin extends React.Component {
               rules={[
                 {
                   required: true,
-                  message: "Please input your Password!"
-                }
+                  message: "Please input your Password!",
+                },
               ]}
             >
               <Input

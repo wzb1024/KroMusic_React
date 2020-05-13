@@ -36,7 +36,6 @@ a:active {
 button {
   outline: none;
   cursor: pointer;
-  height: 0;
 }
 
 em {
@@ -44,7 +43,7 @@ em {
 }
 
 .shadow {
-  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 5px 15px 1px rgba(0, 0, 0, 0.2);
 }
 
 #renderBody {
@@ -165,15 +164,35 @@ em {
 
 /*æ³¨å†Œæ¡†*/
 #signup_container {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  height: 100%;
+  width: 100%;
+  background-color: white;
+}
+
+#signup_box {
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
   width: 360px;
-  padding: 15px 3px;
+  padding-top: 20px;
   position: absolute;
   top: 20%;
   right: 25%;
 }
 
-#signup-box h3 {
+#ckUN {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  color: #ff4d4f;
+}
+
+#ckNN {
+  position: absolute;
+  top: 210px;
+  right: 40px;
+  color: #ff4d4f;
+}
+
+/* #signup-box h3 {
   text-align: center;
 }
 
@@ -186,8 +205,9 @@ em {
   position: relative;
   margin-bottom: 7px;
   top: 3px;
-}
+} */
 
+/* 
 #head-image {
   position: relative;
 }
@@ -234,13 +254,13 @@ em {
 
 .form-item span {
   color: red;
-}
+} */
 
 /*è½®æ’­å›¾*/
 #recommend {
   width: 100%;
   height: 500px;
-  background-color: #f1f2f6;
+  /* background-color: #f1f2f6; */
   padding: 50px;
 }
 
@@ -661,6 +681,29 @@ element.style {
   font-size: 15px;
 }
 
+ul.self_playlist>li {
+  display: inline-block;
+  text-overflow: ellipsis;
+  height: 25px;
+  line-height: 25px;
+}
+
+ul.self_playlist>li:first-child {
+  width: 45%;
+}
+
+ul.self_playlist>li:nth-child(2) {
+  width: 35%;
+}
+
+ul.self_playlist>li:nth-child(3) {
+  width: 10%;
+}
+
+ul.self_playlist>li:nth-child(4) {
+  float: right;
+}
+
 /*æ­Œå•*/
 #playlist_container {
   padding: 15px 35px;
@@ -872,15 +915,19 @@ element.style {
 }
 
 /*æ­Œæ›²è¯¦æƒ…*/
+.ant-popover-title {
+  min-width: 100px;
+}
+
 #music_details_box {
   width: 50%;
 }
 
 #music_introduce {
   width: 100%;
-  height: 230px;
+  height: 200px;
   padding: 0 30px;
-  padding-top: 40px;
+  padding-top: 20px;
   min-width: 800px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -912,9 +959,8 @@ element.style {
 
 #music_operate {
   margin: 0 auto;
-  margin-top: 33px;
-  width: 60%;
-  min-width: 480px;
+  margin-top: 15px;
+  width: 31%;
   height: 50px;
   border-radius: 35px;
   padding: 10px 22px;
@@ -928,22 +974,21 @@ element.style {
 #music_operate ul li {
   display: inline-block;
   height: 30px;
-  padding: 0 10px;
+  line-height: 30px;
+  margin: 0 15px;
 }
 
-#music_operate ul> :first-child {
-  width: 28%;
-}
-
-#music_operate ul> :not(:first-child) {
-  width: 24%;
+#music_operate ul li:hover * {
+  transform: scale(1.1);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 #music_operate ul li button {
   display: block;
-  width: 100%;
-  height: 100%;
+  height: 0px;
+  font-size: 20px;
 }
+
 
 #music_lyric_box {
   float: left;
@@ -973,6 +1018,10 @@ element.style {
   height: 70px;
   padding: 5px 8px;
   margin-bottom: 20px;
+}
+
+#music_comment {
+  clear: both;
 }
 
 /*æ’­æ”¾å™¨*/
@@ -1320,6 +1369,11 @@ ul#carousel_box>li {
   margin: 0 15px;
   width: 180px;
   overflow: hidden;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.15);
+}
+
+.carousel_item>li:hover {
+  filter: opacity(80%);
 }
 
 .carousel_item>li img {

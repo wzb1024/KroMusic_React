@@ -52,6 +52,7 @@
     <Compile Include="DBContextFactory.cs" />
     <Compile Include="SqlMusicService.cs" />
     <Compile Include="SqlPlaylistCommentService.cs" />
+    <Compile Include="SqlPlaylistItemService.cs" />
     <Compile Include="SqlPlaylistService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlSingerService.cs" />

@@ -5,13 +5,12 @@ using System.Web;
 
 namespace KroMusic.Areas.Music.Data
 {
-    public class PlaylistModel
+    public class PlaylistViewModel
     {
-        public int PlaylistId { get; set; }
-        public string Owner { get; set; }
-        public int OwnerId { get; set; }
-        public string Cover { get; set; }
+        public int Id { get; set; } 
         public string Name { get; set; }
-        public int PlayTimes { get; set; }
+        public bool IsPublic { get; set; }
+        public string Description { get; set; }
+        public int[] Tags { get; set; }
     }
 }

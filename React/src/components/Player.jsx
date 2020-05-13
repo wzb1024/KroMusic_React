@@ -88,6 +88,7 @@ class Player extends Component {
     list.forEach((item, i) => {
       if (item === this.state.current.Id) list.splice(i, 1);
     });
+    if (list.length == 0) return;
     $.ajax("/music/song/GetSongsList", {
       data: { list: list },
       dataType: "json",

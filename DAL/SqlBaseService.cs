@@ -25,14 +25,10 @@ namespace DAL
         {
             return _db.Set<T>();
         }
-        public ParallelQuery<T> GetAllAsNoTracking()
+        public IQueryable<T> GetAllAsNoTracking()
         {
-            return _db.Set<T>().AsNoTracking().AsParallel();//并行查询，提高效率
+            return _db.Set<T>().AsNoTracking();
         }
-        //public IQueryable<T> GetAllAsNoTracking()
-        //{
-        //    return _db.Set<T>().AsNoTracking();
-        //}
         public T GetById(int id)
         {
             return _db.Set<T>().Find(id);

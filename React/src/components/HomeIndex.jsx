@@ -12,9 +12,6 @@ class HomeIndex extends Component {
     return (
       <div>
         <div id="recommend">
-          <div id="rcmd-title">
-            <em>歌单推荐</em>
-          </div>
           <div id="rcmd-container">
             <Carousel />
           </div>
