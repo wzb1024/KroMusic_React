@@ -9,7 +9,7 @@ import Song from "@/components/Song";
 const router = [
   {
     path: "/",
-    component: Song,
+    component: Account,
     exact: true,
   },
   {

@@ -83,10 +83,15 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="MusicId" Type="Int32" Nullable="false" />
     <Property Name="UserId" Type="Int32" Nullable="false" />
-    <Property Name="TargetId" Type="Int32" Nullable="false" />
+    <Property Name="TargetId" Type="Int32" />
     <Property Name="Content" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ReplyId" Type="Int32" />
     <NavigationProperty Name="Music" Relationship="Self.FK_MusicComment_MusicComment" FromRole="MusicComment" ToRole="Music" />
+    <NavigationProperty Name="MusicComment1" Relationship="Self.FK_MusicComment_MusicComment1" FromRole="MusicComment" ToRole="MusicComment1" />
+    <NavigationProperty Name="MusicComment2" Relationship="Self.FK_MusicComment_MusicComment1" FromRole="MusicComment1" ToRole="MusicComment" />
+    <NavigationProperty Name="MusicComment11" Relationship="Self.FK_MusicComment_MusicComment2" FromRole="MusicComment" ToRole="MusicComment1" />
+    <NavigationProperty Name="MusicComment3" Relationship="Self.FK_MusicComment_MusicComment2" FromRole="MusicComment1" ToRole="MusicComment" />
     <NavigationProperty Name="User" Relationship="Self.FK_MusicComment_User" FromRole="MusicComment" ToRole="User" />
   </EntityType>
   <EntityType Name="MusicType">
@@ -405,6 +410,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_MusicComment_MusicComment1">
+    <End Role="MusicComment" Type="Self.MusicComment" Multiplicity="0..1" />
+    <End Role="MusicComment1" Type="Self.MusicComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MusicComment">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MusicComment1">
+        <PropertyRef Name="ReplyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MusicComment_MusicComment2">
+    <End Role="MusicComment" Type="Self.MusicComment" Multiplicity="0..1" />
+    <End Role="MusicComment1" Type="Self.MusicComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MusicComment">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MusicComment1">
+        <PropertyRef Name="TargetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_MusicComment_User">
     <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="MusicComment" Type="Self.MusicComment" Multiplicity="*" />
@@ -623,6 +652,14 @@
     <AssociationSet Name="FK_PlaylistItems_Music" Association="Self.FK_PlaylistItems_Music">
       <End Role="Music" EntitySet="Music" />
       <End Role="PlaylistItem" EntitySet="PlaylistItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MusicComment_MusicComment1" Association="Self.FK_MusicComment_MusicComment1">
+      <End Role="MusicComment" EntitySet="MusicComment" />
+      <End Role="MusicComment1" EntitySet="MusicComment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MusicComment_MusicComment2" Association="Self.FK_MusicComment_MusicComment2">
+      <End Role="MusicComment" EntitySet="MusicComment" />
+      <End Role="MusicComment1" EntitySet="MusicComment" />
     </AssociationSet>
     <AssociationSet Name="FK_MusicComment_User" Association="Self.FK_MusicComment_User">
       <End Role="User" EntitySet="User" />

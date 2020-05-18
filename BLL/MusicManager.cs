@@ -159,5 +159,98 @@ namespace BLL
                 return true;
             }
         }
+        public List<CommentJsonModel> GetComments(int id)
+        {
+            List<CommentJsonModel> Result = new List<CommentJsonModel>();
+            Music model = service.GetByIdAsNoTracking(id);
+            var Comments = model.MusicComment.Where(m => m.TargetId == null).OrderByDescending(i => i.Time).ToList();
+            foreach (var item in Comments)
+            {
+                CommentJsonModel u = new CommentJsonModel();
+                u.Id = item.Id;
+                u.Content = item.Content;
+                u.UserId = item.UserId;
+                u.NickName = item.User.NickName;
+                u.Hdimg = item.User.Hdimage;
+                u.Time = item.Time.ToString();
+                List<SubCommentJsonModel> subComments = new List<SubCommentJsonModel>();
+                var n = model.MusicComment.Where(m => m.ReplyId == item.Id).OrderByDescending(i => i.Time).ToList();
+                foreach (var it in n)
+                {
+                    SubCommentJsonModel sub = new SubCommentJsonModel();
+                    var target = it.MusicComment3;
+                    sub.Id = it.Id;
+                    sub.TarUserId = target.UserId;
+                    sub.UserId = it.UserId;
+                    sub.NickName = it.User.NickName;
+                    sub.TarHdimg = target.User.Hdimage;
+                    sub.Hdimg = it.User.Hdimage;
+                    sub.Time = it.Time.ToString();
+                    sub.TarName = target.User.NickName;
+                    sub.Content = it.Content;
+                    sub.TargetId = int.Parse(it.TargetId.ToString());
+                    subComments.Add(sub);
+                }
+                u.SubComments = subComments;
+                Result.Add(u);
+            }
+            return Result;
+        }
+        public CommentJsonModel Comment(int id, string value)
+        {
+            var s = DALFactory.DataAccess.CreateMusicCommentService();
+            MusicComment comment = new MusicComment();
+            comment.Content = value;
+            comment.MusicId = id;
+            comment.UserId = int.Parse(userId);
+            comment.Time = DateTime.Now;
+            s.Create(comment);
+            comment = s.GetByIdAsNoTracking(comment.Id);
+            CommentJsonModel model = new CommentJsonModel
+            {
+                UserId = int.Parse(userId),
+                Id = comment.Id,
+                Content = value,
+                Hdimg = comment.User.Hdimage,
+                NickName = comment.User.NickName,
+                Time = comment.Time.ToString(),
+                SubComments = new List<SubCommentJsonModel>()
+            };
+
+            return model;
+        }
+        public SubCommentJsonModel Reply(int id, string value, int targetId)
+        {
+            var s = DALFactory.DataAccess.CreateMusicCommentService();
+            var target = s.GetByIdAsNoTracking(targetId);
+            MusicComment comment = new MusicComment();
+            comment.Content = value;
+            comment.MusicId = id;
+            comment.UserId = int.Parse(userId);
+            comment.Time = DateTime.Now;
+            comment.TargetId = targetId;
+            if (target.ReplyId != null)
+            {
+                comment.ReplyId = target.ReplyId;
+            }
+            else
+            {
+                comment.ReplyId = target.Id;
+            }
+            s.Create(comment);
+            comment = s.GetByIdAsNoTracking(comment.Id);
+            SubCommentJsonModel model = new SubCommentJsonModel();
+            model.UserId = int.Parse(userId);
+            model.Id = comment.Id;
+            model.Content = value;
+            model.Hdimg = comment.User.Hdimage;
+            model.NickName = comment.User.NickName;
+            model.Time = comment.Time.ToString();
+            model.TarName = target.User.NickName;
+            model.TarUserId = target.User.Id;
+            model.TarHdimg = target.User.Hdimage;
+            model.TargetId = target.Id;
+            return model;
+        }
     }
 }

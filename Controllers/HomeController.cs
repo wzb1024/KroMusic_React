@@ -20,6 +20,7 @@ namespace KroMusic.Controllers
         [Route("search")]
         [Route("signup")]
         [Route("song/{id}")]
+        [Route("account")]
         public ActionResult Index()
         {
             return PartialView();

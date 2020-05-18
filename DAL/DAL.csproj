@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="SqlBaseService.cs" />
     <Compile Include="DBContextFactory.cs" />
+    <Compile Include="SqlMusicCommentService.cs" />
     <Compile Include="SqlMusicService.cs" />
     <Compile Include="SqlPlaylistCommentService.cs" />
     <Compile Include="SqlPlaylistItemService.cs" />

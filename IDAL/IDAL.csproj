@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseService.cs" />
+    <Compile Include="IFavoriteMusicService.cs" />
+    <Compile Include="IMusicCommentService.cs" />
     <Compile Include="IPlaylistCommentService.cs" />
     <Compile Include="IPlaylistItemService.cs" />
     <Compile Include="IPlaylistTypeService.cs" />

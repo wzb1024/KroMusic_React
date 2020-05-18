@@ -36,6 +36,7 @@ a:active {
 button {
   outline: none;
   cursor: pointer;
+  height: 0;
 }
 
 em {
@@ -309,7 +310,7 @@ em {
   height: 100%;
   width: 100%;
   position: absolute;
-  background-image: url('/src/img/search_bg.jpg');
+  background-image: url('/Sourse/bkg-imgs/search_bg.jpg');
   background-size: cover;
   background-position: 0 -250px;
   background-repeat: no-repeat;
@@ -749,20 +750,24 @@ ul.self_playlist>li:nth-child(4) {
   min-height: 460px;
 }
 
-#playlist_content ul {
+#playlist_content ul,
+#favorite_songs ul {
   background-color: #fafafa;
   padding: 8px 0px;
   margin-bottom: 0;
 }
 
-#playlist_content ul li {
+#playlist_content ul li,
+#favorite_songs ul li {
   display: inline-block;
   font-size: 13px;
   letter-spacing: 1px;
   width: 25%;
+  text-overflow: ellipsis;
 }
 
-#playlist_content ul:nth-child(2n + 1) {
+#playlist_content ul:nth-child(2n + 1),
+#favorite_songs ul:nth-child(2n + 1) {
   background-color: white;
 }
 
@@ -778,7 +783,7 @@ ul.self_playlist>li:nth-child(4) {
 }
 
 .music_action * {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 #playlist_operate {
@@ -1022,6 +1027,8 @@ ul.self_playlist>li:nth-child(4) {
 
 #music_comment {
   clear: both;
+  padding: 20px;
+  padding-top: 40px;
 }
 
 /*æ’­æ”¾å™¨*/

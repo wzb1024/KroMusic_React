@@ -123,6 +123,11 @@ class App extends Component {
               component={() => <Song addToList={this.addToList}></Song>}
               exact
             ></Route>
+            <Route
+              from="/account"
+              component={() => <Account addToList={this.addToList}></Account>}
+              exact
+            ></Route>
             {router.map((route, i) => (
               <Route
                 key={i}

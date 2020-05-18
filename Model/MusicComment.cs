@@ -14,14 +14,28 @@ namespace Model
     
     public partial class MusicComment
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public MusicComment()
+        {
+            this.MusicComment1 = new HashSet<MusicComment>();
+            this.MusicComment11 = new HashSet<MusicComment>();
+        }
+    
         public int Id { get; set; }
         public int MusicId { get; set; }
         public int UserId { get; set; }
-        public int TargetId { get; set; }
+        public Nullable<int> TargetId { get; set; }
         public string Content { get; set; }
         public System.DateTime Time { get; set; }
+        public Nullable<int> ReplyId { get; set; }
     
         public virtual Music Music { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MusicComment> MusicComment1 { get; set; }
+        public virtual MusicComment MusicComment2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MusicComment> MusicComment11 { get; set; }
+        public virtual MusicComment MusicComment3 { get; set; }
         public virtual User User { get; set; }
     }
 }

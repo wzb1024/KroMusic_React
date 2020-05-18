@@ -43,6 +43,11 @@ namespace DALFactory
             string className = AssemblyName + "." + db + "PlaylistCommentService";
             return (IPlaylistCommentService)Assembly.Load(AssemblyName).CreateInstance(className);
         }
+        public static IMusicCommentService CreateMusicCommentService()
+        {
+            string className = AssemblyName + "." + db + "MusicCommentService";
+            return (IMusicCommentService)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
         public static IPlaylistItemService CreatePlaylistItemService()
         {
             string className = AssemblyName + "." + db + "PlaylistItemService";

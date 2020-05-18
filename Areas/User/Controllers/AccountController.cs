@@ -255,5 +255,19 @@ namespace KroMusic.Areas.User.Controllers
             var model = manager.GetSelfPlaylists();
             return Json(new { State = true, Model = model }, JsonRequestBehavior.AllowGet);
         }
+        [SigninAuthorize]
+        [HttpGet]
+        public ActionResult GetFavoSongs()
+        {
+            var result = manager.GetFavoSongs();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        [HttpGet]
+        public ActionResult RmFavoSong(int id)
+        {
+            bool rm = manager.RmFavoSong(id);
+            return Json(new { State = true, result = rm },JsonRequestBehavior.AllowGet);
+        }
     }
 }

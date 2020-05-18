@@ -10,6 +10,7 @@ export default class Song extends Comment {
     this.state = {
       details: { Tags: [] },
       relate: [],
+      comments: [],
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -26,7 +27,17 @@ export default class Song extends Comment {
       function (data) {
         this.setState({
           details: data[0],
-          relate: data,
+          relate: data.splice(0, 1),
+        });
+      }.bind(this)
+    );
+    $.getJSON(
+      "/Music/Song/GetComments",
+      { id: id },
+      function (data) {
+        this.setState({
+          comments: data,
+          loading: false,
         });
       }.bind(this)
     );
@@ -78,7 +89,7 @@ export default class Song extends Comment {
   handleSubmit(e) {
     if (e != "")
       $.post(
-        "/Music/Playlist/Comment",
+        "/Music/Song/Comment",
         { id: this.state.details.Id, value: e },
         function (result) {
           if (result.State) {
@@ -96,7 +107,7 @@ export default class Song extends Comment {
       var com = this.state.comments;
       var sub = com[position].SubComments;
       $.post(
-        "/Music/Playlist/Reply",
+        "/Music/Song/Reply",
         { id: this.state.details.Id, value: value, targetId: targetId },
         function (result) {
           if (result.State) {
@@ -115,8 +126,17 @@ export default class Song extends Comment {
       });
     }
   }
+  handleShow() {
+    var $div = $(event.target);
+    var dis = $div.next().css("display");
+    if (dis == "none") {
+      $div.next().css("display", "block");
+    } else {
+      $div.next().css("display", "none");
+    }
+  }
   render() {
-    const { details } = this.state;
+    const { details, relate, comments } = this.state;
     return (
       <div id="music_details_box" className="container">
         <div id="music_introduce" className=" shadow">
@@ -184,15 +204,39 @@ export default class Song extends Comment {
             </li>
           </ul>
         </div>
-        <div id="music_lyric_box" className="shadow"></div>
+        <div id="music_lyric_box" className="shadow">
+          <h2
+            style={{
+              letterSpacing: "2px",
+              color: "rgba(0,0,0,0.5)",
+              fontSize: "16px",
+            }}
+          >
+            歌词
+          </h2>
+        </div>
         <div id="relate_music_box">
           <h4>相关音乐</h4>
-          <div className="relate_music shadow"></div>
-          <div className="relate_music shadow"></div>
-          <div className="relate_music shadow"></div>
-          <div className="relate_music shadow"></div>
-          <div className="relate_music shadow"></div>
-          <div className="relate_music shadow"></div>
+          {relate.map((item) => (
+            <div className="relate_music shadow">
+              <img
+                src={item.ImagePath}
+                style={{
+                  float: "left",
+                  marginRight: "15px",
+                }}
+                height="60px"
+                width="50px"
+              />
+              <div style={{ fontSize: "16px", lineHeight: "30px" }}>
+                {item.MusicName}
+              </div>
+
+              <div style={{ fontSize: "16px", lineHeight: "30px" }}>
+                {item.SingerName}
+              </div>
+            </div>
+          ))}
         </div>
         <div id="music_comment">
           <div>
@@ -212,9 +256,9 @@ export default class Song extends Comment {
                 marginBottom: "20px",
               }}
             >
-              {/* 全部评论&nbsp;<small>共{comments.length}条评论</small> */}
+              全部评论&nbsp;<small>共{comments.length}条评论</small>
             </h3>
-            {/* {comments.map((item, i) => (
+            {comments.map((item, i) => (
               <div key={item.Id}>
                 <Comment
                   actions={[
@@ -284,7 +328,7 @@ export default class Song extends Comment {
                   ))}
                 </div>
               </div>
-            ))} */}
+            ))}
           </div>
         </div>
       </div>

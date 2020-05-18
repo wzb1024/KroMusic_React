@@ -4,6 +4,7 @@ import { UserOutlined } from "@ant-design/icons";
 import $ from "jquery";
 import CollectedPlaylists from "@/components/CollectedPlaylists";
 import MyPlaylists from "@/components/MyPlaylists";
+import FavoriteSongs from "@/components/FavoriteSongs";
 
 const { TabPane } = Tabs;
 export default class Account extends Component {
@@ -128,7 +129,7 @@ export default class Account extends Component {
           <img src="http://oss.krokro.top/img/20200320121658.png" />
         </div>
         <div id="account_taps">
-          <Tabs type="line" tabPosition="left" defaultActiveKey="3">
+          <Tabs type="line" tabPosition="left" defaultActiveKey="2">
             <TabPane tab="个人资料" key="1">
               <div id="msg_hdimg">
                 <Avatar
@@ -192,7 +193,9 @@ export default class Account extends Component {
                 <Button type="link">修改密码</Button>
               </div>
             </TabPane>
-            <TabPane tab="我喜欢" key="2"></TabPane>
+            <TabPane tab="我喜欢" key="2">
+              <FavoriteSongs addToList={this.props.addToList}></FavoriteSongs>
+            </TabPane>
             <TabPane tab="我的歌单" key="3">
               <MyPlaylists></MyPlaylists>
             </TabPane>

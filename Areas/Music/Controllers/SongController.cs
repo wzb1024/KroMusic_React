@@ -70,5 +70,41 @@ namespace KroMusic.Areas.Music.Controllers
             var model = manager.GetSongsList(list);
             return Json(model,JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 获取评论
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult GetComments(int id)
+        {
+            var result = manager.GetComments(id);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult Comment(int id, string value)
+        {
+
+            var model = manager.Comment(id, value);
+            var result = new
+            {
+                State = true,
+                Model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult Reply(int id, string value, int targetId)
+        {
+
+            var model = manager.Reply(id, value, targetId);
+            var result = new
+            {
+                State = true,
+                Model = model
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

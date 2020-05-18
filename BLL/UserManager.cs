@@ -37,6 +37,7 @@ namespace BLL
         //public static UserManager Instance { get { return instance; } }
 
         IUserService service = DataAccess.CreateUserService();
+        KroMusicEntities entities = DBContextFactory.GetContext();
         string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
         User self = null;
         public UserManager()
@@ -166,5 +167,29 @@ namespace BLL
             user.NickName = model.NickName;
             return service.Edit(user)>0;
         }
+        public List<SongJsonModel> GetFavoSongs()
+        {
+            List<SongJsonModel> list = new List<SongJsonModel>();
+            var songs = self.FavoriteMusic.ToList();
+            foreach (var item in songs)
+            {
+                SongJsonModel song = new SongJsonModel();
+                song.Id = item.MusicId;
+                song.MusicName = item.Music.MusicName;
+                song.SingerName = item.Music.Singer.Name;
+                song.Span = item.Music.Span.ToString().Remove(0, 3);
+                list.Add(song);
+            }
+            return list;
+        }
+        public bool RmFavoSong(int mid)
+        {
+            var it = entities.FavoriteMusic.FirstOrDefault(i => i.UserId == self.Id && i.MusicId == mid);
+            if(it!=null)
+            entities.FavoriteMusic.Remove(it);
+            return entities.SaveChanges() > 0;
+
+        }
+
     }
 }
