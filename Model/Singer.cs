@@ -26,8 +26,6 @@ namespace Model
         public string Gender { get; set; }
         public string Image { get; set; }
         public int Age { get; set; }
-        public string Introduce { get; set; }
-        public int Fans { get; set; }
         public string Nationality { get; set; }
         public string Profession { get; set; }
     

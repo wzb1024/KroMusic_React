@@ -270,7 +270,11 @@ class Playlist extends Component {
                     <i> {i + 1}&nbsp;</i>
                     <Link to={"/song/" + item.Id}>{item.MusicName}</Link>
                   </li>
-                  <li style={{ width: "25%" }}>{item.SingerName}</li>
+                  <li style={{ width: "25%" }}>
+                    <Link to={"/singer/" + item.SingerId}>
+                      {item.SingerName}
+                    </Link>
+                  </li>
                   <li style={{ width: "10%" }}>{item.Span}</li>
                   <li style={{ textAlign: "center" }}>
                     <button

@@ -177,6 +177,7 @@ namespace BLL
                 song.Id = item.MusicId;
                 song.MusicName = item.Music.MusicName;
                 song.SingerName = item.Music.Singer.Name;
+                song.SingerId = item.Music.SingerId;
                 song.Span = item.Music.Span.ToString().Remove(0, 3);
                 list.Add(song);
             }
@@ -189,6 +190,25 @@ namespace BLL
             entities.FavoriteMusic.Remove(it);
             return entities.SaveChanges() > 0;
 
+        }
+        public bool Focus(int id)
+        {
+            var exist = entities.Attention.FirstOrDefault(it => it.UserId == self.Id && it.SingerId == id) ;
+            if(exist!=null)
+            {
+                entities.Attention.Remove(exist);
+                entities.SaveChanges();
+                return false;
+            }
+            else
+            {
+                Attention attention = new Attention();
+                attention.UserId = self.Id;
+                attention.SingerId = id;
+                entities.Attention.Add(attention);
+                entities.SaveChanges();
+                return true;
+            }
         }
 
     }

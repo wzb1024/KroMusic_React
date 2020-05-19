@@ -20,6 +20,7 @@ import Category from "@/components/CategoryIndex";
 import Account from "@/components/Account";
 import Playlist from "@/components/Playlist";
 import Song from "@/components/Song";
+import Singer from "@/components/Singer";
 import $ from "jquery";
 class App extends Component {
   constructor() {
@@ -66,7 +67,7 @@ class App extends Component {
                 <li>
                   <NavLink
                     activeClassName="active"
-                    to="/singer"
+                    to="/singers"
                     onClick={this.indexChange}
                   >
                     <em>歌手</em>
@@ -123,6 +124,12 @@ class App extends Component {
               component={() => <Song addToList={this.addToList}></Song>}
               exact
             ></Route>
+            <Route
+              from="/singer/:id"
+              component={() => <Singer addToList={this.addToList}></Singer>}
+              exact
+            ></Route>
+
             <Route
               from="/account"
               component={() => <Account addToList={this.addToList}></Account>}

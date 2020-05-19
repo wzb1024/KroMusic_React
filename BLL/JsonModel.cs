@@ -29,7 +29,14 @@ namespace BLL
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Gender { get; set; }
         public string Image { get; set; }
+        public int Age { get; set; }
+        public int Fans { get; set; }
+        public string Nationality { get; set; }
+        public string Profession { get; set; }
+        public int Amount { get; set; }
+        public bool Focused { get; set; } = false;
     }
     public class CommentJsonModel
     {

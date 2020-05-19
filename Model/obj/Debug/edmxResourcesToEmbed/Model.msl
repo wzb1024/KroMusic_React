@@ -143,8 +143,6 @@
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="Age" ColumnName="Age" />
-          <ScalarProperty Name="Introduce" ColumnName="Introduce" />
-          <ScalarProperty Name="Fans" ColumnName="Fans" />
           <ScalarProperty Name="Nationality" ColumnName="Nationality" />
           <ScalarProperty Name="Profession" ColumnName="Profession" />
         </MappingFragment>

@@ -9,10 +9,11 @@ using KroMusic.Areas.Music.Data;
 
 namespace KroMusic.Areas.Music.Controllers
 {
+    [AjaxSyncAction]
     public class SingerController : Controller
     {
         SingerManager manager = new SingerManager();
-        [AjaxSyncAction]
+        
         public ActionResult Search(string keywords)
         {
              var results = manager.GetSingerByKeywords(keywords);
@@ -25,5 +26,18 @@ namespace KroMusic.Areas.Music.Controllers
                 }
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+       
+        public ActionResult GetDetails(int id)
+        {
+            var data = manager.GetDetails(id);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        
+        public ActionResult GetSongs(int id)
+        {
+            var data = manager.GetSongs(id);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

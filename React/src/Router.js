@@ -5,11 +5,12 @@ import Category from "@/components/CategoryIndex";
 import Account from "@/components/Account";
 import Playlist from "@/components/Playlist";
 import Song from "@/components/Song";
+import Singer from "@/components/Singer";
 
 const router = [
   {
     path: "/",
-    component: Account,
+    component: Singer,
     exact: true,
   },
   {
@@ -33,7 +34,7 @@ const router = [
     exact: true,
   },
   {
-    path: "/singer",
+    path: "/singers",
     component: Home,
     exact: true,
   },

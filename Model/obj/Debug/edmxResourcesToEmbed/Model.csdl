@@ -171,8 +171,6 @@
     <Property Name="Gender" Type="String" MaxLength="5" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Age" Type="Int32" Nullable="false" />
-    <Property Name="Introduce" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Fans" Type="Int32" Nullable="false" />
     <Property Name="Nationality" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Profession" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Attention" Relationship="Self.FK_Attention_Attention" FromRole="Singer" ToRole="Attention" />

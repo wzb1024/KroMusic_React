@@ -131,8 +131,6 @@
     <Property Name="Gender" Type="nchar" MaxLength="5" Nullable="false" />
     <Property Name="Image" Type="varchar" MaxLength="200" Nullable="false" />
     <Property Name="Age" Type="int" Nullable="false" />
-    <Property Name="Introduce" Type="varchar(max)" Nullable="false" />
-    <Property Name="Fans" Type="int" Nullable="false" />
     <Property Name="Nationality" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="Profession" Type="nvarchar" MaxLength="100" />
   </EntityType>

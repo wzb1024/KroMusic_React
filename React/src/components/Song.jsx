@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
-import { Pagination, Spin, message, Button } from "antd";
-import { Comment, Avatar, Form, List, Input, Tooltip } from "antd";
+import { message, Button } from "antd";
+import { Comment, Avatar, Input, Tooltip } from "antd";
 import moment from "moment";
 import $ from "jquery";
 import Add from "@/components/Add";

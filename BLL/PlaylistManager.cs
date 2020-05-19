@@ -188,7 +188,7 @@ namespace BLL
             foreach (var item in u.PlaylistItem)
             {
                 var m = item.Music;
-                SongJsonModel model = new SongJsonModel { Id = item.MusicId, ImagePath = m.ImagePath, MusicName = m.MusicName, Path = m.Path, SingerName = item.Music.Singer.Name, Span = m.Span.ToString().Remove(0, 3) };
+                SongJsonModel model = new SongJsonModel { Id = item.MusicId, ImagePath = m.ImagePath,SingerId=m.SingerId, MusicName = m.MusicName, Path = m.Path, SingerName = item.Music.Singer.Name, Span = m.Span.ToString().Remove(0, 3) };
                 data.Add(model);
             }
             return data;

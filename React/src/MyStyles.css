@@ -751,6 +751,7 @@ ul.self_playlist>li:nth-child(4) {
 }
 
 #playlist_content ul,
+#singer_content ul,
 #favorite_songs ul {
   background-color: #fafafa;
   padding: 8px 0px;
@@ -758,6 +759,7 @@ ul.self_playlist>li:nth-child(4) {
 }
 
 #playlist_content ul li,
+#singer_content ul li,
 #favorite_songs ul li {
   display: inline-block;
   font-size: 13px;
@@ -767,6 +769,7 @@ ul.self_playlist>li:nth-child(4) {
 }
 
 #playlist_content ul:nth-child(2n + 1),
+#singer_content ul:nth-child(2n + 1),
 #favorite_songs ul:nth-child(2n + 1) {
   background-color: white;
 }
@@ -933,33 +936,39 @@ ul.self_playlist>li:nth-child(4) {
   height: 200px;
   padding: 0 30px;
   padding-top: 20px;
-  min-width: 800px;
+  /* min-width: 800px; */
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
 
 #music_cover {
   float: left;
-  margin-right: 30px;
+  /* margin-right: 30px; */
 }
 
 #music_title {
   float: left;
-  padding: 0 20px;
+  padding: 0 10px;
   font-size: 30px;
+  /* vertical-align: top; */
+  /* max-width: 600px; */
 }
 
 #music_title>ul {
   display: inline-block;
-  margin-left: 30px;
+  vertical-align: middle;
 }
 
-#music_title ul :not(:first-child) {
-  margin-top: 8px;
-}
 
 #music_title ul li {
   font-size: 18px;
+  width: 180px;
+  height: 35px;
+  line-height: 30px;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #music_operate {
@@ -1389,4 +1398,12 @@ ul#carousel_box>li {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#singer_container {
+  width: 42%;
+}
+
+#singer_content {
+  margin-top: 40px;
 }

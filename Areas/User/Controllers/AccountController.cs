@@ -14,7 +14,7 @@ namespace KroMusic.Areas.User.Controllers
     public class AccountController : Controller
     {
         // GET: User/Account
-        UserManager manager =new UserManager();
+        UserManager manager = new UserManager();
         [HttpGet]
         [AjaxSyncAction]
         public JsonResult Signin()
@@ -30,10 +30,10 @@ namespace KroMusic.Areas.User.Controllers
             {
                 model.RememberMe = false;
             }
-            return Json(model,JsonRequestBehavior.AllowGet);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        
+
         public ActionResult Signin(SigninViewModel model)
         {
             LoginInfo result = new LoginInfo();
@@ -60,12 +60,12 @@ namespace KroMusic.Areas.User.Controllers
                             Response.AppendCookie(cok);
                         }
                     }
-                    int id= manager.GetId(model.UserName);
+                    int id = manager.GetId(model.UserName);
                     Session["UserId"] = id;
                     var self = manager.GetUserById(id);
                     result.Status = true;
                     result.NikName = self.NickName;
-                    result.Hdimg = self.Hdimage; 
+                    result.Hdimg = self.Hdimage;
 
                 }
                 else
@@ -87,23 +87,23 @@ namespace KroMusic.Areas.User.Controllers
 
         public JsonResult SigninState()
         {
-            if (Session["UserId"]==null)
+            if (Session["UserId"] == null)
             {
                 return Json(new { SigninSatae = false }, JsonRequestBehavior.AllowGet);
             }
-            
+
             else
             {
                 var user = manager.GetUserById(int.Parse(Session["UserId"].ToString()));
-                return Json(new { SigninState = true, NikName = user.NickName, Hdimg = user.Hdimage },JsonRequestBehavior.AllowGet);
+                return Json(new { SigninState = true, NikName = user.NickName, Hdimg = user.Hdimage }, JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult CheckUserName(string UserName)
         {
-           var user= manager.CheckName(UserName);
+            var user = manager.CheckName(UserName);
             if (user)
-                return Json(new {Msg="用户名已被占用" },JsonRequestBehavior.AllowGet);
+                return Json(new { Msg = "用户名已被占用" }, JsonRequestBehavior.AllowGet);
             else
                 return Json(new { Msg = "" }, JsonRequestBehavior.AllowGet);
         }
@@ -111,7 +111,7 @@ namespace KroMusic.Areas.User.Controllers
 
         public ActionResult CheckNickName(string NickName)
         {
-            if(manager.ExistNickName(NickName))
+            if (manager.ExistNickName(NickName))
                 return Json(new { Msg = "昵称已被占用" }, JsonRequestBehavior.AllowGet);
             else
                 return Json(new { Msg = "" }, JsonRequestBehavior.AllowGet);
@@ -125,7 +125,7 @@ namespace KroMusic.Areas.User.Controllers
 
         public ActionResult Signup(SignupViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
                 if (manager.CheckName(model.UserName))
@@ -136,7 +136,7 @@ namespace KroMusic.Areas.User.Controllers
                         ErrorMsg = "用户已存在"
                     });
                 }
-                if (manager.ExistNickName(model.NickName) )
+                if (manager.ExistNickName(model.NickName))
                 {
                     return Json(new
                     {
@@ -146,12 +146,12 @@ namespace KroMusic.Areas.User.Controllers
                 }
                 string savepath = "/Sourse/Head-image/default.jpg";
 
-                    //var file = Request.Files[0];
-                    //string imgPath = "/Sourse/Head-image/" + Guid.NewGuid().ToString() + file.FileName;
-                    //savepath = Server.MapPath(imgPath);
-                    //file.SaveAs(savepath);
+                //var file = Request.Files[0];
+                //string imgPath = "/Sourse/Head-image/" + Guid.NewGuid().ToString() + file.FileName;
+                //savepath = Server.MapPath(imgPath);
+                //file.SaveAs(savepath);
 
-                if (manager.Create(model.UserName,model.Password,model.NickName,model.Gender,model.Age,model.Email,savepath))
+                if (manager.Create(model.UserName, model.Password, model.NickName, model.Gender, model.Age, model.Email, savepath))
                 {
                     return Json(new
                     {
@@ -177,7 +177,7 @@ namespace KroMusic.Areas.User.Controllers
                         foreach (var error in item.Errors)
                         {
 
-                            errormsg+=error.ErrorMessage;
+                            errormsg += error.ErrorMessage;
                         }
                     }
                 }
@@ -200,7 +200,7 @@ namespace KroMusic.Areas.User.Controllers
                 State = true,
                 AccountInfo = manager.GetAccountMsg(id)
             };
-            var accountInfo =JsonConvert.SerializeObject( model);
+            var accountInfo = JsonConvert.SerializeObject(model);
             return Content(accountInfo);
         }
         [HttpPost]
@@ -216,17 +216,17 @@ namespace KroMusic.Areas.User.Controllers
         [SigninAuthorize]
         public ActionResult ModifyMsg(ModifyMsgJsonModel model)
         {
-            int id= int.Parse(Session["UserId"].ToString());
+            int id = int.Parse(Session["UserId"].ToString());
             if (ModelState.IsValid)
             {
-                if(manager.ExistNickName(model.NickName,id))
+                if (manager.ExistNickName(model.NickName, id))
                 {
                     return Json(new { State = false, ErrorMsg = "该昵称已存在" });
                 }
                 else
                 {
                     manager.ModifyMsg(model, id);
-                    return Json(new { State =true});
+                    return Json(new { State = true });
                 }
 
             }
@@ -246,7 +246,7 @@ namespace KroMusic.Areas.User.Controllers
                 }
                 return Json(new { State = false, ErrorMsg = errormsg });
             }
-            
+
         }
         [SigninAuthorize]
         [HttpGet]
@@ -267,7 +267,14 @@ namespace KroMusic.Areas.User.Controllers
         public ActionResult RmFavoSong(int id)
         {
             bool rm = manager.RmFavoSong(id);
-            return Json(new { State = true, result = rm },JsonRequestBehavior.AllowGet);
+            return Json(new { State = true, result = rm }, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        public ActionResult Focus(int id)
+        {
+            var result = manager.Focus(id);
+            return Json(new { State = true, Focused = result}, JsonRequestBehavior.AllowGet);
         }
     }
+
 }
