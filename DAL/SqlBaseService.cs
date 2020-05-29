@@ -8,7 +8,7 @@ namespace DAL
 {
     public abstract partial class SqlBaseService<T>: IBaseService<T> where T :class,new()
     {
-        private KroMusicEntities _db = DBContextFactory.GetContext();
+        private KroMusicEntities _db = DBContextFactory.Context;
         //private KroMusicEntities _db = new KroMusicEntities();
         public int Create(T model)
         {

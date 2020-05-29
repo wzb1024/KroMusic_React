@@ -4,25 +4,24 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9221b979756a40f18398c855a685644b" Name="Diagram1">
-        <EntityTypeShape EntityType="KroMusicModel.Attention" Width="1.5" PointX="3" PointY="14.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.FavoriteMusic" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.FavoritePlaylist" Width="1.5" PointX="5.25" PointY="23.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.LikeMusic" Width="1.5" PointX="3" PointY="17.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.LikePlaylist" Width="1.5" PointX="5.25" PointY="26.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.Music" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.MusicComment" Width="1.5" PointX="6" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.MusicType" Width="1.5" PointX="5.25" PointY="18.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.Playlist" Width="1.5" PointX="3" PointY="31.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.PlaylistComment" Width="1.5" PointX="8.25" PointY="22.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.PlaylistItem" Width="1.5" PointX="5.25" PointY="32.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.PlaylistType" Width="1.5" PointX="5.25" PointY="29.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.Singer" Width="1.5" PointX="1.5" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.SubType" Width="1.5" PointX="3" PointY="28.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.Type" Width="1.5" PointX="0.75" PointY="28.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="KroMusicModel.User" Width="1.5" PointX="0.75" PointY="13.5" IsExpanded="true" />
-        <AssociationConnector Association="KroMusicModel.FK_Attention_Attention" ManuallyRouted="false" />
-        <AssociationConnector Association="KroMusicModel.FK_Attention_User" ManuallyRouted="false" />
+      <Diagram DiagramId="6db6c5d7272e4364bdda0dc84fe08f0e" Name="Diagram1">
+        <EntityTypeShape EntityType="KroMusicModel.FavoriteMusic" Width="1.5" PointX="3" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.FavoritePlaylist" Width="1.5" PointX="5.25" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.LikeMusic" Width="1.5" PointX="3" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.LikePlaylist" Width="1.5" PointX="5.25" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.Music" Width="1.5" PointX="8.25" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.MusicComment" Width="1.5" PointX="10.5" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.MusicType" Width="1.5" PointX="10.5" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.Playlist" Width="1.5" PointX="3" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.PlaylistComment" Width="1.5" PointX="5.25" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.PlaylistItem" Width="1.5" PointX="10.5" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.PlaylistType" Width="1.5" PointX="5.25" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.Singer" Width="1.5" PointX="3" PointY="35.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.SingerAttention" Width="1.5" PointX="8.25" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.SubType" Width="1.5" PointX="8.25" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.Type" Width="1.5" PointX="6" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.User" Width="1.5" PointX="0.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="KroMusicModel.UserAttention" Width="1.5" PointX="3" PointY="38.875" IsExpanded="true" />
         <AssociationConnector Association="KroMusicModel.FK_FavoriteMusic_Music" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_FavoriteMusic_User" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_FavoritePlaylist_Playlist" ManuallyRouted="false" />
@@ -32,6 +31,7 @@
         <AssociationConnector Association="KroMusicModel.FK_LikePlaylist_Playlist" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_LikePlaylist_User" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_Music_Singer" ManuallyRouted="false" />
+        <AssociationConnector Association="KroMusicModel.FK_Music_User" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_MusicComment_MusicComment" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_MusicType_Music" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_PlaylistItems_Music" ManuallyRouted="false" />
@@ -47,7 +47,12 @@
         <AssociationConnector Association="KroMusicModel.FK_PlaylistComment_PlaylistComment2" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_PlaylistComment_User" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_PlaylistType_SubType" ManuallyRouted="false" />
+        <AssociationConnector Association="KroMusicModel.FK_Attention_Attention" ManuallyRouted="false" />
+        <AssociationConnector Association="KroMusicModel.FK_Singer_User" ManuallyRouted="false" />
+        <AssociationConnector Association="KroMusicModel.FK_Attention_User" ManuallyRouted="false" />
         <AssociationConnector Association="KroMusicModel.FK_SubType_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="KroMusicModel.FK_UserAttention_User" ManuallyRouted="false" />
+        <AssociationConnector Association="KroMusicModel.FK_UserAttention_User1" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

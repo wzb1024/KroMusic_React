@@ -11,43 +11,30 @@ using System;
 
 namespace BLL
 {
-    public class ModifyMsgJsonModel
-    {
-        [StringLength(6, MinimumLength = 3, ErrorMessage = "昵称长度为3~6")]
-        public string NickName { get; set; }
-        [EmailAddress]
-        public string Email { get; set; }
-        [Range(6, 99, ErrorMessage = "非法年龄！")]
-        public int Age { get; set; }
-
-    }
-
-    public class AccountInfoJsonModel
-    {
-        public string Hdimage { get; set; }
-        public string NickName { get; set; }
-        public string Gender { get; set; }
-        public int Age { get; set; }
-        public string Email { get; set; }
-    }
-    public partial class UserManager
+   
+    public class UserManager
     {
         //private UserManager() { }                                       //单例模式
         //private static UserManager instance = new UserManager();
         //public static UserManager Instance { get { return instance; } }
 
         IUserService service = DataAccess.CreateUserService();
-        KroMusicEntities entities = DBContextFactory.GetContext();
-        string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
-        User self = null;
-        public UserManager()
+        
+        public static User GetUser(int id)
         {
-            if (userId != null)
-                self = service.GetById(int.Parse(userId));
+            return DBContextFactory.Context.User.Find(id);
         }
-        public User GetUserById(int id)
+        public static User GetSelf()
         {
-            return service.GetById(id);
+            string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
+            if (userId == null)
+                return null;
+            else
+            {
+                int uid = int.Parse(userId);
+                return DBContextFactory.Context.User.Find(uid);
+            }
+           
         }
         public bool Success(string userName, string password)
         {
@@ -67,7 +54,7 @@ namespace BLL
         }
         public bool ExistNickName(string nickName, int id)
         {
-            return service.GetAll().FirstOrDefault(m => m.NickName == nickName && m.Id != id) != null;
+            return service.GetAllAsNoTracking().FirstOrDefault(m => m.NickName == nickName && m.Id != id) != null;
         }
         public bool Create(string userName, string password, string nikName, string gender, int age, string email, string path)
         {
@@ -85,34 +72,12 @@ namespace BLL
         {
             AccountInfoJsonModel model;
             var user = service.GetById(id);
-            model = new AccountInfoJsonModel { NickName = user.NickName, Age = user.Age, Email = user.Email, Gender = user.Gender, Hdimage = user.Hdimage };        
-            return model;
-        }
-        public List<SongJsonModel> GetFavoriteMusics(int id)
-        {
-            List<SongJsonModel> model = new List<SongJsonModel>();
-            var user = service.GetById(id);
-            foreach (var item in user.FavoriteMusic)
-            {
-                SongJsonModel music = new SongJsonModel { Id = item.MusicId, ImagePath = item.Music.ImagePath, MusicName = item.Music.MusicName, Path = item.Music.Path, SingerName = item.Music.Singer.Name, Span = item.Music.Span.ToString().Remove(0, 3) };
-                model.Add(music);
-            }
-            return model;
-        }
-       
-        public List<SingerJsonModel> GetAttendSingers(int id)
-        {
-            List<SingerJsonModel> model = new List<SingerJsonModel>();
-            var user = service.GetById(id);
-            foreach (var item in user.Attention)
-            {
-                SingerJsonModel singer = new SingerJsonModel { Id = item.SingerId, Image = item.Singer.Image, Name = item.Singer.Name };
-                model.Add(singer);
-            }
+            model = ConvertHelper.UserConvert(user);  
             return model;
         }
         public List<PlaylistJsonModel> GetSelfPlaylists()
         {
+            var self = GetSelf();
             List<PlaylistJsonModel> model = new List<PlaylistJsonModel>();
             var all = self.Playlist.ToList();
             foreach (var item in all)
@@ -154,7 +119,8 @@ namespace BLL
             return model;
         }
         public void ChangeHdimage(string path)
-        {            
+        {
+            var self = GetSelf();
             File.Delete(HttpContext.Current.Server.MapPath(self.Hdimage));
             self.Hdimage = path;
             service.Edit(self);
@@ -169,6 +135,7 @@ namespace BLL
         }
         public List<SongJsonModel> GetFavoSongs()
         {
+            var self = GetSelf();
             List<SongJsonModel> list = new List<SongJsonModel>();
             var songs = self.FavoriteMusic.ToList();
             foreach (var item in songs)
@@ -185,31 +152,47 @@ namespace BLL
         }
         public bool RmFavoSong(int mid)
         {
-            var it = entities.FavoriteMusic.FirstOrDefault(i => i.UserId == self.Id && i.MusicId == mid);
-            if(it!=null)
-            entities.FavoriteMusic.Remove(it);
-            return entities.SaveChanges() > 0;
+            var self = GetSelf();
+            var exist = self.FavoriteMusic.FirstOrDefault(it => it.MusicId == mid);
+            if(exist != null)
+            DBContextFactory.Context.FavoriteMusic.Remove(exist);
+            return DBContextFactory.Context.SaveChanges() > 0;
 
         }
         public bool Focus(int id)
         {
-            var exist = entities.Attention.FirstOrDefault(it => it.UserId == self.Id && it.SingerId == id) ;
+            var self = GetSelf();
+            var exist = self.SingerAttention.FirstOrDefault(it => it.SingerId == id);
             if(exist!=null)
             {
-                entities.Attention.Remove(exist);
-                entities.SaveChanges();
+                self.SingerAttention.Remove(exist);
+                DBContextFactory.Context.SaveChanges();
                 return false;
             }
             else
             {
-                Attention attention = new Attention();
-                attention.UserId = self.Id;
-                attention.SingerId = id;
-                entities.Attention.Add(attention);
-                entities.SaveChanges();
+                
+                SingerAttention SingerAttention = new SingerAttention();
+                SingerAttention.SingerId = id;
+                self.SingerAttention.Add(SingerAttention);
+                DBContextFactory.Context.SaveChanges();
                 return true;
             }
         }
-
+        public List<SingerAttentionJsonModel> GetSingerAttention()
+        {
+            var self = GetSelf();
+            List<SingerAttentionJsonModel> list = new List<SingerAttentionJsonModel>();
+            var s = self.SingerAttention.ToList();
+            foreach (var item in s)
+            {
+                SingerAttentionJsonModel t = new SingerAttentionJsonModel();
+                t.Id = item.SingerId;
+                t.ImgPath = item.Singer.Image;
+                t.Name = item.Singer.Name;
+                list.Add(t);
+            }
+            return list;
+        }
     }
 }

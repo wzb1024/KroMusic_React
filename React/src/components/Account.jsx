@@ -5,6 +5,7 @@ import $ from "jquery";
 import CollectedPlaylists from "@/components/CollectedPlaylists";
 import MyPlaylists from "@/components/MyPlaylists";
 import FavoriteSongs from "@/components/FavoriteSongs";
+import Attention from "@/components/Attention";
 
 const { TabPane } = Tabs;
 export default class Account extends Component {
@@ -129,7 +130,7 @@ export default class Account extends Component {
           <img src="http://oss.krokro.top/img/20200320121658.png" />
         </div>
         <div id="account_taps">
-          <Tabs type="line" tabPosition="left" defaultActiveKey="2">
+          <Tabs type="line" tabPosition="left" defaultActiveKey="1">
             <TabPane tab="个人资料" key="1">
               <div id="msg_hdimg">
                 <Avatar
@@ -202,9 +203,9 @@ export default class Account extends Component {
             <TabPane tab="收藏歌单" key="4">
               <CollectedPlaylists></CollectedPlaylists>
             </TabPane>
-            <TabPane tab="关注歌手" key="5"></TabPane>
-            <TabPane tab="通知" key="6"></TabPane>
-            <TabPane tab="设置" key="7"></TabPane>
+            <TabPane tab="关注歌手" key="5">
+              <Attention></Attention>
+            </TabPane>
           </Tabs>
         </div>
       </div>

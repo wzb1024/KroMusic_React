@@ -6,16 +6,7 @@ using System.Linq;
 
 namespace BLL
 {
-    public class SubTypeModel
-    {
-        public string TypeName { get; set; }
-        public List<Category> Categories = new List<Category>();
-    }
-    public class Category
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+
     public class CategoryManager 
     {
 
@@ -23,18 +14,18 @@ namespace BLL
         /// 获取全部分类，用于json数据
         /// </summary>
         /// <returns></returns>
-        public List<SubTypeModel> GetAllCategories()
+        public List<SubTypeJsonModel> GetAllCategories()
         {
             ITypeService service = DALFactory.DataAccess.CreateTypeService();
-            List<SubTypeModel> model = new List<SubTypeModel>();
+            List<SubTypeJsonModel> model = new List<SubTypeJsonModel>();
             var all = service.GetAllAsNoTracking().ToList();
             foreach (var item in all)
             {
-                SubTypeModel n = new SubTypeModel();
+                SubTypeJsonModel n = new SubTypeJsonModel();
                 n.TypeName = item.Name;
                 foreach (var u in item.SubType)
                 {
-                    Category category = new Category();
+                    CategoryJsonModel category = new CategoryJsonModel();
                     category.Id = u.Id;
                     category.Name = u.Name;
                     n.Categories.Add(category);

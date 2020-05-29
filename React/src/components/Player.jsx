@@ -98,7 +98,19 @@ class Player extends Component {
       }.bind(this),
     }); //异步！！！
   }
-
+  handleListSlide() {
+    const exheight = $("#listBox").height();
+    const totheight = $("#list_ul").height();
+    if (totheight > exheight) {
+      const inity = $("#listBox").offset().top;
+      $("#listBox").mousemove(function (e) {
+        let span = totheight - exheight;
+        let rate = (e.clientY - inity) / exheight;
+        let distance = "-" + rate * span + "px";
+        $("#list_ul").css("top", distance);
+      });
+    }
+  }
   handleListChange(result, play) {
     var updateList = result;
     //var list = this.getDifferenceSet(this.state.mlist, updateList);   无法赋值？？？
@@ -126,7 +138,7 @@ class Player extends Component {
         },
         () => {
           if (play) this.handlePlay();
-          this.handleListSlide();
+          setTimeout(this.handleListSlide, 300);
         }
       );
     } else {
@@ -142,24 +154,12 @@ class Player extends Component {
         },
         () => {
           if (play) this.handleNext();
-          this.handleListSlide();
+          setTimeout(this.handleListSlide, 300);
         }
       );
     }
   }
-  handleListSlide() {
-    const exheight = $("#listBox").height();
-    const totheight = $("#list_ul").height();
-    if (totheight > exheight) {
-      const inity = $("#listBox").offset().top;
-      $("#listBox").mousemove(function (e) {
-        let span = totheight - exheight;
-        let rate = (e.clientY - inity) / exheight;
-        let distance = "-" + rate * span + "px";
-        $("#list_ul").css("top", distance);
-      });
-    }
-  }
+
   // componentDidUpdate(prevProps, provState) {
   //   // let updateList = prevProps.updateList;
   //   // let play = prevProps.play;
@@ -391,6 +391,7 @@ class Player extends Component {
         mlist: this.state.mlist.filter((item, i) => index !== i),
       },
       () => {
+        this.handleListSlide();
         let i = -1;
         let j = 0;
         while (j < this.state.mlist.length) {

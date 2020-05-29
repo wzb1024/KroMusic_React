@@ -1,11 +1,67 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL
 {
+    public class ConvertHelper
+    {
+        public static AccountInfoJsonModel UserConvert(User user)
+        {
+            return new AccountInfoJsonModel { NickName = user.NickName, Age = user.Age, Email = user.Email, Gender = user.Gender, Hdimage = user.Hdimage };
+        }
+        public static SongJsonModel SongConvert(Music music)
+        {
+            return new SongJsonModel { Id = music.Id, ImagePath = music.ImagePath, MusicName = music.MusicName, Path = music.Path, SingerName = music.Singer.Name, Span = music.Span.ToString().Remove(0, 3) };
+        }
+        public static SingerJsonModel SingerConvert(Singer singer)
+        {
+            SingerJsonModel model = new SingerJsonModel();
+            model.Id = singer.Id;
+            model.Image = singer.Image;
+            model.Name = singer.Name;
+            model.Nationality = singer.Nationality;
+            model.Gender = singer.Gender;
+            model.Age = singer.Age;
+            model.Fans = singer.SingerAttention.Count();
+            model.Amount = singer.Music.Count();
+            return model;
+        }
+
+    }
+    public class ModifyMsgJsonModel
+    {
+        [StringLength(6, MinimumLength = 3, ErrorMessage = "昵称长度为3~6")]
+        public string NickName { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+        [Range(6, 99, ErrorMessage = "非法年龄！")]
+        public int Age { get; set; }
+
+    }
+
+    public class AccountInfoJsonModel
+    {
+        public string Hdimage { get; set; }
+        public string NickName { get; set; }
+        public string Gender { get; set; }
+        public int Age { get; set; }
+        public string Email { get; set; }
+    }
+    public class SubTypeJsonModel
+    {
+        public string TypeName { get; set; }
+        public List<CategoryJsonModel> Categories = new List<CategoryJsonModel>();
+    }
+    public class CategoryJsonModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
     public class SongJsonModel
     {
         public int Id { get; set; }
@@ -127,5 +183,16 @@ namespace BLL
         public bool State = true;
         public string Message { get; set; }
         public bool Like { get; set; }
+    }
+
+    public class SingerAttentionJsonModel
+    {
+        public int Id { get; set; }
+        public string ImgPath { get; set; }
+        public string Name { get; set; }
+    }
+    public class RecoJsonModel {
+        public string Title { get; set; }
+        public List<PlaylistCardJsonModel> List = new List<PlaylistCardJsonModel>();
     }
 }

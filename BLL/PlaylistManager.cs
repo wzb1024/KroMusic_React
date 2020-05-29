@@ -23,13 +23,13 @@ namespace BLL
 
         IPlaylistService service = DALFactory.DataAccess.CreatePlaylistService();
 
-        KroMusicEntities entities = DBContextFactory.GetContext();
+        KroMusicEntities entities = DBContextFactory.Context;
         string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
 
         public SearchResultJsonModel GetPlaylistsByKeywords(string keywords, int pageIndex, int pageSize)
         {
             var model = new SearchResultJsonModel();
-            var query = service.GetAllAsNoTracking().Where(u => u.Name.Contains(keywords));
+            var query = service.GetAllAsNoTracking().Where(u => u.Name.Contains(keywords)||keywords.Contains(u.Name));
             var result = query.OrderByDescending(i => i.PlayTimes).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             model.Total = query.Count();
             List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
@@ -299,6 +299,17 @@ namespace BLL
             model.TargetId = target.Id;
             return model;
         }
+        static Playlist Init()
+        {
+            Playlist l = new Playlist();
+            l.Cover = @"\Sourse\PlaylistCover\Default.png";
+            l.CreateTime = DateTime.Now;
+            l.Description = "主人没有留下任何描述哦~";
+            l.Likes = 0;
+            l.IsPublic = false;
+            l.PlayTimes = 0;
+            return l;
+        }
         public PlaylistJsonModel CreatePlaylist(string name)
         {
             int uid = int.Parse(userId);
@@ -307,7 +318,7 @@ namespace BLL
                 return null;
             else
             {
-                Playlist model = new Playlist();
+                Playlist model = Init();
                 model.Name = name;
                 model.OwnerId = uid;
                 service.Create(model);
@@ -374,6 +385,49 @@ namespace BLL
             }
             
 
+        }
+        public List<RecoJsonModel> GetReco()
+        {
+            List<RecoJsonModel> reco = new List<RecoJsonModel>();
+            var All = service.GetAllAsNoTracking().OrderByDescending(k => k.PlayTimes).Take(9).ToList();
+            RecoJsonModel x = new RecoJsonModel();
+            x.Title = "全部歌单";
+            foreach (var item in All)
+            {
+                PlaylistCardJsonModel model = new PlaylistCardJsonModel();
+                model.Id = item.Id;
+                model.Name = item.Name;
+                model.PlayTimes = item.PlayTimes;
+                model.Cover = item.Cover;
+                x.List.Add(model);
+            }
+            reco.Add(x);
+            var entity = DBContextFactory.Context;
+            Random r = new Random();       
+            for (int j = 0; j < 3; j++)
+            {
+                RecoJsonModel re = new RecoJsonModel();
+                int i = r.Next(1, 30);
+                var con = entities.SubType.Find(i);
+                while (con==null)
+                {
+                    i = r.Next(1, 30);
+                    con = entities.SubType.Find(i);
+                }
+                re.Title = con.Name;
+                var list = con.PlaylistType.OrderByDescending(v => v.Playlist.PlayTimes).Take(9).ToList();
+                foreach (var item in list)
+                {
+                    PlaylistCardJsonModel model = new PlaylistCardJsonModel();
+                    model.Id = item.Id;
+                    model.Name = item.Playlist.Name;
+                    model.PlayTimes = item.Playlist.PlayTimes;
+                    model.Cover = item.Playlist.Cover;
+                    re.List.Add(model);
+                }
+                reco.Add(re);
+            }
+            return reco;
         }
     }
 }

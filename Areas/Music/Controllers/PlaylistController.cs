@@ -215,5 +215,11 @@ namespace KroMusic.Areas.Music.Controllers
 
             return new EmptyResult();
         }
+        [AjaxSyncAction]
+        public ActionResult GetReco()
+        {
+            var result = manager.GetReco();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

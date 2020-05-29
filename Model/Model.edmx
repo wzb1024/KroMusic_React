@@ -5,14 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="KroMusicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Attention">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="SingerId" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="FavoriteMusic">
           <Key>
             <PropertyRef Name="Id" />
@@ -53,16 +45,17 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MusicName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UploaderId" Type="int" Nullable="false" />
           <Property Name="SingerId" Type="int" Nullable="false" />
           <Property Name="Path" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="ImagePath" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Likes" Type="int" Nullable="false" />
           <Property Name="PlayTimes" Type="int" Nullable="false" />
-          <Property Name="Size" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Size" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Lyric" Type="nvarchar(max)" />
-          <Property Name="Span" Type="time" Precision="7" Nullable="false" />
-          <Property Name="Region" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="DownloadTimes" Type="int" Nullable="false" />
+          <Property Name="Span" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Region" Type="nvarchar" MaxLength="10" />
+          <Property Name="Genre" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="ReleaseTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="MusicComment">
@@ -76,6 +69,7 @@
           <Property Name="Content" Type="nvarchar" MaxLength="400" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="ReplyId" Type="int" />
+          <Property Name="Visited" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MusicType">
           <Key>
@@ -105,9 +99,10 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PlaylistId" Type="int" Nullable="false" />
+          <Property Name="Visited" Type="bit" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="TargetId" Type="int" />
-          <Property Name="Content" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="ReplyId" Type="int" />
         </EntityType>
@@ -137,7 +132,15 @@
           <Property Name="Image" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Age" Type="int" Nullable="false" />
           <Property Name="Nationality" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Profession" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SingerAttention">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="SingerId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SubType">
           <Key>
@@ -166,17 +169,26 @@
           <Property Name="Gender" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="Age" Type="int" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAttention">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TargetId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Attention_Attention">
           <End Role="Singer" Type="Self.Singer" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+          <End Role="SingerAttention" Type="Self.SingerAttention" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Singer">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Attention">
+            <Dependent Role="SingerAttention">
               <PropertyRef Name="SingerId" />
             </Dependent>
           </ReferentialConstraint>
@@ -185,12 +197,12 @@
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+          <End Role="SingerAttention" Type="Self.SingerAttention" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Attention">
+            <Dependent Role="SingerAttention">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -224,7 +236,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FavoritePlaylist_Playlist">
-          <End Role="Playlist" Type="Self.Playlist" Multiplicity="1" />
+          <End Role="Playlist" Type="Self.Playlist" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FavoritePlaylist" Type="Self.FavoritePlaylist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Playlist">
@@ -292,7 +306,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LikePlaylist_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="LikePlaylist" Type="Self.LikePlaylist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -314,6 +330,18 @@
             </Principal>
             <Dependent Role="Music">
               <PropertyRef Name="SingerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Music_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Music" Type="Self.Music" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Music">
+              <PropertyRef Name="UploaderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -356,7 +384,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MusicComment_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="MusicComment" Type="Self.MusicComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -396,9 +426,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Playlist_User">
-          <End Role="User" Type="Self.User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -448,7 +476,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PlaylistComment_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PlaylistComment" Type="Self.PlaylistComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -515,6 +545,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Singer_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Singer" Type="Self.Singer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Singer">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SubType_Type">
           <End Role="Type" Type="Self.Type" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -529,8 +571,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserAttention_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserAttention" Type="Self.UserAttention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAttention">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAttention_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserAttention" Type="Self.UserAttention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAttention">
+              <PropertyRef Name="TargetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="KroMusicModelStoreContainer">
-          <EntitySet Name="Attention" EntityType="Self.Attention" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FavoriteMusic" EntityType="Self.FavoriteMusic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FavoritePlaylist" EntityType="Self.FavoritePlaylist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LikeMusic" EntityType="Self.LikeMusic" Schema="dbo" store:Type="Tables" />
@@ -543,16 +608,18 @@
           <EntitySet Name="PlaylistItem" EntityType="Self.PlaylistItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlaylistType" EntityType="Self.PlaylistType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Singer" EntityType="Self.Singer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SingerAttention" EntityType="Self.SingerAttention" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubType" EntityType="Self.SubType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Type" EntityType="Self.Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAttention" EntityType="Self.UserAttention" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Attention_Attention" Association="Self.FK_Attention_Attention">
             <End Role="Singer" EntitySet="Singer" />
-            <End Role="Attention" EntitySet="Attention" />
+            <End Role="SingerAttention" EntitySet="SingerAttention" />
           </AssociationSet>
           <AssociationSet Name="FK_Attention_User" Association="Self.FK_Attention_User">
             <End Role="User" EntitySet="User" />
-            <End Role="Attention" EntitySet="Attention" />
+            <End Role="SingerAttention" EntitySet="SingerAttention" />
           </AssociationSet>
           <AssociationSet Name="FK_FavoriteMusic_Music" Association="Self.FK_FavoriteMusic_Music">
             <End Role="Music" EntitySet="Music" />
@@ -588,6 +655,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Music_Singer" Association="Self.FK_Music_Singer">
             <End Role="Singer" EntitySet="Singer" />
+            <End Role="Music" EntitySet="Music" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Music_User" Association="Self.FK_Music_User">
+            <End Role="User" EntitySet="User" />
             <End Role="Music" EntitySet="Music" />
           </AssociationSet>
           <AssociationSet Name="FK_MusicComment_MusicComment" Association="Self.FK_MusicComment_MusicComment">
@@ -650,9 +721,21 @@
             <End Role="SubType" EntitySet="SubType" />
             <End Role="PlaylistType" EntitySet="PlaylistType" />
           </AssociationSet>
+          <AssociationSet Name="FK_Singer_User" Association="Self.FK_Singer_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Singer" EntitySet="Singer" />
+          </AssociationSet>
           <AssociationSet Name="FK_SubType_Type" Association="Self.FK_SubType_Type">
             <End Role="Type" EntitySet="Type" />
             <End Role="SubType" EntitySet="SubType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAttention_User" Association="Self.FK_UserAttention_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserAttention" EntitySet="UserAttention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAttention_User1" Association="Self.FK_UserAttention_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserAttention" EntitySet="UserAttention" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -660,16 +743,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KroMusicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Attention">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="SingerId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Singer" Relationship="Self.FK_Attention_Attention" FromRole="Attention" ToRole="Singer" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Attention_User" FromRole="Attention" ToRole="User" />
-        </EntityType>
         <EntityType Name="FavoriteMusic">
           <Key>
             <PropertyRef Name="Id" />
@@ -718,20 +791,22 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MusicName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UploaderId" Type="Int32" Nullable="false" />
           <Property Name="SingerId" Type="Int32" Nullable="false" />
           <Property Name="Path" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ImagePath" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Likes" Type="Int32" Nullable="false" />
           <Property Name="PlayTimes" Type="Int32" Nullable="false" />
-          <Property Name="Size" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Lyric" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Span" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="Region" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DownloadTimes" Type="Int32" Nullable="false" />
+          <Property Name="Span" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Region" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Genre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ReleaseTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="FavoriteMusic" Relationship="Self.FK_FavoriteMusic_Music" FromRole="Music" ToRole="FavoriteMusic" />
           <NavigationProperty Name="LikeMusic" Relationship="Self.FK_LikeMusic_Music" FromRole="Music" ToRole="LikeMusic" />
           <NavigationProperty Name="Singer" Relationship="Self.FK_Music_Singer" FromRole="Music" ToRole="Singer" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Music_User" FromRole="Music" ToRole="User" />
           <NavigationProperty Name="MusicComment" Relationship="Self.FK_MusicComment_MusicComment" FromRole="Music" ToRole="MusicComment" />
           <NavigationProperty Name="MusicType" Relationship="Self.FK_MusicType_Music" FromRole="Music" ToRole="MusicType" />
           <NavigationProperty Name="PlaylistItem" Relationship="Self.FK_PlaylistItems_Music" FromRole="Music" ToRole="PlaylistItem" />
@@ -747,6 +822,7 @@
           <Property Name="Content" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReplyId" Type="Int32" />
+          <Property Name="Visited" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Music" Relationship="Self.FK_MusicComment_MusicComment" FromRole="MusicComment" ToRole="Music" />
           <NavigationProperty Name="MusicComment1" Relationship="Self.FK_MusicComment_MusicComment1" FromRole="MusicComment" ToRole="MusicComment1" />
           <NavigationProperty Name="MusicComment2" Relationship="Self.FK_MusicComment_MusicComment1" FromRole="MusicComment1" ToRole="MusicComment" />
@@ -790,9 +866,10 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PlaylistId" Type="Int32" Nullable="false" />
+          <Property Name="Visited" Type="Boolean" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="TargetId" Type="Int32" />
-          <Property Name="Content" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReplyId" Type="Int32" />
           <NavigationProperty Name="Playlist" Relationship="Self.FK_PlaylistComment_PlaylistComment" FromRole="PlaylistComment" ToRole="Playlist" />
@@ -832,9 +909,20 @@
           <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Age" Type="Int32" Nullable="false" />
           <Property Name="Nationality" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Profession" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Attention" Relationship="Self.FK_Attention_Attention" FromRole="Singer" ToRole="Attention" />
+          <Property Name="CreatorId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Music" Relationship="Self.FK_Music_Singer" FromRole="Singer" ToRole="Music" />
+          <NavigationProperty Name="SingerAttention" Relationship="Self.FK_Attention_Attention" FromRole="Singer" ToRole="SingerAttention" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Singer_User" FromRole="Singer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="SingerAttention">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="SingerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Singer" Relationship="Self.FK_Attention_Attention" FromRole="SingerAttention" ToRole="Singer" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Attention_User" FromRole="SingerAttention" ToRole="User" />
         </EntityType>
         <EntityType Name="SubType">
           <Key>
@@ -867,43 +955,30 @@
           <Property Name="Gender" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Age" Type="Int32" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Attention" Relationship="Self.FK_Attention_User" FromRole="User" ToRole="Attention" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FavoriteMusic" Relationship="Self.FK_FavoriteMusic_User" FromRole="User" ToRole="FavoriteMusic" />
           <NavigationProperty Name="FavoritePlaylist" Relationship="Self.FK_FavoritePlaylist_User" FromRole="User" ToRole="FavoritePlaylist" />
           <NavigationProperty Name="LikeMusic" Relationship="Self.FK_LikeMusic_User" FromRole="User" ToRole="LikeMusic" />
           <NavigationProperty Name="LikePlaylist" Relationship="Self.FK_LikePlaylist_User" FromRole="User" ToRole="LikePlaylist" />
+          <NavigationProperty Name="Music" Relationship="Self.FK_Music_User" FromRole="User" ToRole="Music" />
           <NavigationProperty Name="MusicComment" Relationship="Self.FK_MusicComment_User" FromRole="User" ToRole="MusicComment" />
           <NavigationProperty Name="Playlist" Relationship="Self.FK_Playlist_User" FromRole="User" ToRole="Playlist" />
           <NavigationProperty Name="PlaylistComment" Relationship="Self.FK_PlaylistComment_User" FromRole="User" ToRole="PlaylistComment" />
+          <NavigationProperty Name="Singer" Relationship="Self.FK_Singer_User" FromRole="User" ToRole="Singer" />
+          <NavigationProperty Name="SingerAttention" Relationship="Self.FK_Attention_User" FromRole="User" ToRole="SingerAttention" />
+          <NavigationProperty Name="UserAttention" Relationship="Self.FK_UserAttention_User" FromRole="User" ToRole="UserAttention" />
+          <NavigationProperty Name="UserAttention1" Relationship="Self.FK_UserAttention_User1" FromRole="User" ToRole="UserAttention" />
         </EntityType>
-        <Association Name="FK_Attention_Attention">
-          <End Role="Singer" Type="Self.Singer" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Singer">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attention">
-              <PropertyRef Name="SingerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attention_User">
-          <End Role="User" Type="Self.User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attention">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="UserAttention">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TargetId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserAttention_User" FromRole="UserAttention" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_UserAttention_User1" FromRole="UserAttention" ToRole="User" />
+        </EntityType>
         <Association Name="FK_FavoriteMusic_Music">
           <End Role="Music" Type="Self.Music" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -933,7 +1008,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FavoritePlaylist_Playlist">
-          <End Role="Playlist" Type="Self.Playlist" Multiplicity="1" />
+          <End Role="Playlist" Type="Self.Playlist" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FavoritePlaylist" Type="Self.FavoritePlaylist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Playlist">
@@ -1001,7 +1078,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LikePlaylist_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="LikePlaylist" Type="Self.LikePlaylist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1023,6 +1102,18 @@
             </Principal>
             <Dependent Role="Music">
               <PropertyRef Name="SingerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Music_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Music" Type="Self.Music" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Music">
+              <PropertyRef Name="UploaderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1093,7 +1184,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MusicComment_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="MusicComment" Type="Self.MusicComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1119,9 +1212,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Playlist_User">
-          <End Role="User" Type="Self.User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1199,7 +1290,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PlaylistComment_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PlaylistComment" Type="Self.PlaylistComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1224,6 +1317,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Attention_Attention">
+          <End Role="Singer" Type="Self.Singer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SingerAttention" Type="Self.SingerAttention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Singer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SingerAttention">
+              <PropertyRef Name="SingerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Singer_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Singer" Type="Self.Singer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Singer">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attention_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SingerAttention" Type="Self.SingerAttention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SingerAttention">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SubType_Type">
           <End Role="Type" Type="Self.Type" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1238,8 +1371,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserAttention_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserAttention" Type="Self.UserAttention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAttention">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAttention_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserAttention" Type="Self.UserAttention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAttention">
+              <PropertyRef Name="TargetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="KroMusicEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Attention" EntityType="Self.Attention" />
           <EntitySet Name="FavoriteMusic" EntityType="Self.FavoriteMusic" />
           <EntitySet Name="FavoritePlaylist" EntityType="Self.FavoritePlaylist" />
           <EntitySet Name="LikeMusic" EntityType="Self.LikeMusic" />
@@ -1252,17 +1408,11 @@
           <EntitySet Name="PlaylistItem" EntityType="Self.PlaylistItem" />
           <EntitySet Name="PlaylistType" EntityType="Self.PlaylistType" />
           <EntitySet Name="Singer" EntityType="Self.Singer" />
+          <EntitySet Name="SingerAttention" EntityType="Self.SingerAttention" />
           <EntitySet Name="SubType" EntityType="Self.SubType" />
           <EntitySet Name="Type" EntityType="Self.Type" />
           <EntitySet Name="User" EntityType="Self.User" />
-          <AssociationSet Name="FK_Attention_Attention" Association="Self.FK_Attention_Attention">
-            <End Role="Singer" EntitySet="Singer" />
-            <End Role="Attention" EntitySet="Attention" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attention_User" Association="Self.FK_Attention_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Attention" EntitySet="Attention" />
-          </AssociationSet>
+          <EntitySet Name="UserAttention" EntityType="Self.UserAttention" />
           <AssociationSet Name="FK_FavoriteMusic_Music" Association="Self.FK_FavoriteMusic_Music">
             <End Role="Music" EntitySet="Music" />
             <End Role="FavoriteMusic" EntitySet="FavoriteMusic" />
@@ -1297,6 +1447,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Music_Singer" Association="Self.FK_Music_Singer">
             <End Role="Singer" EntitySet="Singer" />
+            <End Role="Music" EntitySet="Music" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Music_User" Association="Self.FK_Music_User">
+            <End Role="User" EntitySet="User" />
             <End Role="Music" EntitySet="Music" />
           </AssociationSet>
           <AssociationSet Name="FK_MusicComment_MusicComment" Association="Self.FK_MusicComment_MusicComment">
@@ -1359,9 +1513,29 @@
             <End Role="SubType" EntitySet="SubType" />
             <End Role="PlaylistType" EntitySet="PlaylistType" />
           </AssociationSet>
+          <AssociationSet Name="FK_Attention_Attention" Association="Self.FK_Attention_Attention">
+            <End Role="Singer" EntitySet="Singer" />
+            <End Role="SingerAttention" EntitySet="SingerAttention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Singer_User" Association="Self.FK_Singer_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Singer" EntitySet="Singer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attention_User" Association="Self.FK_Attention_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="SingerAttention" EntitySet="SingerAttention" />
+          </AssociationSet>
           <AssociationSet Name="FK_SubType_Type" Association="Self.FK_SubType_Type">
             <End Role="Type" EntitySet="Type" />
             <End Role="SubType" EntitySet="SubType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAttention_User" Association="Self.FK_UserAttention_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserAttention" EntitySet="UserAttention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAttention_User1" Association="Self.FK_UserAttention_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserAttention" EntitySet="UserAttention" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -1370,15 +1544,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="KroMusicModelStoreContainer" CdmEntityContainer="KroMusicEntities">
-          <EntitySetMapping Name="Attention">
-            <EntityTypeMapping TypeName="KroMusicModel.Attention">
-              <MappingFragment StoreEntitySet="Attention">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="SingerId" ColumnName="SingerId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FavoriteMusic">
             <EntityTypeMapping TypeName="KroMusicModel.FavoriteMusic">
               <MappingFragment StoreEntitySet="FavoriteMusic">
@@ -1422,6 +1587,7 @@
               <MappingFragment StoreEntitySet="Music">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MusicName" ColumnName="MusicName" />
+                <ScalarProperty Name="UploaderId" ColumnName="UploaderId" />
                 <ScalarProperty Name="SingerId" ColumnName="SingerId" />
                 <ScalarProperty Name="Path" ColumnName="Path" />
                 <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
@@ -1431,7 +1597,7 @@
                 <ScalarProperty Name="Lyric" ColumnName="Lyric" />
                 <ScalarProperty Name="Span" ColumnName="Span" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
-                <ScalarProperty Name="DownloadTimes" ColumnName="DownloadTimes" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
                 <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1446,6 +1612,7 @@
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
+                <ScalarProperty Name="Visited" ColumnName="Visited" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1478,6 +1645,7 @@
               <MappingFragment StoreEntitySet="PlaylistComment">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PlaylistId" ColumnName="PlaylistId" />
+                <ScalarProperty Name="Visited" ColumnName="Visited" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="TargetId" ColumnName="TargetId" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
@@ -1513,7 +1681,16 @@
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="Nationality" ColumnName="Nationality" />
-                <ScalarProperty Name="Profession" ColumnName="Profession" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SingerAttention">
+            <EntityTypeMapping TypeName="KroMusicModel.SingerAttention">
+              <MappingFragment StoreEntitySet="SingerAttention">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SingerId" ColumnName="SingerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1545,6 +1722,16 @@
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAttention">
+            <EntityTypeMapping TypeName="KroMusicModel.UserAttention">
+              <MappingFragment StoreEntitySet="UserAttention">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TargetId" ColumnName="TargetId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

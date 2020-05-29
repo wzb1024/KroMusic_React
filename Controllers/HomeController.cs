@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.IO;
 using Shell32;
 using KroMusic.Filter;
+using BLL;
+using Newtonsoft.Json;
 
 namespace KroMusic.Controllers
 {
@@ -41,47 +43,47 @@ namespace KroMusic.Controllers
         //        }
         //    }
         //}
-        public ActionResult Search()
-        {
-            var cok = Request.Cookies["historySearch"];
-            List<string> values = new List<string>();
-            if (cok != null)
-            {
-                foreach (var item in cok.Values.AllKeys)
-                {
-                    values.Add(cok.Values[item]);
-                }
-                ViewBag.Values = values;
-            }
+        //public ActionResult Search()
+        //{
+        //    var cok = Request.Cookies["historySearch"];
+        //    List<string> values = new List<string>();
+        //    if (cok != null)
+        //    {
+        //        foreach (var item in cok.Values.AllKeys)
+        //        {
+        //            values.Add(cok.Values[item]);
+        //        }
+        //        ViewBag.Values = values;
+        //    }
 
-            return View();
-        }
-        [AjaxSyncAction]
-        public ActionResult AddHistory(string value)
-        {
-            HttpCookie cookie;
-            var cok = Request.Cookies["historySearch"];
-            if (cok == null)
-                cookie = new HttpCookie("historySearch");
-            else
-                cookie = cok;
-            TimeSpan ts = new TimeSpan(7, 0, 0, 0);
-            cookie.Expires = DateTime.Now + ts;
-            cookie.Values.Add(DateTime.Now.ToString(), value);
-            Response.AppendCookie(cookie);
-            return new EmptyResult();
-        }
-        [AjaxSyncAction]
-        public ActionResult Clear()
-        {
-            var cok = Request.Cookies["historySearch"];
-            if (cok != null)
-            {
-                TimeSpan ts = new TimeSpan(-1, 0, 0, 0);
-                cok.Expires = DateTime.Now.Add(ts);//删除整个Cookie，只要把过期时间设置为现在
-                Response.AppendCookie(cok);
-            }
-            return new EmptyResult();
-        }
+        //    return View();
+        //}
+        //[AjaxSyncAction]
+        //public ActionResult AddHistory(string value)
+        //{
+        //    HttpCookie cookie;
+        //    var cok = Request.Cookies["historySearch"];
+        //    if (cok == null)
+        //        cookie = new HttpCookie("historySearch");
+        //    else
+        //        cookie = cok;
+        //    TimeSpan ts = new TimeSpan(7, 0, 0, 0);
+        //    cookie.Expires = DateTime.Now + ts;
+        //    cookie.Values.Add(DateTime.Now.ToString(), value);
+        //    Response.AppendCookie(cookie);
+        //    return new EmptyResult();
+        //}
+        //[AjaxSyncAction]
+        //public ActionResult Clear()
+        //{
+        //    var cok = Request.Cookies["historySearch"];
+        //    if (cok != null)
+        //    {
+        //        TimeSpan ts = new TimeSpan(-1, 0, 0, 0);
+        //        cok.Expires = DateTime.Now.Add(ts);//删除整个Cookie，只要把过期时间设置为现在
+        //        Response.AppendCookie(cok);
+        //    }
+        //    return new EmptyResult();
+        //}
     }
 }

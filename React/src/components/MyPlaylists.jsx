@@ -69,10 +69,8 @@ class MyPlaylists extends Component {
       }.bind(this),
     });
   }
-  handleCreate(model) {
-    this.setState({
-      playlists: [model, ...this.state.playlists],
-    });
+  handleCreate() {
+    this.refresh();
   }
   render() {
     return (
@@ -583,7 +581,7 @@ class PlaylistTable extends Component {
           >
             删除
           </Button>
-          <Link>
+          <Link to={"/playlist/" + this.props.details.Id}>
             <Button type="primary" size="small">
               详情页
             </Button>

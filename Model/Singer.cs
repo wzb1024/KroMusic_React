@@ -17,8 +17,8 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Singer()
         {
-            this.Attention = new HashSet<Attention>();
             this.Music = new HashSet<Music>();
+            this.SingerAttention = new HashSet<SingerAttention>();
         }
     
         public int Id { get; set; }
@@ -27,11 +27,12 @@ namespace Model
         public string Image { get; set; }
         public int Age { get; set; }
         public string Nationality { get; set; }
-        public string Profession { get; set; }
+        public int CreatorId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attention> Attention { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Music> Music { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SingerAttention> SingerAttention { get; set; }
+        public virtual User User { get; set; }
     }
 }

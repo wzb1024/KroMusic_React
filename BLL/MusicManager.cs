@@ -14,17 +14,14 @@ namespace BLL
 
     public class MusicManager
     {
-        //private MusicManager() { }                                       //单例模式
-        //private static MusicManager instance = new MusicManager();
-        //public static MusicManager Instance { get { return instance; } }
 
         IMusicService service = DALFactory.DataAccess.CreateMusicService();
-        KroMusicEntities entities = DBContextFactory.GetContext();
+       
 
 
-        string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
         SongJsonModel Convert(Music s)
         {
+            var self = UserManager.GetSelf();
             SongJsonModel t = new SongJsonModel();
             List<String> subs = new List<string>();
             foreach (var item in s.MusicType)
@@ -41,11 +38,11 @@ namespace BLL
             t.MusicName = s.MusicName;
             t.Region = s.Region;
             t.ReleaseTime = s.ReleaseTime.ToShortDateString();
-            if (userId != null)
+            if (self != null)
             {
-                int uid = int.Parse(userId);
-                t.Favorite = s.FavoriteMusic.Any(it => it.UserId == uid);
-                t.Like = s.LikeMusic.Any(it => it.UserId == uid);
+      
+                t.Favorite = s.FavoriteMusic.Any(it => it.UserId == self.Id);
+                t.Like = s.LikeMusic.Any(it => it.UserId == self.Id);
             }
             return t;
         }
@@ -70,51 +67,58 @@ namespace BLL
             return new List<SongJsonModel>(model);
 
         }
-        public List<Music> GetMusicsByKeywords(string keywords)
+        public List<SearchResultItemJsonModel> GetMusicsByKeywords(string keywords)
         {
-            return service.GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)).ToList<Music>();
+            var results=service.GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)||keywords.Contains(u.MusicName)).ToList<Music>();
+            List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
+            foreach (var item in results)
+            {
+                SearchResultItemJsonModel u = new SearchResultItemJsonModel() { Id = item.Id, Name = item.MusicName, Owner = item.Singer.Name };
+                data.Add(u);
+            }
+            return data;
         }
         public CollectJsonModel Collect(int musicId)
         {
-            int uid = int.Parse(userId);
-            var e = entities.Set<FavoriteMusic>().FirstOrDefault(u => u.MusicId== musicId && u.UserId == uid);
+            var self = UserManager.GetSelf();
+            var e = self.FavoriteMusic.FirstOrDefault(u => u.MusicId== musicId );
             if (e == null)
             {
                 FavoriteMusic s = new FavoriteMusic();
-                s.UserId = uid;
+                s.UserId = self.Id;
                 s.MusicId = musicId;
-                entities.Set<FavoriteMusic>().Add(s);
-                entities.SaveChanges();
+                self.FavoriteMusic.Add(s);
+                DBContextFactory.Context.SaveChanges();
                 return new CollectJsonModel {State=true, Collected = true, Message = "已添加" };
             }
             else
             {
-                entities.Set<FavoriteMusic>().Remove(e);
-                entities.SaveChanges();
+                self.FavoriteMusic.Remove(e);
+                DBContextFactory.Context.SaveChanges();
                 return new CollectJsonModel { State = true, Collected = false, Message = "已取消" };
             }
         }
         public LikeJsonModel Like(int musicId)
         {
-            int uid = int.Parse(userId);
-            var e = entities.Set<LikeMusic>().FirstOrDefault(u => u.MusicId == musicId && u.UserId == uid);
+            var self = UserManager.GetSelf();
+            var e = self.LikeMusic.FirstOrDefault(u => u.MusicId == musicId );
             var n = service.GetById(musicId);
             if (e == null)
             {
                 LikeMusic s = new LikeMusic();
-                s.UserId = uid;
+                s.UserId = self.Id;
                 s.MusicId = musicId;
                 s.Time = DateTime.Now;
-                entities.Set<LikeMusic>().Add(s);
-                entities.SaveChanges();
+                self.LikeMusic.Add(s);
+                DBContextFactory.Context.SaveChanges();
                 n.Likes = n.LikeMusic.Count();
                 service.Edit(n);
                 return new LikeJsonModel { State = true, Like = true, Message = "点赞成功" };
             }
             else
             {
-                entities.Set<LikeMusic>().Remove(e);
-                entities.SaveChanges();
+                self.LikeMusic.Remove(e);
+                DBContextFactory.Context.SaveChanges();
                 n.Likes = n.LikeMusic.Count();
                 service.Edit(n);
                 return new LikeJsonModel { State = true, Like = false, Message = "取消点赞" };
@@ -123,23 +127,24 @@ namespace BLL
         public List<SongJsonModel> GetSongsList(List<int> list)
         {
             List<SongJsonModel> mlist = new List<SongJsonModel>();
+            var self = UserManager.GetSelf();
             foreach (var item in list)
             {
                 var m = service.GetByIdAsNoTracking(item);
-                SongJsonModel u = new SongJsonModel
+                SongJsonModel u = new SongJsonModel();
+                u.Id = m.Id;
+                u.ImagePath = m.ImagePath;
+                u.MusicName = m.MusicName;
+                u.Path = m.Path;
+                u.SingerName = m.Singer.Name;
+                var sp= m.Span.Split(':');
+                int min = int.Parse(sp[1]);
+                int se = int.Parse(sp[2]);
+                u.Span = (min*60+se).ToString();
+                if (self != null)
                 {
-                    Id = m.Id,
-                    ImagePath = m.ImagePath,
-                    MusicName = m.MusicName,
-                    Path = m.Path,
-                    SingerName = m.Singer.Name,
-                    Span = m.Span.TotalSeconds.ToString()
-
-                };
-                if (userId != null)
-                {
-                    int uid = int.Parse(userId);
-                    u.Favorite = m.FavoriteMusic.Any(it => it.UserId == uid);
+                    
+                    u.Favorite = m.FavoriteMusic.Any(it => it.UserId == self.Id);
                 }
                 mlist.Add(u);
             }
@@ -198,17 +203,18 @@ namespace BLL
         }
         public CommentJsonModel Comment(int id, string value)
         {
+            var userId = UserManager.GetSelf().Id;
             var s = DALFactory.DataAccess.CreateMusicCommentService();
             MusicComment comment = new MusicComment();
             comment.Content = value;
             comment.MusicId = id;
-            comment.UserId = int.Parse(userId);
+            comment.UserId = userId;
             comment.Time = DateTime.Now;
             s.Create(comment);
             comment = s.GetByIdAsNoTracking(comment.Id);
             CommentJsonModel model = new CommentJsonModel
             {
-                UserId = int.Parse(userId),
+                UserId = userId,
                 Id = comment.Id,
                 Content = value,
                 Hdimg = comment.User.Hdimage,
@@ -221,12 +227,13 @@ namespace BLL
         }
         public SubCommentJsonModel Reply(int id, string value, int targetId)
         {
+            var userId = UserManager.GetSelf().Id;
             var s = DALFactory.DataAccess.CreateMusicCommentService();
             var target = s.GetByIdAsNoTracking(targetId);
             MusicComment comment = new MusicComment();
             comment.Content = value;
             comment.MusicId = id;
-            comment.UserId = int.Parse(userId);
+            comment.UserId = userId;
             comment.Time = DateTime.Now;
             comment.TargetId = targetId;
             if (target.ReplyId != null)
@@ -240,7 +247,7 @@ namespace BLL
             s.Create(comment);
             comment = s.GetByIdAsNoTracking(comment.Id);
             SubCommentJsonModel model = new SubCommentJsonModel();
-            model.UserId = int.Parse(userId);
+            model.UserId = userId;
             model.Id = comment.Id;
             model.Content = value;
             model.Hdimg = comment.User.Hdimage;

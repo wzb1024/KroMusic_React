@@ -100,7 +100,6 @@ export default class Singer extends Component {
               <li>年龄：{details.Age}</li>
               <li>性别：{details.Gender}</li>
               <li>地区：{details.Nationality}</li>
-              <li title={details.Profession}>职业：{details.Profession}</li>
             </ul>
             <ul>
               {" "}

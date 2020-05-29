@@ -25,7 +25,6 @@ namespace Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Attention> Attention { get; set; }
         public virtual DbSet<FavoriteMusic> FavoriteMusic { get; set; }
         public virtual DbSet<FavoritePlaylist> FavoritePlaylist { get; set; }
         public virtual DbSet<LikeMusic> LikeMusic { get; set; }
@@ -38,8 +37,10 @@ namespace Model
         public virtual DbSet<PlaylistItem> PlaylistItem { get; set; }
         public virtual DbSet<PlaylistType> PlaylistType { get; set; }
         public virtual DbSet<Singer> Singer { get; set; }
+        public virtual DbSet<SingerAttention> SingerAttention { get; set; }
         public virtual DbSet<SubType> SubType { get; set; }
         public virtual DbSet<Type> Type { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserAttention> UserAttention { get; set; }
     }
 }

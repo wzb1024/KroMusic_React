@@ -23,6 +23,7 @@ namespace Model
     
         public int Id { get; set; }
         public int PlaylistId { get; set; }
+        public bool Visited { get; set; }
         public int UserId { get; set; }
         public Nullable<int> TargetId { get; set; }
         public string Content { get; set; }

@@ -2,12 +2,17 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 class Carousel extends Component {
+  constructor() {
+    super();
+    this.state = {
+      reco: [],
+    };
+  }
   handleMove() {
     var windowWidth = $("#carousel_window").width();
     var num1 = $("#carousel_nav>li").length;
     var boxWidth = $("#carousel_box").width(windowWidth * num1 + "px");
     var index = 0;
-
     //初始化容器宽度
     $(".carousel_item").each(function () {
       var num2 = $(this).children("li").length;
@@ -57,168 +62,49 @@ class Carousel extends Component {
     });
   }
   componentDidMount() {
-    this.handleMove();
+    $.getJSON(
+      "/Music/Playlist/GetReco",
+      function (result) {
+        this.setState(
+          {
+            reco: result,
+          },
+          () => this.handleMove()
+        );
+      }.bind(this)
+    );
   }
 
   render() {
     return (
       <div id="carousel_container">
         <ul id="carousel_nav">
-          <li className="active">标题一</li>
-          <li>标题二</li>
-          <li>标题三</li>
-          <li>标题四</li>
+          <li className="active">全部歌单</li>
+          {this.state.reco.map((item, i) => {
+            if (i > 0) {
+              return <li key={item.Title}>{item.Title}</li>;
+            }
+          })}
         </ul>
         <div id="carousel_window">
           <ul id="carousel_box">
-            <li>
-              <ul className="carousel_item">
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/1.jpg" />
-                </li>
-              </ul>
-            </li>
-            <li>
-              <ul className="carousel_item">
-                <li>
-                  <img src="/src/img/2.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/2.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/2.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/2.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/2.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/2.jpg" />
-                </li>
-              </ul>
-            </li>
-            <li>
-              <ul className="carousel_item">
-                <li>
-                  <img src="/src/img/3.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/3.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/3.jpg" />
-                </li>
-              </ul>
-            </li>
-            <li>
-              <ul className="carousel_item">
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>{" "}
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-                <li>
-                  <img src="/src/img/4.jpg" />
-                </li>
-              </ul>
-            </li>
+            {this.state.reco.map((item) => (
+              <li key={item.Title}>
+                <ul className="carousel_item">
+                  {item.List.map((it) => (
+                    <li key={it.Id} title={it.Name}>
+                      <Link to={"/playlist/" + it.Id}>
+                        <img src={it.Cover} />
+                        <div className="carousel_cover">
+                          <h2>{it.Name}</h2>
+                          <h3>{it.PlayTimes} 次播放</h3>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

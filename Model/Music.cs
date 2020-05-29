@@ -26,6 +26,7 @@ namespace Model
     
         public int Id { get; set; }
         public string MusicName { get; set; }
+        public int UploaderId { get; set; }
         public int SingerId { get; set; }
         public string Path { get; set; }
         public string ImagePath { get; set; }
@@ -33,9 +34,9 @@ namespace Model
         public int PlayTimes { get; set; }
         public string Size { get; set; }
         public string Lyric { get; set; }
-        public System.TimeSpan Span { get; set; }
+        public string Span { get; set; }
         public string Region { get; set; }
-        public int DownloadTimes { get; set; }
+        public string Genre { get; set; }
         public System.DateTime ReleaseTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -43,6 +44,7 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LikeMusic> LikeMusic { get; set; }
         public virtual Singer Singer { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MusicComment> MusicComment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

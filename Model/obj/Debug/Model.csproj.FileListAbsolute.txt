@@ -25,3 +25,5 @@ D:\Project\KroMusic\Model\obj\Debug\Model.csproj.CopyComplete
 D:\Project\KroMusic\Model\obj\Debug\Model.dll
 D:\Project\KroMusic\Model\obj\Debug\Model.pdb
 D:\Project\KroMusic\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+D:\Project\KroMusic\Model\bin\Debug\Newtonsoft.Json.dll
+D:\Project\KroMusic\Model\bin\Debug\Newtonsoft.Json.xml

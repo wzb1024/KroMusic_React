@@ -28,6 +28,7 @@ namespace Model
         public string Content { get; set; }
         public System.DateTime Time { get; set; }
         public Nullable<int> ReplyId { get; set; }
+        public bool Visited { get; set; }
     
         public virtual Music Music { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

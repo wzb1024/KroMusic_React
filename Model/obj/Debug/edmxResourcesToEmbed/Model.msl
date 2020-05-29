@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="KroMusicModelStoreContainer" CdmEntityContainer="KroMusicEntities">
-    <EntitySetMapping Name="Attention">
-      <EntityTypeMapping TypeName="KroMusicModel.Attention">
-        <MappingFragment StoreEntitySet="Attention">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="SingerId" ColumnName="SingerId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="FavoriteMusic">
       <EntityTypeMapping TypeName="KroMusicModel.FavoriteMusic">
         <MappingFragment StoreEntitySet="FavoriteMusic">
@@ -53,6 +44,7 @@
         <MappingFragment StoreEntitySet="Music">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="MusicName" ColumnName="MusicName" />
+          <ScalarProperty Name="UploaderId" ColumnName="UploaderId" />
           <ScalarProperty Name="SingerId" ColumnName="SingerId" />
           <ScalarProperty Name="Path" ColumnName="Path" />
           <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
@@ -62,7 +54,7 @@
           <ScalarProperty Name="Lyric" ColumnName="Lyric" />
           <ScalarProperty Name="Span" ColumnName="Span" />
           <ScalarProperty Name="Region" ColumnName="Region" />
-          <ScalarProperty Name="DownloadTimes" ColumnName="DownloadTimes" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
           <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -77,6 +69,7 @@
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="Time" ColumnName="Time" />
           <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
+          <ScalarProperty Name="Visited" ColumnName="Visited" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -109,6 +102,7 @@
         <MappingFragment StoreEntitySet="PlaylistComment">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PlaylistId" ColumnName="PlaylistId" />
+          <ScalarProperty Name="Visited" ColumnName="Visited" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="TargetId" ColumnName="TargetId" />
           <ScalarProperty Name="Content" ColumnName="Content" />
@@ -144,7 +138,16 @@
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="Age" ColumnName="Age" />
           <ScalarProperty Name="Nationality" ColumnName="Nationality" />
-          <ScalarProperty Name="Profession" ColumnName="Profession" />
+          <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SingerAttention">
+      <EntityTypeMapping TypeName="KroMusicModel.SingerAttention">
+        <MappingFragment StoreEntitySet="SingerAttention">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="SingerId" ColumnName="SingerId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -176,6 +179,16 @@
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="Age" ColumnName="Age" />
           <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="State" ColumnName="State" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAttention">
+      <EntityTypeMapping TypeName="KroMusicModel.UserAttention">
+        <MappingFragment StoreEntitySet="UserAttention">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TargetId" ColumnName="TargetId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

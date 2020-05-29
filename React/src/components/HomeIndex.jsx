@@ -13,10 +13,23 @@ class HomeIndex extends Component {
       <div>
         <div id="recommend">
           <div id="rcmd-container">
+            <div
+              style={{
+                position: "absolute",
+                left: " 200px",
+                fontSize: "25px",
+                lineHeight: "30px",
+                height: "120px",
+                width: "30px",
+                top: "80px",
+              }}
+            >
+              歌单推荐
+            </div>
             <Carousel />
           </div>
         </div>
-        <div id="hit-songs"></div>
+        <div id="hit-singers"></div>
         <div id="index-ranking"></div>
       </div>
     );

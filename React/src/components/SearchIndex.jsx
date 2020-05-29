@@ -78,7 +78,7 @@ class SearchIndex extends Component {
     var timer = null; //定义定时器
     var timeOut = null;
     $input.bind(
-      "propertychange input",
+      "propertychange input change",
       function (e) {
         var keyword = e.target.value;
         if (keyword != "") {
@@ -222,21 +222,31 @@ class SearchIndex extends Component {
                   <span>未找到相关歌曲</span>
                 </li>
               ) : (
-                this.state.songs.map((item, i) => {
-                  if (i < 5) {
-                    return (
-                      <Link
-                        to={"/song/" + item.Id}
-                        onClick={() => this.handleSearch(item.Name)}
-                      >
-                        <li key={item.Id}>
-                          <span>{item.Name}</span>
-                          <span>{item.Owner}</span>
-                        </li>
-                      </Link>
-                    );
-                  }
-                })
+                <>
+                  <li>
+                    <span>歌单名</span>
+                    <span style={{ float: "right", fontSize: "13px" }}>
+                      歌手
+                    </span>
+                  </li>
+                  {this.state.songs.map((item, i) => {
+                    if (i < 5) {
+                      return (
+                        <Link
+                          to={"/song/" + item.Id}
+                          onClick={() => this.handleSearch(item.Name)}
+                        >
+                          <li key={item.Id}>
+                            <span>{item.Name}</span>
+                            <span style={{ float: "right", fontSize: "13px" }}>
+                              {item.Owner}
+                            </span>
+                          </li>
+                        </Link>
+                      );
+                    }
+                  })}
+                </>
               )}
             </ul>
           </div>
@@ -256,13 +266,15 @@ class SearchIndex extends Component {
                         onClick={() => this.handleSearch(item.Name)}
                       >
                         <li key={item.id}>
-                          <span>{item.Name}</span>
                           <span>
                             <Avatar
                               src={item.Owner}
                               size="small"
                               icon={<UserOutlined />}
                             />
+                          </span>
+                          <span style={{ marginLeft: "15px" }}>
+                            {item.Name}
                           </span>
                         </li>
                       </Link>

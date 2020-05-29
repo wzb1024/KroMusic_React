@@ -62,7 +62,7 @@ namespace KroMusic.Areas.User.Controllers
                     }
                     int id = manager.GetId(model.UserName);
                     Session["UserId"] = id;
-                    var self = manager.GetUserById(id);
+                    var self = UserManager.GetUser(id);
                     result.Status = true;
                     result.NikName = self.NickName;
                     result.Hdimg = self.Hdimage;
@@ -87,15 +87,16 @@ namespace KroMusic.Areas.User.Controllers
 
         public JsonResult SigninState()
         {
-            if (Session["UserId"] == null)
+            var self = UserManager.GetSelf();
+            if (self == null)
             {
                 return Json(new { SigninSatae = false }, JsonRequestBehavior.AllowGet);
             }
 
             else
             {
-                var user = manager.GetUserById(int.Parse(Session["UserId"].ToString()));
-                return Json(new { SigninState = true, NikName = user.NickName, Hdimg = user.Hdimage }, JsonRequestBehavior.AllowGet);
+
+                return Json(new { SigninState = true, NikName = self.NickName, Hdimg = self.Hdimage }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -273,8 +274,12 @@ namespace KroMusic.Areas.User.Controllers
         public ActionResult Focus(int id)
         {
             var result = manager.Focus(id);
-            return Json(new { State = true, Focused = result}, JsonRequestBehavior.AllowGet);
+            return Json(new { State = true, Focused = result }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetAttention()
+        {
+            var result = manager.GetSingerAttention();
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
-
 }

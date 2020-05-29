@@ -22,6 +22,7 @@ class Playlist extends Component {
       details: { Tags: [] },
       songs: [],
       comments: [],
+      Hdimg: "",
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -64,6 +65,18 @@ class Playlist extends Component {
         });
       }.bind(this)
     );
+    $.ajax({
+      url: "/User/Account/SigninState",
+      type: "get",
+      dataType: "json",
+      success: function (result) {
+        if (result.SigninState) {
+          this.setState({
+            Hdimg: result.Hdimg,
+          });
+        }
+      }.bind(this),
+    });
   }
   playAll() {
     var list = new Array();
@@ -295,8 +308,11 @@ class Playlist extends Component {
                 <Comment
                   avatar={
                     <Avatar
-                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                      alt="Han Solo"
+                      src={
+                        this.state.Hdimg == ""
+                          ? "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          : this.state.Hdimg
+                      }
                     />
                   }
                   content={<Editor onSubmit={this.handleSubmit} />}

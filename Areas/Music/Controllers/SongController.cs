@@ -17,14 +17,9 @@ namespace KroMusic.Areas.Music.Controllers
         MusicManager manager = new MusicManager();
         public ActionResult Search(string keywords)
         {
-            var results = manager.GetMusicsByKeywords(keywords);
-            List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
-            if (results != null)
-                foreach (var item in results)
-                {
-                    SearchResultItemJsonModel u = new SearchResultItemJsonModel() { Id = item.Id, Name = item.MusicName, Owner = item.Singer.Name };
-                    data.Add(u);
-                }
+            var data = manager.GetMusicsByKeywords(keywords);
+
+               
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
