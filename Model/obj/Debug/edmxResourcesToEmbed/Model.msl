@@ -51,9 +51,7 @@
           <ScalarProperty Name="Likes" ColumnName="Likes" />
           <ScalarProperty Name="PlayTimes" ColumnName="PlayTimes" />
           <ScalarProperty Name="Size" ColumnName="Size" />
-          <ScalarProperty Name="Lyric" ColumnName="Lyric" />
           <ScalarProperty Name="Span" ColumnName="Span" />
-          <ScalarProperty Name="Region" ColumnName="Region" />
           <ScalarProperty Name="Genre" ColumnName="Genre" />
           <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
         </MappingFragment>
@@ -70,15 +68,6 @@
           <ScalarProperty Name="Time" ColumnName="Time" />
           <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
           <ScalarProperty Name="Visited" ColumnName="Visited" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="MusicType">
-      <EntityTypeMapping TypeName="KroMusicModel.MusicType">
-        <MappingFragment StoreEntitySet="MusicType">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="MusicId" ColumnName="MusicId" />
-          <ScalarProperty Name="SubTypeId" ColumnName="SubTypeId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

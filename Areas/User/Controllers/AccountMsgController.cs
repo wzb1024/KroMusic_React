@@ -20,8 +20,7 @@ namespace KroMusic.Areas.User.Controllers
         }
         public ActionResult UserMsg(int id)
         {
-            var user = UserManager.GetUser(id);
-            return View(user);
+            return Content("sdfa");
         }
     }
 }

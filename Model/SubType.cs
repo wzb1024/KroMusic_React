@@ -17,7 +17,6 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SubType()
         {
-            this.MusicType = new HashSet<MusicType>();
             this.PlaylistType = new HashSet<PlaylistType>();
         }
     
@@ -25,8 +24,6 @@ namespace Model
         public string Name { get; set; }
         public int TypeId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MusicType> MusicType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlaylistType> PlaylistType { get; set; }
         public virtual Type Type { get; set; }

@@ -1,7 +1,6 @@
 ﻿import React, { Component } from "react";
 import Carousel from "@/components/Carousel";
 import $ from "jquery";
-
 class HomeIndex extends Component {
   constructor(props) {
     super();

@@ -427,7 +427,7 @@ const Editor = ({ onSubmit }) => {
         type="primary"
         onClick={(e) => {
           onSubmit(value);
-          $(e.target).prev().val("");
+          setValue("");
         }}
         style={{ marginTop: "5px" }}
       >
@@ -438,19 +438,19 @@ const Editor = ({ onSubmit }) => {
 };
 const SubEditor = (props) => {
   const [value, setValue] = useState("");
-
+  const id = props.targetId;
   return (
     <div>
       <span style={{ marginRight: "15px" }}>
         <button
           onClick={(e) => {
-            $(e.target).parent().next().css("display", "inline");
+            $(`#${id}`).css("display", "inline");
           }}
         >
           回复
         </button>
       </span>
-      <span style={{ display: "none" }}>
+      <span style={{ display: "none" }} id={id}>
         <Input.TextArea
           rows={1}
           value={value}
@@ -462,8 +462,8 @@ const SubEditor = (props) => {
           type="link"
           onClick={(e) => {
             props.onSubmit(props.targetId, value, props.position);
-            $(e.target).parent().css("display", "none");
-            $(e.target).prev().val("");
+            $(`#${id}`).css("display", "none");
+            setValue("");
           }}
           style={{ padding: "0px", marginLeft: "5px" }}
         >
@@ -473,8 +473,8 @@ const SubEditor = (props) => {
           htmlType="submit"
           type="link"
           onClick={(e) => {
-            $(e.target).parent().css("display", "none");
-            $(e.target).prev().prev().val("");
+            $(`#${id}`).css("display", "none");
+            setValue("");
           }}
           style={{ padding: "0px", marginLeft: "5px" }}
         >

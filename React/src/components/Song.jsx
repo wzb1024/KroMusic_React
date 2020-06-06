@@ -4,7 +4,8 @@ import { Comment, Avatar, Input, Tooltip } from "antd";
 import moment from "moment";
 import $ from "jquery";
 import Add from "@/components/Add";
-export default class Song extends Comment {
+import { Link } from "react-router-dom";
+export default class Song extends Component {
   constructor() {
     super();
     this.state = {
@@ -28,7 +29,7 @@ export default class Song extends Comment {
       function (data) {
         this.setState({
           details: data[0],
-          relate: data.splice(0, 1),
+          relate: data.slice(1),
         });
       }.bind(this)
     );
@@ -159,17 +160,15 @@ export default class Song extends Comment {
           <div id="music_title">
             <ul>
               <li>{details.MusicName}</li>
-              <li>{details.SingerName}</li>
               <li>
-                标签：
-                {details.Tags.map((it) => (
-                  <span>{it} &nbsp;</span>
-                ))}
+                <Link to={"/singer/" + details.SingerId}>
+                  {details.SingerName}
+                </Link>
               </li>
-              <li>发布时间：{details.ReleaseTime}</li>
             </ul>
             <ul>
-              <li>地区：{details.Region}</li>
+              <li>流派：{details.Genre}</li>
+              <li>发布时间：{details.ReleaseTime}</li>
               <li>播放量：{details.PlayTimes}</li>
             </ul>
           </div>
@@ -208,16 +207,11 @@ export default class Song extends Comment {
               </button>
             </li>
             <li>
-              <button>
-                <i className="fa fa-comments-o" aria-hidden="true"></i>
-              </button>
-            </li>
-            <li>
               <Add id={details.Id} addToList={this.props.addToList}></Add>
             </li>
           </ul>
         </div>
-        <div id="music_lyric_box" className="shadow">
+        {/* <div id="music_lyric_box" className="shadow">
           <h2
             style={{
               letterSpacing: "2px",
@@ -227,30 +221,7 @@ export default class Song extends Comment {
           >
             歌词
           </h2>
-        </div>
-        <div id="relate_music_box">
-          <h4>相关音乐</h4>
-          {relate.map((item) => (
-            <div className="relate_music shadow">
-              <img
-                src={item.ImagePath}
-                style={{
-                  float: "left",
-                  marginRight: "15px",
-                }}
-                height="60px"
-                width="50px"
-              />
-              <div style={{ fontSize: "16px", lineHeight: "30px" }}>
-                {item.MusicName}
-              </div>
-
-              <div style={{ fontSize: "16px", lineHeight: "30px" }}>
-                {item.SingerName}
-              </div>
-            </div>
-          ))}
-        </div>
+        </div> */}
         <div id="music_comment">
           <div>
             <Comment
@@ -347,6 +318,27 @@ export default class Song extends Comment {
             ))}
           </div>
         </div>
+        <div id="relate_music_box">
+          <h4>相关音乐</h4>
+          {relate.map((item) => (
+            <div className="relate_music shadow" key={item.Id}>
+              <Link to={"/song/" + item.Id}>
+                <img
+                  src={item.ImagePath}
+                  style={{
+                    float: "left",
+                    marginRight: "15px",
+                  }}
+                  height="60px"
+                  width="50px"
+                />
+              </Link>
+              <div style={{ fontSize: "16px", lineHeight: "60px" }}>
+                <Link to={"/song/" + item.Id}>{item.MusicName}</Link>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -367,7 +359,7 @@ const Editor = ({ onSubmit }) => {
         type="primary"
         onClick={(e) => {
           onSubmit(value);
-          $(e.target).prev().val("");
+          setValue("");
         }}
         style={{ marginTop: "5px" }}
       >
@@ -378,19 +370,19 @@ const Editor = ({ onSubmit }) => {
 };
 const SubEditor = (props) => {
   const [value, setValue] = useState("");
-
+  const id = props.targetId;
   return (
     <div>
       <span style={{ marginRight: "15px" }}>
         <button
           onClick={(e) => {
-            $(e.target).parent().next().css("display", "inline");
+            $(`#${id}`).css("display", "inline");
           }}
         >
           回复
         </button>
       </span>
-      <span style={{ display: "none" }}>
+      <span style={{ display: "none" }} id={id}>
         <Input.TextArea
           rows={1}
           value={value}
@@ -402,8 +394,8 @@ const SubEditor = (props) => {
           type="link"
           onClick={(e) => {
             props.onSubmit(props.targetId, value, props.position);
-            $(e.target).parent().css("display", "none");
-            $(e.target).prev().val("");
+            $(`#${id}`).css("display", "none");
+            setValue("");
           }}
           style={{ padding: "0px", marginLeft: "5px" }}
         >
@@ -413,8 +405,8 @@ const SubEditor = (props) => {
           htmlType="submit"
           type="link"
           onClick={(e) => {
-            $(e.target).parent().css("display", "none");
-            $(e.target).prev().prev().val("");
+            $(`#${id}`).css("display", "none");
+            setValue("");
           }}
           style={{ padding: "0px", marginLeft: "5px" }}
         >

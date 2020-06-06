@@ -66,7 +66,6 @@ namespace BLL
     {
         public int Id { get; set; }
         public int PlayTimes { get; set; }
-
         public string MusicName { get; set; }
         public int SingerId { get; set; }
         public string SingerName { get; set; }
@@ -75,11 +74,9 @@ namespace BLL
         public string Span { get; set; }
         public bool Like { get; set; } = false;
         public bool Favorite { get; set; } = false;
-        public string Lyric { get; set; }
-        public string Region { get; set; }
         public string ReleaseTime { get; set; }
         public string Size { get; set; }
-        public List<string> Tags { get; set; }
+        public string Genre { get; set; }
     }
     public class SingerJsonModel
     {
@@ -194,5 +191,15 @@ namespace BLL
     public class RecoJsonModel {
         public string Title { get; set; }
         public List<PlaylistCardJsonModel> List = new List<PlaylistCardJsonModel>();
+    }
+    public class MessageJsonModel
+    {
+        public int Id { get; set; }
+        public int Pid { get; set; }
+        public string PName { get; set; }
+        public string Img { get; set; }
+        public string NickName { get; set; }
+        public string Content { get; set; }
+        public string Time { get; set; }
     }
 }

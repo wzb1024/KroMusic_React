@@ -197,3 +197,6 @@ D:\Project\KroMusic\bin\IDAL.dll
 D:\Project\KroMusic\bin\DALFactory.dll
 D:\Project\KroMusic\bin\IDAL.pdb
 D:\Project\KroMusic\bin\DALFactory.pdb
+D:\Project\KroMusic\bin\TagLibSharp.dll
+D:\Project\KroMusic\bin\TagLibSharp.pdb
+D:\Project\KroMusic\bin\TagLibSharp.xml

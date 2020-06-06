@@ -28,7 +28,6 @@ class App extends Component {
     this.state = {
       homeIndex: true,
       updateList: [],
-      play: false,
     };
     this.indexChange = this.indexChange.bind(this);
     this.addToList = this.addToList.bind(this);

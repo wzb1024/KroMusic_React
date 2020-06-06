@@ -8,6 +8,7 @@ using System.Web;
 using IDAL;
 using DALFactory;
 using System;
+using System.Web.ModelBinding;
 
 namespace BLL
 {
@@ -193,6 +194,11 @@ namespace BLL
                 list.Add(t);
             }
             return list;
+        }
+        public void Visit(int id)
+        {
+            DBContextFactory.Context.PlaylistComment.Find(id).Visited = true;
+            DBContextFactory.Context.SaveChanges();
         }
     }
 }

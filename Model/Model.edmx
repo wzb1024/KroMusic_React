@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="KroMusicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="KroMusicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="FavoriteMusic">
           <Key>
             <PropertyRef Name="Id" />
@@ -52,9 +52,7 @@
           <Property Name="Likes" Type="int" Nullable="false" />
           <Property Name="PlayTimes" Type="int" Nullable="false" />
           <Property Name="Size" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Lyric" Type="nvarchar(max)" />
           <Property Name="Span" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Region" Type="nvarchar" MaxLength="10" />
           <Property Name="Genre" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="ReleaseTime" Type="datetime" Nullable="false" />
         </EntityType>
@@ -70,14 +68,6 @@
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="ReplyId" Type="int" />
           <Property Name="Visited" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="MusicType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="MusicId" Type="int" Nullable="false" />
-          <Property Name="SubTypeId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Playlist">
           <Key>
@@ -397,34 +387,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MusicType_Music">
-          <End Role="Music" Type="Self.Music" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MusicType" Type="Self.MusicType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Music">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MusicType">
-              <PropertyRef Name="MusicId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MusicType_SubType1">
-          <End Role="SubType" Type="Self.SubType" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MusicType" Type="Self.MusicType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MusicType">
-              <PropertyRef Name="SubTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Playlist_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
@@ -602,7 +564,6 @@
           <EntitySet Name="LikePlaylist" EntityType="Self.LikePlaylist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Music" EntityType="Self.Music" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MusicComment" EntityType="Self.MusicComment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MusicType" EntityType="Self.MusicType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Playlist" EntityType="Self.Playlist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlaylistComment" EntityType="Self.PlaylistComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlaylistItem" EntityType="Self.PlaylistItem" Schema="dbo" store:Type="Tables" />
@@ -677,14 +638,6 @@
             <End Role="User" EntitySet="User" />
             <End Role="MusicComment" EntitySet="MusicComment" />
           </AssociationSet>
-          <AssociationSet Name="FK_MusicType_Music" Association="Self.FK_MusicType_Music">
-            <End Role="Music" EntitySet="Music" />
-            <End Role="MusicType" EntitySet="MusicType" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MusicType_SubType1" Association="Self.FK_MusicType_SubType1">
-            <End Role="SubType" EntitySet="SubType" />
-            <End Role="MusicType" EntitySet="MusicType" />
-          </AssociationSet>
           <AssociationSet Name="FK_Playlist_User" Association="Self.FK_Playlist_User">
             <End Role="User" EntitySet="User" />
             <End Role="Playlist" EntitySet="Playlist" />
@@ -738,8 +691,7 @@
             <End Role="UserAttention" EntitySet="UserAttention" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KroMusicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -798,9 +750,7 @@
           <Property Name="Likes" Type="Int32" Nullable="false" />
           <Property Name="PlayTimes" Type="Int32" Nullable="false" />
           <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Lyric" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Span" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Region" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Genre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ReleaseTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="FavoriteMusic" Relationship="Self.FK_FavoriteMusic_Music" FromRole="Music" ToRole="FavoriteMusic" />
@@ -808,7 +758,6 @@
           <NavigationProperty Name="Singer" Relationship="Self.FK_Music_Singer" FromRole="Music" ToRole="Singer" />
           <NavigationProperty Name="User" Relationship="Self.FK_Music_User" FromRole="Music" ToRole="User" />
           <NavigationProperty Name="MusicComment" Relationship="Self.FK_MusicComment_MusicComment" FromRole="Music" ToRole="MusicComment" />
-          <NavigationProperty Name="MusicType" Relationship="Self.FK_MusicType_Music" FromRole="Music" ToRole="MusicType" />
           <NavigationProperty Name="PlaylistItem" Relationship="Self.FK_PlaylistItems_Music" FromRole="Music" ToRole="PlaylistItem" />
         </EntityType>
         <EntityType Name="MusicComment">
@@ -829,16 +778,6 @@
           <NavigationProperty Name="MusicComment11" Relationship="Self.FK_MusicComment_MusicComment2" FromRole="MusicComment" ToRole="MusicComment1" />
           <NavigationProperty Name="MusicComment3" Relationship="Self.FK_MusicComment_MusicComment2" FromRole="MusicComment1" ToRole="MusicComment" />
           <NavigationProperty Name="User" Relationship="Self.FK_MusicComment_User" FromRole="MusicComment" ToRole="User" />
-        </EntityType>
-        <EntityType Name="MusicType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MusicId" Type="Int32" Nullable="false" />
-          <Property Name="SubTypeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Music" Relationship="Self.FK_MusicType_Music" FromRole="MusicType" ToRole="Music" />
-          <NavigationProperty Name="SubType" Relationship="Self.FK_MusicType_SubType1" FromRole="MusicType" ToRole="SubType" />
         </EntityType>
         <EntityType Name="Playlist">
           <Key>
@@ -931,7 +870,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TypeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="MusicType" Relationship="Self.FK_MusicType_SubType1" FromRole="SubType" ToRole="MusicType" />
           <NavigationProperty Name="PlaylistType" Relationship="Self.FK_PlaylistType_SubType" FromRole="SubType" ToRole="PlaylistType" />
           <NavigationProperty Name="Type" Relationship="Self.FK_SubType_Type" FromRole="SubType" ToRole="Type" />
         </EntityType>
@@ -1131,20 +1069,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MusicType_Music">
-          <End Role="Music" Type="Self.Music" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MusicType" Type="Self.MusicType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Music">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MusicType">
-              <PropertyRef Name="MusicId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PlaylistItems_Music">
           <End Role="Music" Type="Self.Music" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1194,20 +1118,6 @@
             </Principal>
             <Dependent Role="MusicComment">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MusicType_SubType1">
-          <End Role="SubType" Type="Self.SubType" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MusicType" Type="Self.MusicType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MusicType">
-              <PropertyRef Name="SubTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1402,7 +1312,6 @@
           <EntitySet Name="LikePlaylist" EntityType="Self.LikePlaylist" />
           <EntitySet Name="Music" EntityType="Self.Music" />
           <EntitySet Name="MusicComment" EntityType="Self.MusicComment" />
-          <EntitySet Name="MusicType" EntityType="Self.MusicType" />
           <EntitySet Name="Playlist" EntityType="Self.Playlist" />
           <EntitySet Name="PlaylistComment" EntityType="Self.PlaylistComment" />
           <EntitySet Name="PlaylistItem" EntityType="Self.PlaylistItem" />
@@ -1457,10 +1366,6 @@
             <End Role="Music" EntitySet="Music" />
             <End Role="MusicComment" EntitySet="MusicComment" />
           </AssociationSet>
-          <AssociationSet Name="FK_MusicType_Music" Association="Self.FK_MusicType_Music">
-            <End Role="Music" EntitySet="Music" />
-            <End Role="MusicType" EntitySet="MusicType" />
-          </AssociationSet>
           <AssociationSet Name="FK_PlaylistItems_Music" Association="Self.FK_PlaylistItems_Music">
             <End Role="Music" EntitySet="Music" />
             <End Role="PlaylistItem" EntitySet="PlaylistItem" />
@@ -1476,10 +1381,6 @@
           <AssociationSet Name="FK_MusicComment_User" Association="Self.FK_MusicComment_User">
             <End Role="User" EntitySet="User" />
             <End Role="MusicComment" EntitySet="MusicComment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MusicType_SubType1" Association="Self.FK_MusicType_SubType1">
-            <End Role="SubType" EntitySet="SubType" />
-            <End Role="MusicType" EntitySet="MusicType" />
           </AssociationSet>
           <AssociationSet Name="FK_Playlist_User" Association="Self.FK_Playlist_User">
             <End Role="User" EntitySet="User" />
@@ -1594,9 +1495,7 @@
                 <ScalarProperty Name="Likes" ColumnName="Likes" />
                 <ScalarProperty Name="PlayTimes" ColumnName="PlayTimes" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="Lyric" ColumnName="Lyric" />
                 <ScalarProperty Name="Span" ColumnName="Span" />
-                <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Genre" ColumnName="Genre" />
                 <ScalarProperty Name="ReleaseTime" ColumnName="ReleaseTime" />
               </MappingFragment>
@@ -1613,15 +1512,6 @@
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
                 <ScalarProperty Name="Visited" ColumnName="Visited" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MusicType">
-            <EntityTypeMapping TypeName="KroMusicModel.MusicType">
-              <MappingFragment StoreEntitySet="MusicType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="MusicId" ColumnName="MusicId" />
-                <ScalarProperty Name="SubTypeId" ColumnName="SubTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

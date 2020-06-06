@@ -86,9 +86,6 @@
     <Compile Include="MusicComment.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="MusicType.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Playlist.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

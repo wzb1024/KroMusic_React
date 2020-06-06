@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using BLL;
 using KroMusic.Areas.Music.Data;
 using KroMusic.Filter;
+using Shell32;
 
 namespace KroMusic.Areas.Music.Controllers
 {
@@ -101,5 +102,24 @@ namespace KroMusic.Areas.Music.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [SigninAuthorize]
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file,string singer,string title)
+        {
+            var existSong = manager.ExistSong(title, singer);
+            if (existSong) return Json(new { singer = true, song = true }, JsonRequestBehavior.AllowGet);
+            else
+            {
+                var existSinger = manager.ExistSinger(singer);
+                if (existSinger)
+                {
+                    manager.Create(title, singer, file);
+                    return Json(new { singer = true, song = false }, JsonRequestBehavior.AllowGet); 
+                }
+
+                else return Json(new { singer = false, song = false }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

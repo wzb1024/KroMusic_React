@@ -38,6 +38,11 @@ namespace KroMusic.Areas.Music.Controllers
             var data = manager.GetSongs(id);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult Create(string name,string nationality,string gender,int age,HttpPostedFileBase file)
+        {
+            manager.Create(name, nationality, gender, age, file);
+            return new EmptyResult();
+        }
 
     }
 }

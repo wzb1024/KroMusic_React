@@ -28,8 +28,7 @@ namespace KroMusic
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/antd.min.css",
-                      "~/Content/MyStyles.css",
+                      "~/React/src/antd.min.css",
                       "~/React/src/MyStyles.css"));
         }
     }

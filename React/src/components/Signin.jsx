@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Form, Input, Checkbox, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import $ from "jquery";
-
+import { Link } from "react-router-dom";
 export default class Signin extends React.Component {
   constructor(props) {
     super(props);
@@ -96,10 +96,6 @@ export default class Signin extends React.Component {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
-
-              <a className="login-form-forgot" href="">
-                Forgot password
-              </a>
             </Form.Item>
 
             <Form.Item>
@@ -107,10 +103,20 @@ export default class Signin extends React.Component {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                style={{ width: "50%", marginRight: "10%" }}
               >
-                Log in
+                登录
               </Button>
-              Or <a href="">register now!</a>
+              <span>
+                Or{" "}
+                <Link
+                  onClick={() => this.setState({ visible: false })}
+                  to="/signup"
+                  style={{ color: "#3498db" }}
+                >
+                  注册
+                </Link>
+              </span>
             </Form.Item>
           </Form>
         </Modal>

@@ -4,6 +4,7 @@ import $ from "jquery";
 import Signin from "@/Components/Signin";
 import { Avatar, Popover, message } from "antd";
 import { UserOutlined, PoweroffOutlined } from "@ant-design/icons";
+import Message from "@/Components/Message";
 
 export default class AccountNav extends Component {
   constructor() {
@@ -46,36 +47,38 @@ export default class AccountNav extends Component {
   }
   render() {
     return this.state.signinState ? (
-      <Popover
-        content={
-          <>
-            <p>
-              <Link to="/account" className="nav_signlist">
-                <UserOutlined style={{ marginRight: "5px" }} />
-                个人资料
-              </Link>
-            </p>
-            <p>
-              <a className="nav_signlist" onClick={this.signout}>
-                <PoweroffOutlined style={{ marginRight: "5px" }} />
-                退出登录
-              </a>
-            </p>
-          </>
-        }
-      >
-        <div id="nav_img">
-          <Avatar
-            style={{ cursor: "pointer" }}
-            size="large"
-            src={this.state.imgPath}
-          />
-        </div>
-      </Popover>
+      <>
+        <Message></Message>
+        <Popover
+          content={
+            <>
+              <p>
+                <Link to="/account" className="nav_signlist">
+                  <UserOutlined style={{ marginRight: "5px" }} />
+                  个人资料
+                </Link>
+              </p>
+              <p>
+                <a className="nav_signlist" onClick={this.signout}>
+                  <PoweroffOutlined style={{ marginRight: "5px" }} />
+                  退出登录
+                </a>
+              </p>
+            </>
+          }
+        >
+          <div id="nav_img">
+            <Avatar
+              style={{ cursor: "pointer" }}
+              size="large"
+              src={this.state.imgPath}
+            />
+          </div>
+        </Popover>
+      </>
     ) : (
       <>
         <Signin login={this.success} />
-        <Link to="/signup">注册</Link>
       </>
     );
   }

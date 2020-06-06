@@ -2,6 +2,7 @@
 using Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace BLL
 {
@@ -41,6 +42,20 @@ namespace BLL
             }
 
             return model;
+        }
+        public void Create(string name, string nationality, string gender, int age, HttpPostedFileBase file)
+        {
+            Singer singer = new Singer();
+            singer.Age = age;
+            singer.CreatorId = UserManager.GetSelf().Id;
+            singer.Gender = gender;
+            singer.Nationality = nationality;
+            singer.Name = name;
+            string imgPath = "/Sourse/singer/" + name + ".jpg";
+            string savepath = HttpContext.Current.Server.MapPath(imgPath);
+            file.SaveAs(savepath);
+            singer.Image = imgPath;
+            service.Create(singer);
         }
     }
 }

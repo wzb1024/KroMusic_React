@@ -20,7 +20,6 @@ namespace Model
             this.FavoriteMusic = new HashSet<FavoriteMusic>();
             this.LikeMusic = new HashSet<LikeMusic>();
             this.MusicComment = new HashSet<MusicComment>();
-            this.MusicType = new HashSet<MusicType>();
             this.PlaylistItem = new HashSet<PlaylistItem>();
         }
     
@@ -33,9 +32,7 @@ namespace Model
         public int Likes { get; set; }
         public int PlayTimes { get; set; }
         public string Size { get; set; }
-        public string Lyric { get; set; }
         public string Span { get; set; }
-        public string Region { get; set; }
         public string Genre { get; set; }
         public System.DateTime ReleaseTime { get; set; }
     
@@ -47,8 +44,6 @@ namespace Model
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MusicComment> MusicComment { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MusicType> MusicType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlaylistItem> PlaylistItem { get; set; }
     }

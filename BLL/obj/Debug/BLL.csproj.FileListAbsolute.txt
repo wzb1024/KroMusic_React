@@ -41,3 +41,7 @@ D:\Project\KroMusic\BLL\bin\Debug\DALFactory.dll
 D:\Project\KroMusic\BLL\bin\Debug\IDAL.dll
 D:\Project\KroMusic\BLL\bin\Debug\DALFactory.pdb
 D:\Project\KroMusic\BLL\bin\Debug\IDAL.pdb
+D:\Project\KroMusic\BLL\bin\Debug\TagLibSharp.dll
+D:\Project\KroMusic\BLL\bin\Debug\TagLibSharp.pdb
+D:\Project\KroMusic\BLL\bin\Debug\TagLibSharp.xml
+D:\Project\KroMusic\BLL\bin\Debug\Interop.Shell32.dll

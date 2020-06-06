@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Avatar, message } from "antd";
 import $ from "jquery";
+import { Link } from "react-router-dom";
 
 class Player extends Component {
   constructor(props) {
@@ -534,7 +535,10 @@ class Player extends Component {
                 <i className="fa fa-list fa-2x" aria-hidden="true"></i>
               </button>
               <button className="operation">
-                <i className="fa fa-info-circle fa-2x" aria-hidden="true"></i>
+                <Link to={"/song/" + this.state.current.Id}>
+                  {" "}
+                  <i className="fa fa-info-circle fa-2x" aria-hidden="true"></i>
+                </Link>
               </button>
               <button id="favolumntag" className="operation">
                 <i className="fa fa-volume-up fa-2x" aria-hidden="true"></i>

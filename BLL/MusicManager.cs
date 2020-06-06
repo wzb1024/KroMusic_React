@@ -8,6 +8,8 @@ using DAL;
 using System.Web;
 using IDAL;
 using System.Security;
+using System.IO;
+using Shell32;
 
 namespace BLL
 {
@@ -23,20 +25,13 @@ namespace BLL
         {
             var self = UserManager.GetSelf();
             SongJsonModel t = new SongJsonModel();
-            List<String> subs = new List<string>();
-            foreach (var item in s.MusicType)
-            {
-                subs.Add(item.SubType.Name);
-            }
-            t.Tags = subs;
+            t.Genre = s.Genre;
             t.PlayTimes = s.PlayTimes;
-            t.Lyric = s.Lyric;
             t.SingerId = s.SingerId;
             t.SingerName = s.Singer.Name;
             t.Id = s.Id;
             t.ImagePath = s.ImagePath;
             t.MusicName = s.MusicName;
-            t.Region = s.Region;
             t.ReleaseTime = s.ReleaseTime.ToShortDateString();
             if (self != null)
             {
@@ -51,20 +46,24 @@ namespace BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<SongJsonModel> GetSongDetails(int id)
+        public HashSet<SongJsonModel> GetSongDetails(int id)
         {
-            HashSet<SongJsonModel> model = new HashSet<SongJsonModel>();
+            List<Music> songs = new List<Music>();
+            List<SongJsonModel> models = new List<SongJsonModel>();
             var m= service.GetById(id);
-            var v = Convert(m);
-            model.Add(v);
-            var relate = service.GetAllAsNoTracking().Where(it => it.MusicType.Any(i => v.Tags.Contains(i.SubType.Name)));
+            songs.Add(m);
+            var relate = service.GetById(id).Singer.Music.Where(it=>it.Id!=id).Take(6).ToList();
             foreach (var item in relate)
             {
-                var i = Convert(item);
-                model.Add(i);
-                if (model.Count == 6) break;
+                songs.Add(item);
             }
-            return new List<SongJsonModel>(model);
+            foreach (var item in songs)
+            {
+                var i = Convert(item);
+                models.Add(i);
+            }
+
+            return new HashSet<SongJsonModel>(models);
 
         }
         public List<SearchResultItemJsonModel> GetMusicsByKeywords(string keywords)
@@ -258,6 +257,61 @@ namespace BLL
             model.TarHdimg = target.User.Hdimage;
             model.TargetId = target.Id;
             return model;
+        }
+        public bool ExistSong(string title,string singer)
+        {
+            return service.GetAllAsNoTracking().FirstOrDefault(it => it.MusicName == title&& it.Singer.Name == singer) != null;
+        }
+        public bool ExistSinger(string singer)
+        {
+            return DBContextFactory.Context.Singer.FirstOrDefault(it=>it.Name==singer) != null;
+        }
+        public void Create(string title,string singer, HttpPostedFileBase file)
+        {
+
+            string desDir = HttpContext.Current.Server.MapPath("\\Sourse\\Musics\\");
+            string musicimg = HttpContext.Current.Server.MapPath("\\Sourse\\MusicCover\\");
+            string filename = singer + "-" + title+".mp3";
+            string fullname = desDir + filename;
+            if (!File.Exists(fullname))
+            {
+                Music song = new Music();
+                int sid = DBContextFactory.Context.Singer.First(it => it.Name == singer).Id;
+                song.SingerId = sid;
+                file.SaveAs(fullname);
+                ShellClass sh = new ShellClass();
+                Folder dir = sh.NameSpace(desDir);
+                FolderItem mp3f = dir.ParseName(filename);
+                TagLib.File mp3 = TagLib.File.Create(fullname);
+                var tag = mp3.Tag;
+                string genre = tag.FirstGenre;
+                string size = dir.GetDetailsOf(mp3f, 1);
+                string span = dir.GetDetailsOf(mp3f, 27);
+                try
+                {
+                    byte[] bin = tag.Pictures[0].Data.Data;
+                    System.IO.MemoryStream ms = new System.IO.MemoryStream(bin);
+                    System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
+                    string imgpath = musicimg + filename.Remove(filename.LastIndexOf('.')) + ".jpg";
+                    img.Save(imgpath);
+                    song.ImagePath = "\\Sourse\\MusicCover\\" + filename.Remove(filename.LastIndexOf('.')) + ".jpg";
+                }
+                catch
+                {
+                    song.ImagePath = "\\Sourse\\MusicCover\\default.jpg";
+                }
+                song.Path = "\\Sourse\\Musics\\" + filename;
+                song.MusicName = title;
+                song.Span = span;
+                song.Size = size;
+                song.PlayTimes = 0;
+                song.Genre = genre;
+                song.Likes = 0;
+                song.UploaderId = UserManager.GetSelf().Id;
+                song.ReleaseTime = DateTime.Now;
+                DBContextFactory.Context.Music.Add(song);
+                DBContextFactory.Context.SaveChanges();
+            }
         }
     }
 }

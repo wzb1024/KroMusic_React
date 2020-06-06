@@ -7,6 +7,7 @@ using KroMusic.Areas.User.Models;
 using BLL;
 using KroMusic.Filter;
 using Newtonsoft.Json;
+using System.Data.Entity;
 
 namespace KroMusic.Areas.User.Controllers
 {
@@ -280,6 +281,63 @@ namespace KroMusic.Areas.User.Controllers
         {
             var result = manager.GetSingerAttention();
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        public ActionResult GetUploads()
+        {
+
+            var model1 = UserManager.GetSelf().Music.OrderByDescending(t=>t.ReleaseTime).Select(item => new { id = item.Id,key=item.Id, name = item.MusicName, singer = item.Singer.Name, createTime = item.ReleaseTime.ToString() });
+            var model2 = UserManager.GetSelf().Singer.OrderByDescending(t => t.Id).Select(item => new { id = item.Id,cover=item.Image, key = item.Id, name = item.Name, });
+            var results = new { songs = model1, singers = model2 };
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        public ActionResult GetComAdRpl()
+        {
+            var data = UserManager.GetSelf().Playlist;
+            var reps=UserManager.GetSelf().PlaylistComment;
+            var uid = UserManager.GetSelf().Id;
+            List<MessageJsonModel> msgs = new List<MessageJsonModel>();
+            foreach (var item in data)
+            {
+                var all = item.PlaylistComment.Where(x => x.TargetId == null&&x.Visited==false&&x.UserId!=uid);
+                foreach (var it in all)
+                {
+                    MessageJsonModel msg = new MessageJsonModel();
+                    msg.Content = it.Content;
+                    msg.Pid = it.PlaylistId;
+                    msg.Id = it.Id;
+                    msg.Img = it.User.Hdimage;
+                    msg.Time = it.Time.ToString();
+                    msg.NickName = it.User.NickName;
+                    msg.PName = it.Playlist.Name;
+                    msgs.Add(msg);
+                }
+            }
+            List<MessageJsonModel> rpls = new List<MessageJsonModel>();
+            foreach (var item in reps)
+            {
+                var res = item.PlaylistComment11.Where(t=>t.Visited==false&& t.UserId != uid).ToList();
+                foreach (var it in res)
+                {
+                    MessageJsonModel msg = new MessageJsonModel();
+                    msg.Content = it.Content;
+                    msg.Pid = it.PlaylistId;
+                    msg.Id = it.Id;
+                    msg.Img = it.User.Hdimage;
+                    msg.Time = it.Time.ToString();
+                    msg.NickName = it.User.NickName;
+                    rpls.Add(msg);
+                }
+            }
+            return Json(new {comments=msgs,replies=rpls }, JsonRequestBehavior.AllowGet);
+        }
+        [SigninAuthorize]
+        public ActionResult Visit(int id)
+        {
+            
+            manager.Visit(id);
+            return new EmptyResult();
         }
     }
 }
