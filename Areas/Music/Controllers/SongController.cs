@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -119,6 +120,20 @@ namespace KroMusic.Areas.Music.Controllers
 
                 else return Json(new { singer = false, song = false }, JsonRequestBehavior.AllowGet);
             }
+        }
+        [AjaxSyncAction]
+        public ActionResult Play(int id)
+        {
+            manager.Play(id);
+            return new EmptyResult();
+        }
+        [AjaxSyncAction]
+        [HttpGet]
+        public ActionResult Download(int id)
+        {
+            var song = manager.GetSong(id);
+
+            return Json(new { path=song.Path},JsonRequestBehavior.AllowGet);
         }
 
     }

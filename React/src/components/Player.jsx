@@ -368,6 +368,10 @@ class Player extends Component {
   }
 
   handleTimeUpdate() {
+    var k = this.audio.currentTime - this.state.current.Span * 0.6;
+    if (0 < k && k < 0.2) {
+      $.getJSON("/Music/Song/Play", { id: this.state.current.Id });
+    }
     this.setState({
       currentTime: this.audio.currentTime,
     });

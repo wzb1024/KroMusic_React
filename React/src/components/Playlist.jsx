@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { Pagination, Spin, message, Button } from "antd";
 import { Comment, Avatar, Form, List, Input, Tooltip } from "antd";
 import moment from "moment";
+import Download from "@/components/Download";
 import Add from "@/components/Add";
 import $ from "jquery";
 import {
@@ -87,6 +88,12 @@ class Playlist extends Component {
       message.error("暂无可播放音乐");
       return;
     }
+    $.getJSON("/Music/Playlist/Play", { id: this.state.details.Id });
+    var details = this.state.details;
+    details.PlayTimes += 1;
+    this.setState({
+      details: details,
+    });
     this.props.addToList(list, true);
   }
   handlePlay(id) {
@@ -104,10 +111,11 @@ class Playlist extends Component {
           var details = this.state.details;
           if (result.Like) {
             details.IsLiked = true;
+            details.Likes += 1;
           } else {
             details.IsLiked = false;
+            details.Likes -= 1;
           }
-
           this.setState({
             details: details,
           });
@@ -229,7 +237,7 @@ class Playlist extends Component {
                 </li>
                 <li>
                   <label>点赞:&nbsp;</label>
-                  <em>{details.PlayTimes}</em>
+                  <em>{details.Likes}</em>
                 </li>
                 <li>
                   <label>简介:&nbsp;</label>
@@ -251,7 +259,10 @@ class Playlist extends Component {
                   />
                 </button>
                 <button>
-                  <CommentOutlined />
+                  <a href="#playlist_comment">
+                    {" "}
+                    <CommentOutlined />
+                  </a>
                 </button>
               </div>
             </div>
@@ -296,9 +307,12 @@ class Playlist extends Component {
                     >
                       <PlayCircleOutlined />
                     </button>
-                    <button className="music_action">
+                    <span className="music_action">
                       <Add id={item.Id} addToList={this.props.addToList}></Add>
-                    </button>
+                    </span>
+                    <span className="music_action">
+                      <Download data={item} />
+                    </span>
                   </li>
                 </ul>
               ))}

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class SqlUserService : SqlBaseService<User>,IUserService
+    public class SqlUserService : BaseService<User>,IUserService
     {
         public override Expression<Func<User, bool>> GetByIdKey(int id)
         {

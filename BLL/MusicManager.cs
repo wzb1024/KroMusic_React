@@ -20,6 +20,10 @@ namespace BLL
         IMusicService service = DALFactory.DataAccess.CreateMusicService();
        
 
+        public Music GetSong(int id)
+        {
+            return service.GetById(id);
+        }
 
         SongJsonModel Convert(Music s)
         {
@@ -312,6 +316,12 @@ namespace BLL
                 DBContextFactory.Context.Music.Add(song);
                 DBContextFactory.Context.SaveChanges();
             }
+        }
+        public void Play(int id)
+        {
+            var p = service.GetById(id);
+            p.PlayTimes++;
+            service.Edit(p);
         }
     }
 }

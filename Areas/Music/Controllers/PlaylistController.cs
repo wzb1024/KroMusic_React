@@ -202,6 +202,12 @@ namespace KroMusic.Areas.Music.Controllers
             manager.RmItems(items);
             return new EmptyResult();
         }
+        [AjaxSyncAction]
+        public ActionResult Play(int id)
+        {
+            manager.Play(id);
+            return new EmptyResult();
+        }
         [SigninAuthorize]
         [HttpPost]
         public ActionResult ModifyPlaylist(HttpPostedFileBase cover)
@@ -221,5 +227,6 @@ namespace KroMusic.Areas.Music.Controllers
             var result = manager.GetReco();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

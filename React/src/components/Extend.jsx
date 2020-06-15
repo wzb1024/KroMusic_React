@@ -37,11 +37,6 @@ const Extend = () => {
     },
     showUploadList: false,
     beforeUpload(file) {
-      const isMp3 = file.type === "audio/mpeg";
-      if (!isMp3) {
-        message.error("只能上传mp3文件!");
-        return false;
-      }
       var jsmediatags = require("jsmediatags");
       jsmediatags.read(file, {
         onSuccess: ({ tags }) => {

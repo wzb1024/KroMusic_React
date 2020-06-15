@@ -192,7 +192,6 @@ export default class Account extends Component {
                 <Button type="primary" onClick={this.handleClick}>
                   {this.state.isModify ? "保存修改" : "修改信息"}
                 </Button>
-                <Button type="link">修改密码</Button>
               </div>
             </TabPane>
             <TabPane tab="我喜欢" key="2">

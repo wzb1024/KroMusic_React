@@ -386,6 +386,12 @@ namespace BLL
             
 
         }
+        public void Play(int id)
+        {
+            var p = service.GetById(id);
+            p.PlayTimes++;
+            service.Edit(p);
+        }
         public List<RecoJsonModel> GetReco()
         {
             List<RecoJsonModel> reco = new List<RecoJsonModel>();

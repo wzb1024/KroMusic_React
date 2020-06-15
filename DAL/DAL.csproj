@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SqlBaseService.cs" />
+    <Compile Include="BaseService.cs" />
     <Compile Include="DBContextFactory.cs" />
     <Compile Include="SqlMusicCommentService.cs" />
     <Compile Include="SqlMusicService.cs" />
