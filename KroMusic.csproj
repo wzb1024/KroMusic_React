@@ -143,7 +143,6 @@
     <Compile Include="Areas\Music\Model\PlaylistModel.cs" />
     <Compile Include="Areas\Music\MusicAreaRegistration.cs" />
     <Compile Include="Areas\User\Controllers\AccountController.cs" />
-    <Compile Include="Areas\User\Controllers\AccountMsgController.cs" />
     <Compile Include="Areas\User\Models\LoginInfo.cs" />
     <Compile Include="Areas\User\Models\SigninViewModel.cs" />
     <Compile Include="Areas\User\Models\SignupViewModel.cs" />
@@ -152,6 +151,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Music\Controllers\PlaylistController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Filter\AjaxSyncActionAttribute.cs" />
     <Compile Include="Filter\MyExceptionAttribute.cs" />
     <Compile Include="Filter\SigninAuthorizeAttribute.cs" />
@@ -266,6 +266,7 @@
     <Folder Include="Models\" />
     <Folder Include="Sourse\Musics\" />
     <Folder Include="Views\Search\" />
+    <Folder Include="Views\SignIn\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

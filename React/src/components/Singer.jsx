@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { message, Button } from "antd";
 import $ from "jquery";
 import Add from "@/components/Add";
+import Download from "@/components/Download";
 import {
   LikeTwoTone,
   StarTwoTone,
@@ -155,6 +156,9 @@ export default class Singer extends Component {
                 <button className="music_action">
                   <Add id={item.Id} addToList={this.props.addToList}></Add>
                 </button>
+                <span className="music_action">
+                  <Download data={item} />
+                </span>
               </li>
             </ul>
           ))}

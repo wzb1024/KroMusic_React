@@ -14,7 +14,7 @@ class CatrgoryIndex extends Component {
       currentTypeId: 0,
       popsort: true,
       loading: false,
-      total: 15
+      total: 15,
     };
 
     this.select = this.select.bind(this);
@@ -25,23 +25,21 @@ class CatrgoryIndex extends Component {
     this.handlePageChange = this.handlePageChange.bind(this);
   }
   initPage() {
-    setTimeout(() => {
-      $.getJSON(
-        "/Music/Playlist/GetPlaylists",
-        {
-          id: this.state.currentTypeId,
+    $.getJSON(
+      "/Music/Playlist/GetPlaylists",
+      {
+        id: this.state.currentTypeId,
+        pageIndex: 1,
+        orderByHeat: this.state.popsort,
+      },
+      function (data) {
+        this.setState({
           pageIndex: 1,
-          orderByHeat: this.state.popsort
-        },
-        function(data) {
-          this.setState({
-            pageIndex: 1,
-            total: data.Total,
-            playlists: data.Playlists,
-          });
-        }.bind(this)
-      );
-    }, 10);
+          total: data.Total,
+          playlists: data.Playlists,
+        });
+      }.bind(this)
+    );
   }
 
   componentDidMount() {
@@ -49,30 +47,37 @@ class CatrgoryIndex extends Component {
       url: "/Music/Playlist/GetCategories",
       type: "get",
       dataType: "json",
-      success: function(data) {
-        this.setState({
-          categories: data,
-          loading: false
-        });
-      }.bind(this)
+      success: function (data) {
+        this.setState(
+          {
+            categories: data,
+            loading: false,
+          },
+          () => this.initPage()
+        );
+      }.bind(this),
     });
-    this.initPage();
+
     //控制页码宽度
     // var pagination = document.getElementsByClassName("pagination")[0];
     // var i = pagination.children.length;
     // pagination.style.width = i * 32 + (i - 1) * 8 + "px";
   }
   handlePopSort() {
-    this.setState({
-      popsort: true
-    });
-    this.initPage(this.state.currentTypeId);
+    this.setState(
+      {
+        popsort: true,
+      },
+      () => this.initPage()
+    );
   }
   handleLastestSort() {
-    this.setState({
-      popsort: false
-    });
-    this.initPage(this.state.currentTypeId);
+    this.setState(
+      {
+        popsort: false,
+      },
+      () => this.initPage()
+    );
   }
   getAllPlaylists() {
     if (breadcrumb.children.length > 2) {
@@ -83,20 +88,15 @@ class CatrgoryIndex extends Component {
     for (var i = 0; i < btns.length; i++) {
       btns[i].firstChild.className = "";
     }
-    this.setState({
-      currentTypeId: 0
-    });
-    this.initPage();
+    this.setState(
+      {
+        currentTypeId: 0,
+      },
+      () => this.initPage()
+    );
   }
-  select(e) {
-    var u = e.target;
-    var id = parseInt(u.id);
-    var btns = document.getElementsByClassName("category_btn");
-    for (var i = 0; i < btns.length; i++) {
-      btns[i].firstChild.className = "";
-    }
-
-    document.getElementById(u.id).firstChild.className = "active";
+  select(id) {
+    var u = event.target;
 
     var breadcrumb = document.getElementById("breadcrumb");
     if (breadcrumb.children.length > 1) {
@@ -109,10 +109,12 @@ class CatrgoryIndex extends Component {
     breadcrumb.appendChild(l);
     breadcrumb.appendChild(u.cloneNode(true));
 
-    this.setState({
-      currentTypeId: id
-    });
-    this.initPage();
+    this.setState(
+      {
+        currentTypeId: id,
+      },
+      () => this.initPage()
+    );
   }
   handlePageChange(page, pageSize) {
     $.getJSON(
@@ -120,13 +122,13 @@ class CatrgoryIndex extends Component {
       {
         id: this.state.currentTypeId,
         pageIndex: page,
-        orderByHeat: this.state.popsort
+        orderByHeat: this.state.popsort,
       },
-      function(data) {
+      function (data) {
         this.setState({
           pageIndex: page,
           playlists: data.Playlists,
-          total: data.Total
+          total: data.Total,
         });
       }.bind(this)
     );
@@ -138,13 +140,12 @@ class CatrgoryIndex extends Component {
           {this.state.categories.map((item, i) => (
             <div className="typeItem" key={i}>
               <span>{item.TypeName}:</span>
-              {item.Categories.map(n => (
+              {item.Categories.map((n) => (
                 <Button
                   className="category_btn"
                   key={n.Id}
-                  id={n.Id}
                   type="link"
-                  onClick={this.select}
+                  onClick={() => this.select(n.Id)}
                 >
                   <span>{n.Name}</span>
                 </Button>
@@ -180,7 +181,7 @@ class CatrgoryIndex extends Component {
             {this.state.loading ? (
               <Spin size="large" />
             ) : (
-              this.state.playlists.map(item => (
+              this.state.playlists.map((item) => (
                 <PlaylistCard key={item.Id} msg={item}></PlaylistCard>
               ))
             )}

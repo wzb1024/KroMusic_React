@@ -219,7 +219,7 @@ class Playlist extends Component {
                 </li>
                 <li>
                   <label>创建者:&nbsp;</label>
-                  <a>{details.NickName}</a>
+                  <span>{details.NickName}</span>
                 </li>
                 <li>
                   <label>创建时间:&nbsp;</label>
@@ -228,7 +228,7 @@ class Playlist extends Component {
                 <li>
                   <label>标签:&nbsp;</label>
                   {details.Tags.map((item, i) => (
-                    <span key={i}>{item}</span>
+                    <span key={i}>{item}&nbsp;</span>
                   ))}
                 </li>
                 <li>
@@ -260,8 +260,10 @@ class Playlist extends Component {
                 </button>
                 <button>
                   <a href="#playlist_comment">
-                    {" "}
-                    <CommentOutlined />
+                    <i
+                      className="fa fa-comments-o fa-2x"
+                      aria-hidden="true"
+                    ></i>
                   </a>
                 </button>
               </div>
@@ -341,7 +343,7 @@ class Playlist extends Component {
                   全部评论&nbsp;<small>共{comments.length}条评论</small>
                 </h3>
                 {comments.map((item, i) => (
-                  <div key={item.Id}>
+                  <div key={item.Id} style={{ margin: "2px 0px" }}>
                     <Comment
                       actions={[
                         <SubEditor

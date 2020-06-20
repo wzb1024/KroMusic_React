@@ -17,34 +17,24 @@ namespace BLL
     public class MusicManager
     {
 
-        IMusicService service = DALFactory.DataAccess.CreateMusicService();
+        IMusic service = DALFactory.DataAccess.CreateMusicService();
        
 
-        public Music GetSong(int id)
+         public  void saveChanges()
         {
-            return service.GetById(id);
+            DBContextFactory.Context.SaveChanges();
+        }
+        public IQueryable<Music> GetAllSongs(bool AsNoTracking = true)
+        {
+            if (AsNoTracking) return service.GetAllAsNoTracking();
+            else return service.GetAll();
+        }
+        public Music GetSong(int id, bool AsNoTracking = true)
+        {
+            if (AsNoTracking) return service.GetByIdAsNoTracking(id);
+            else return service.GetById(id);
         }
 
-        SongJsonModel Convert(Music s)
-        {
-            var self = UserManager.GetSelf();
-            SongJsonModel t = new SongJsonModel();
-            t.Genre = s.Genre;
-            t.PlayTimes = s.PlayTimes;
-            t.SingerId = s.SingerId;
-            t.SingerName = s.Singer.Name;
-            t.Id = s.Id;
-            t.ImagePath = s.ImagePath;
-            t.MusicName = s.MusicName;
-            t.ReleaseTime = s.ReleaseTime.ToShortDateString();
-            if (self != null)
-            {
-      
-                t.Favorite = s.FavoriteMusic.Any(it => it.UserId == self.Id);
-                t.Like = s.LikeMusic.Any(it => it.UserId == self.Id);
-            }
-            return t;
-        }
         /// <summary>
         /// 获取歌曲资料及其相关歌曲
         /// </summary>
@@ -54,16 +44,16 @@ namespace BLL
         {
             List<Music> songs = new List<Music>();
             List<SongJsonModel> models = new List<SongJsonModel>();
-            var m= service.GetById(id);
+            var m= GetSong(id);
             songs.Add(m);
-            var relate = service.GetById(id).Singer.Music.Where(it=>it.Id!=id).Take(6).ToList();
+            var relate = GetSong(id,false).Singer.Music.Where(it=>it.Id!=id).Take(6).ToList();
             foreach (var item in relate)
             {
                 songs.Add(item);
             }
             foreach (var item in songs)
             {
-                var i = Convert(item);
+                var i =ConvertHelper.SongConvert(item);
                 models.Add(i);
             }
 
@@ -72,7 +62,7 @@ namespace BLL
         }
         public List<SearchResultItemJsonModel> GetMusicsByKeywords(string keywords)
         {
-            var results=service.GetAllAsNoTracking().Where(u => u.MusicName.Contains(keywords)||keywords.Contains(u.MusicName)).ToList<Music>();
+            var results = GetAllSongs().Where(u => u.MusicName.Contains(keywords)||keywords.Contains(u.MusicName)).ToList<Music>();
             List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
             foreach (var item in results)
             {
@@ -84,44 +74,44 @@ namespace BLL
         public CollectJsonModel Collect(int musicId)
         {
             var self = UserManager.GetSelf();
-            var e = self.FavoriteMusic.FirstOrDefault(u => u.MusicId== musicId );
-            if (e == null)
+            var exist = self.FavoriteMusic.FirstOrDefault(u => u.MusicId== musicId );
+            if (exist == null)
             {
                 FavoriteMusic s = new FavoriteMusic();
                 s.UserId = self.Id;
                 s.MusicId = musicId;
                 self.FavoriteMusic.Add(s);
-                DBContextFactory.Context.SaveChanges();
+                saveChanges();
                 return new CollectJsonModel {State=true, Collected = true, Message = "已添加" };
             }
             else
             {
-                self.FavoriteMusic.Remove(e);
-                DBContextFactory.Context.SaveChanges();
+                var sev = DALFactory.DataAccess.CreateFavoriteMusicService();
+                sev.Remove(exist.Id);
                 return new CollectJsonModel { State = true, Collected = false, Message = "已取消" };
             }
         }
         public LikeJsonModel Like(int musicId)
         {
             var self = UserManager.GetSelf();
-            var e = self.LikeMusic.FirstOrDefault(u => u.MusicId == musicId );
-            var n = service.GetById(musicId);
-            if (e == null)
+            var exist = self.LikeMusic.FirstOrDefault(u => u.MusicId == musicId );
+            var n = GetSong(musicId,false);
+            if (exist == null)
             {
                 LikeMusic s = new LikeMusic();
                 s.UserId = self.Id;
                 s.MusicId = musicId;
                 s.Time = DateTime.Now;
                 self.LikeMusic.Add(s);
-                DBContextFactory.Context.SaveChanges();
+                saveChanges();
                 n.Likes = n.LikeMusic.Count();
                 service.Edit(n);
                 return new LikeJsonModel { State = true, Like = true, Message = "点赞成功" };
             }
             else
             {
-                self.LikeMusic.Remove(e);
-                DBContextFactory.Context.SaveChanges();
+                var sev = DALFactory.DataAccess.CreateLikeMusicService();
+                sev.Remove(exist.Id);
                 n.Likes = n.LikeMusic.Count();
                 service.Edit(n);
                 return new LikeJsonModel { State = true, Like = false, Message = "取消点赞" };
@@ -133,7 +123,7 @@ namespace BLL
             var self = UserManager.GetSelf();
             foreach (var item in list)
             {
-                var m = service.GetByIdAsNoTracking(item);
+                var m = GetSong(item);
                 SongJsonModel u = new SongJsonModel();
                 u.Id = m.Id;
                 u.ImagePath = m.ImagePath;
@@ -155,22 +145,22 @@ namespace BLL
         }
         public bool AddToPlaylist(int mid,int pid)
         {
-            var sev = DALFactory.DataAccess.CreatePlaylistItemService();
-            bool exist = sev.GetAllAsNoTracking().FirstOrDefault(i => i.MusicId == mid && i.PlaylistId == pid)!=null;
+            var song = GetSong(mid, false);
+            bool exist = song.PlaylistItem.FirstOrDefault(u => u.PlaylistId == pid)!=null;
             if (exist) return false;
             else
             {
                 PlaylistItem item = new PlaylistItem();
                 item.PlaylistId = pid;
-                item.MusicId = mid;
-                sev.Create(item);
+                song.PlaylistItem.Add(item);
+                saveChanges();
                 return true;
             }
         }
         public List<CommentJsonModel> GetComments(int id)
         {
             List<CommentJsonModel> Result = new List<CommentJsonModel>();
-            Music model = service.GetByIdAsNoTracking(id);
+            Music model = GetSong(id);
             var Comments = model.MusicComment.Where(m => m.TargetId == null).OrderByDescending(i => i.Time).ToList();
             foreach (var item in Comments)
             {
@@ -207,14 +197,13 @@ namespace BLL
         public CommentJsonModel Comment(int id, string value)
         {
             var userId = UserManager.GetSelf().Id;
-            var s = DALFactory.DataAccess.CreateMusicCommentService();
+            var song = GetSong(id, false);
             MusicComment comment = new MusicComment();
             comment.Content = value;
-            comment.MusicId = id;
             comment.UserId = userId;
             comment.Time = DateTime.Now;
-            s.Create(comment);
-            comment = s.GetByIdAsNoTracking(comment.Id);
+            song.MusicComment.Add(comment);
+            saveChanges();
             CommentJsonModel model = new CommentJsonModel
             {
                 UserId = userId,
@@ -231,11 +220,10 @@ namespace BLL
         public SubCommentJsonModel Reply(int id, string value, int targetId)
         {
             var userId = UserManager.GetSelf().Id;
-            var s = DALFactory.DataAccess.CreateMusicCommentService();
-            var target = s.GetByIdAsNoTracking(targetId);
+            var song = GetSong(id);
+            var target = song.MusicComment.FirstOrDefault(u=>u.Id==targetId);
             MusicComment comment = new MusicComment();
             comment.Content = value;
-            comment.MusicId = id;
             comment.UserId = userId;
             comment.Time = DateTime.Now;
             comment.TargetId = targetId;
@@ -247,8 +235,8 @@ namespace BLL
             {
                 comment.ReplyId = target.Id;
             }
-            s.Create(comment);
-            comment = s.GetByIdAsNoTracking(comment.Id);
+            song.MusicComment.Add(comment);
+            saveChanges();
             SubCommentJsonModel model = new SubCommentJsonModel();
             model.UserId = userId;
             model.Id = comment.Id;
@@ -264,7 +252,7 @@ namespace BLL
         }
         public bool ExistSong(string title,string singer)
         {
-            return service.GetAllAsNoTracking().FirstOrDefault(it => it.MusicName == title&& it.Singer.Name == singer) != null;
+            return GetAllSongs().FirstOrDefault(it => it.MusicName == title&& it.Singer.Name == singer) != null;
         }
         public bool ExistSinger(string singer)
         {
@@ -273,14 +261,15 @@ namespace BLL
         public void Create(string title,string singer, HttpPostedFileBase file)
         {
 
-            string desDir = HttpContext.Current.Server.MapPath("\\Sourse\\Musics\\");
-            string musicimg = HttpContext.Current.Server.MapPath("\\Sourse\\MusicCover\\");
+            string desDir = HttpContext.Current.Server.MapPath(Config.MusicDir);
+            string imgDir = HttpContext.Current.Server.MapPath(Config.MusicCoverDir);
             string filename = singer + "-" + title+".mp3";
             string fullname = desDir + filename;
             if (!File.Exists(fullname))
             {
                 Music song = new Music();
-                int sid = DBContextFactory.Context.Singer.First(it => it.Name == singer).Id;
+                var smanager = new SingerManager();
+                int sid = smanager.GetAllSingers().FirstOrDefault(u=>u.Name==singer).Id;
                 song.SingerId = sid;
                 file.SaveAs(fullname);
                 ShellClass sh = new ShellClass();
@@ -296,15 +285,15 @@ namespace BLL
                     byte[] bin = tag.Pictures[0].Data.Data;
                     System.IO.MemoryStream ms = new System.IO.MemoryStream(bin);
                     System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
-                    string imgpath = musicimg + filename.Remove(filename.LastIndexOf('.')) + ".jpg";
+                    string imgpath = imgDir + filename.Remove(filename.LastIndexOf('.')) + ".jpg";
                     img.Save(imgpath);
-                    song.ImagePath = "\\Sourse\\MusicCover\\" + filename.Remove(filename.LastIndexOf('.')) + ".jpg";
+                    song.ImagePath = Config.MusicCoverDir + filename.Remove(filename.LastIndexOf('.')) + ".jpg";
                 }
                 catch
                 {
-                    song.ImagePath = "\\Sourse\\MusicCover\\default.jpg";
+                    song.ImagePath = Config.MusicCoverDir+"default.jpg";
                 }
-                song.Path = "\\Sourse\\Musics\\" + filename;
+                song.Path = Config.MusicDir + filename;
                 song.MusicName = title;
                 song.Span = span;
                 song.Size = size;
@@ -313,15 +302,8 @@ namespace BLL
                 song.Likes = 0;
                 song.UploaderId = UserManager.GetSelf().Id;
                 song.ReleaseTime = DateTime.Now;
-                DBContextFactory.Context.Music.Add(song);
-                DBContextFactory.Context.SaveChanges();
+                service.Create(song);
             }
-        }
-        public void Play(int id)
-        {
-            var p = service.GetById(id);
-            p.PlayTimes++;
-            service.Edit(p);
         }
     }
 }

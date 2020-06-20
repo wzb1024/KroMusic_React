@@ -15,7 +15,7 @@ export default class Signin extends React.Component {
 
   componentDidMount() {
     $.ajax({
-      url: "/User/Account/Signin",
+      url: "/SignIn/Signin",
       type: "get",
       success: function (result) {
         this.setState({
@@ -31,7 +31,7 @@ export default class Signin extends React.Component {
 
   onFinish(values) {
     $.ajax({
-      url: "/User/Account/Signin",
+      url: "/SignIn/Signin",
       type: "post",
       data: {
         UserName: values.username,
@@ -108,7 +108,7 @@ export default class Signin extends React.Component {
                 登录
               </Button>
               <span>
-                Or{" "}
+                Or
                 <Link
                   onClick={() => this.setState({ visible: false })}
                   to="/signup"

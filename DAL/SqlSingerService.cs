@@ -9,7 +9,7 @@ using Model;
 
 namespace DAL
 {
-    public class SqlSingerService : BaseService<Singer>,ISingerService
+    public class SqlSingerService : BaseService<Singer>,ISinger
     {
         public override Expression<Func<Singer, bool>> GetByIdKey(int id)
         {

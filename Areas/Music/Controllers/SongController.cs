@@ -121,19 +121,29 @@ namespace KroMusic.Areas.Music.Controllers
                 else return Json(new { singer = false, song = false }, JsonRequestBehavior.AllowGet);
             }
         }
-        [AjaxSyncAction]
+       
         public ActionResult Play(int id)
         {
-            manager.Play(id);
+            
+            var p = manager.GetSong(id, false);
+            p.PlayTimes++;
+            manager.saveChanges();
             return new EmptyResult();
         }
-        [AjaxSyncAction]
-        [HttpGet]
-        public ActionResult Download(int id)
+        public ActionResult GetPopSongs()
         {
-            var song = manager.GetSong(id);
-
-            return Json(new { path=song.Path},JsonRequestBehavior.AllowGet);
+            var data = manager.GetAllSongs().OrderByDescending(u => u.LikeMusic.Count()).Take(4).Select(n=>new {Id=n.Id,MusicName=n.MusicName,Singer=n.Singer.Name });
+            return Json( data , JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetNewSongs()
+        {
+            var data = manager.GetAllSongs().OrderByDescending(u => u.ReleaseTime).Take(4).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name });
+            return Json( data , JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetRegionSongs(string region)
+        {
+            var data = manager.GetAllSongs().Where(x=>x.Singer.Nationality==region).OrderByDescending(u => u.PlayTimes).Take(4).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name });
+            return Json( data , JsonRequestBehavior.AllowGet);
         }
 
     }

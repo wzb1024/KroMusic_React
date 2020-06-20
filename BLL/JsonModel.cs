@@ -14,10 +14,6 @@ namespace BLL
         {
             return new AccountInfoJsonModel { NickName = user.NickName, Age = user.Age, Email = user.Email, Gender = user.Gender, Hdimage = user.Hdimage };
         }
-        public static SongJsonModel SongConvert(Music music)
-        {
-            return new SongJsonModel { Id = music.Id, ImagePath = music.ImagePath, MusicName = music.MusicName, Path = music.Path, SingerName = music.Singer.Name, Span = music.Span.ToString().Remove(0, 3) };
-        }
         public static SingerJsonModel SingerConvert(Singer singer)
         {
             SingerJsonModel model = new SingerJsonModel();
@@ -30,6 +26,27 @@ namespace BLL
             model.Fans = singer.SingerAttention.Count();
             model.Amount = singer.Music.Count();
             return model;
+        }
+        public static SongJsonModel SongConvert(Music s)
+        {
+            var self = UserManager.GetSelf();
+            SongJsonModel t = new SongJsonModel();
+            t.Genre = s.Genre;
+            t.PlayTimes = s.PlayTimes;
+            t.SingerId = s.SingerId;
+            t.SingerName = s.Singer.Name;
+            t.Id = s.Id;
+            t.ImagePath = s.ImagePath;
+            t.MusicName = s.MusicName;
+            t.ReleaseTime = s.ReleaseTime.ToShortDateString();
+            t.Path = s.Path;
+            if (self != null)
+            {
+
+                t.Favorite = s.FavoriteMusic.Any(it => it.UserId == self.Id);
+                t.Like = s.LikeMusic.Any(it => it.UserId == self.Id);
+            }
+            return t;
         }
 
     }
@@ -87,7 +104,6 @@ namespace BLL
         public int Age { get; set; }
         public int Fans { get; set; }
         public string Nationality { get; set; }
-        public string Profession { get; set; }
         public int Amount { get; set; }
         public bool Focused { get; set; } = false;
     }

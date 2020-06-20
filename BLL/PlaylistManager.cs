@@ -21,15 +21,26 @@ namespace BLL
         //private static PlaylistManager instance = new PlaylistManager();
         //public static PlaylistManager Instance { get { return instance; } }
 
-        IPlaylistService service = DALFactory.DataAccess.CreatePlaylistService();
+        IPlaylist service = DALFactory.DataAccess.CreatePlaylistService();
 
-        KroMusicEntities entities = DBContextFactory.Context;
-        string userId = HttpContext.Current.Session["UserId"] == null ? null : HttpContext.Current.Session["UserId"].ToString();
-
+        public void saveChanges()
+        {
+            DBContextFactory.Context.SaveChanges();
+        }
+        public IQueryable<Playlist> GetAllPlaylists(bool AsNoTracking = true)
+        {
+            if (AsNoTracking) return service.GetAllAsNoTracking();
+            else return service.GetAll();
+        }
+        public Playlist GetPlaylist(int id, bool AsNoTracking = true)
+        {
+            if (AsNoTracking) return service.GetByIdAsNoTracking(id);
+            else return service.GetById(id);
+        }
         public SearchResultJsonModel GetPlaylistsByKeywords(string keywords, int pageIndex, int pageSize)
         {
             var model = new SearchResultJsonModel();
-            var query = service.GetAllAsNoTracking().Where(u => u.Name.Contains(keywords)||keywords.Contains(u.Name));
+            var query = GetAllPlaylists().Where(u => u.Name.Contains(keywords)||keywords.Contains(u.Name));
             var result = query.OrderByDescending(i => i.PlayTimes).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             model.Total = query.Count();
             List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
@@ -56,7 +67,7 @@ namespace BLL
 
             if (id == 0)
             {
-                var these = service.GetAllAsNoTracking().Where(u => u.IsPublic);
+                var these = GetAllPlaylists().Where(u => u.IsPublic);
                 data.Total = these.Count();
                 if (orderByHeat)
 
@@ -67,7 +78,7 @@ namespace BLL
             }
             else
             {
-                var these = service.GetAll().Where(u => u.IsPublic && u.PlaylistType.Any(n => n.SubTypeId == id));
+                var these = GetAllPlaylists().Where(u => u.IsPublic && u.PlaylistType.Any(n => n.SubTypeId == id));
                 data.Total = these.Count();
 
                 if (orderByHeat)
@@ -89,8 +100,9 @@ namespace BLL
             data.Playlists = card;
             return data;
         }
-        public PlaylistJsonModel GetPlaylist(int id)
+        public PlaylistJsonModel GetPlaylistJson(int id)
         {
+            var self = UserManager.GetSelf();
             var model = service.GetById(id);
             List<String> subs = new List<string>();
             PlaylistJsonModel jsonModel = new PlaylistJsonModel
@@ -105,11 +117,10 @@ namespace BLL
                 Name = model.Name,
                 NickName = model.User.NickName,
             };
-            if (userId != null)
+            if (self!= null)
             {
-                int uid = int.Parse(userId);
-                jsonModel.IsCollected = model.FavoritePlaylist.Any(item => item.UserId == uid);
-                jsonModel.IsLiked = model.LikePlaylist.Any(item => item.UserId == uid);
+                jsonModel.IsCollected = self.FavoritePlaylist.Any(item => item.PlaylistId == id);
+                jsonModel.IsLiked = self.LikePlaylist.Any(item => item.PlaylistId == id);
             }
             foreach (var item in model.PlaylistType)
             {
@@ -120,56 +131,53 @@ namespace BLL
         }
         public CollectJsonModel Collect(int playlistId)
         {
-            int uid = int.Parse(userId);
-            var e = entities.FavoritePlaylist.FirstOrDefault(u => u.PlaylistId == playlistId && u.UserId == uid);
-            if (e == null)
+            var self = UserManager.GetSelf();
+            var exist = self.FavoritePlaylist.FirstOrDefault(u => u.PlaylistId == playlistId);
+            if (exist == null)
             {
                 FavoritePlaylist s = new FavoritePlaylist();
-                s.UserId = uid;
                 s.PlaylistId = playlistId;
-                entities.Set<FavoritePlaylist>().Add(s);
-                entities.SaveChanges();
+                self.FavoritePlaylist.Add(s);
+                saveChanges();
                 return new CollectJsonModel { Collected = true, Message = "收藏成功" };
             }
             else
             {
-                entities.Set<FavoritePlaylist>().Remove(e);
-                entities.SaveChanges();
+                var sev = DALFactory.DataAccess.CreateFavoritePlaylistService();
+                sev.Remove(exist.Id);
                 return new CollectJsonModel { Collected = false, Message = "取消收藏" };
             }
         }
         public LikeJsonModel Like(int playlistId)
         {
-            int uid = int.Parse(userId);
-            var e = entities.Set<LikePlaylist>().FirstOrDefault(u => u.PlaylistId == playlistId && u.UserId == uid);
-            var n = service.GetById(playlistId);
-            if (e == null)
+            var self = UserManager.GetSelf();
+            var exist = self.LikePlaylist.FirstOrDefault(u => u.PlaylistId == playlistId);
+            var p = GetPlaylist(playlistId, false);
+            if (exist == null)
             {
                 LikePlaylist s = new LikePlaylist();
-                s.UserId = uid;
                 s.PlaylistId = playlistId;
                 s.Time = DateTime.Now;
-                entities.Set<LikePlaylist>().Add(s);
-                entities.SaveChanges();
-                n.Likes = n.LikePlaylist.Count();
-                service.Edit(n);
+                self.LikePlaylist.Add(s);
+                saveChanges();
+                p.Likes = p.LikePlaylist.Count();
+                service.Edit(p);
                 return new LikeJsonModel { Like = true, Message = "点赞成功" };
             }
             else
             {
-                entities.Set<LikePlaylist>().Remove(e);
-                entities.SaveChanges();
-                n.Likes = n.LikePlaylist.Count();
-                service.Edit(n);
+                var sev = DALFactory.DataAccess.CreateLikePlaylistService();
+                sev.Remove(exist.Id);
+                p.Likes = p.LikePlaylist.Count();
+                service.Edit(p);
                 return new LikeJsonModel { Like = false, Message = "取消点赞" };
             }
         }
         public List<PlaylistJsonModel> GetFavoritePlaylists()
         {
-            int uid = int.Parse(userId);
+            var self = UserManager.GetSelf();
             List<PlaylistJsonModel> model = new List<PlaylistJsonModel>();
-            var user = entities.User.Find(uid);
-            foreach (var item in user.FavoritePlaylist)
+            foreach (var item in self.FavoritePlaylist)
             {
                 PlaylistJsonModel playlist = new PlaylistJsonModel { Id = item.PlaylistId, Cover = item.Playlist.Cover, Name = item.Playlist.Name };
                 model.Add(playlist);
@@ -183,7 +191,7 @@ namespace BLL
         /// <returns></returns>
         public List<SongJsonModel> GetSongList(int id)
         {
-            var u = service.GetById(id);
+            var u = GetPlaylist(id);
             List<SongJsonModel> data = new List<SongJsonModel>();
             foreach (var item in u.PlaylistItem)
             {
@@ -199,18 +207,19 @@ namespace BLL
         /// <param name="playlists"></param>
         public void CancelCollectPlaylists(List<int> playlists)
         {
-            var service = DALFactory.DataAccess.CreateFavoritePlaylistService();
-            int uid = int.Parse(userId);
+            var sev = DALFactory.DataAccess.CreateFavoritePlaylistService();
+            var self = UserManager.GetSelf();
             foreach (var item in playlists)
             {
-                service.Remove(service.GetAll().First(u => u.PlaylistId == item && u.UserId == uid).Id);
+                var p = self.FavoritePlaylist.First(u => u.PlaylistId == item);
+                sev.Remove(p.Id);
             }
         }
         public List<CommentJsonModel> GetComments(int id)
         {
             List<CommentJsonModel> Result = new List<CommentJsonModel>();
-            Playlist model = service.GetByIdAsNoTracking(id);
-            var Comments = model.PlaylistComment.Where(m => m.TargetId == null).OrderByDescending(i => i.Time).ToList();
+            Playlist model = GetPlaylist(id);
+            var Comments = model.PlaylistComment.Where(m => m.TargetId == null).OrderByDescending(i => i.Time);
             foreach (var item in Comments)
             {
                 CommentJsonModel u = new CommentJsonModel();
@@ -245,17 +254,16 @@ namespace BLL
         }
         public CommentJsonModel Comment(int id, string value)
         {
-            var s = DALFactory.DataAccess.CreatePlaylistCommentService();
+            var self = UserManager.GetSelf();
             PlaylistComment comment = new PlaylistComment();
             comment.Content = value;
             comment.PlaylistId = id;
-            comment.UserId = int.Parse(userId);
             comment.Time = DateTime.Now;
-            s.Create(comment);
-            comment = s.GetByIdAsNoTracking(comment.Id);
+            self.PlaylistComment.Add(comment);
+            saveChanges();
             CommentJsonModel model = new CommentJsonModel
             {
-                UserId = int.Parse(userId),
+                UserId = self.Id,
                 Id = comment.Id,
                 Content = value,
                 Hdimg = comment.User.Hdimage,
@@ -268,12 +276,13 @@ namespace BLL
         }
         public SubCommentJsonModel Reply(int id, string value, int targetId)
         {
-            var s = DALFactory.DataAccess.CreatePlaylistCommentService();
-            var target = s.GetByIdAsNoTracking(targetId);
+            var self = UserManager.GetSelf();
+            var p = GetPlaylist(id);
+            var target = p.PlaylistComment.FirstOrDefault(u=>u.Id==targetId);
             PlaylistComment comment = new PlaylistComment();
             comment.Content = value;
-            comment.PlaylistId = id;
-            comment.UserId = int.Parse(userId);
+            
+            comment.UserId = self.Id;
             comment.Time = DateTime.Now;
             comment.TargetId = targetId;
             if(target.ReplyId!=null)
@@ -284,10 +293,10 @@ namespace BLL
             {
                 comment.ReplyId = target.Id;
             }
-            s.Create(comment);
-            comment = s.GetByIdAsNoTracking(comment.Id);
+            p.PlaylistComment.Add(comment);
+            saveChanges();
             SubCommentJsonModel model = new SubCommentJsonModel();
-            model.UserId = int.Parse(userId);
+            model.UserId = self.Id;
             model.Id = comment.Id;
             model.Content = value;
             model.Hdimg = comment.User.Hdimage;
@@ -299,41 +308,26 @@ namespace BLL
             model.TargetId = target.Id;
             return model;
         }
-        static Playlist Init()
-        {
-            Playlist l = new Playlist();
-            l.Cover = @"\Sourse\PlaylistCover\Default.png";
-            l.CreateTime = DateTime.Now;
-            l.Description = "主人没有留下任何描述哦~";
-            l.Likes = 0;
-            l.IsPublic = false;
-            l.PlayTimes = 0;
-            return l;
-        }
         public PlaylistJsonModel CreatePlaylist(string name)
         {
-            int uid = int.Parse(userId);
-            var u = service.GetAllAsNoTracking().FirstOrDefault(n => n.OwnerId == uid && n.Name == name);
+            var self = UserManager.GetSelf();
+            var u = self.Playlist.FirstOrDefault(n => n.Name == name);
             if (u != null)
                 return null;
             else
             {
-                Playlist model = Init();
+                Playlist model = new Playlist();
                 model.Name = name;
-                model.OwnerId = uid;
-                service.Create(model);
-                var o= service.GetByIdAsNoTracking(model.Id);
-                PlaylistJsonModel model1 = new PlaylistJsonModel();
-                model1.Id = o.Id;
-                model1.Description = o.Description;
-                model1.Cover = o.Cover;
-                model1.CreateTime = o.CreateTime.ToString();
-                model1.Likes = 0;
-                model1.PlayTimes = 0;
-                model1.Tags = new List<string>();
-                model1.NickName = o.User.NickName;
-                model.IsPublic = o.IsPublic;
-                return model1;
+                model.Cover =Config.PlaylistCoverDir+"Default.png";
+                model.CreateTime = DateTime.Now;
+                model.Description = "主人没有留下任何描述哦~";
+                model.Likes = 0;
+                model.IsPublic = false;
+                model.PlayTimes = 0;
+                self.Playlist.Add(model);
+                saveChanges();
+                var o= GetPlaylistJson(model.Id);
+                return o;
                 
             }
         }
@@ -352,13 +346,13 @@ namespace BLL
         public void Modify(int id,string desc,string Tags,bool ispublic,string name, HttpPostedFileBase file)
         {
             
-            var model = service.GetById(id);
+            var model = GetPlaylist(id,false);
             model.Description = desc;
             model.IsPublic = ispublic;
             model.Name = name;
             if (file != null)
             {
-                string imgPath = "/Sourse/PlaylistCover/" + Guid.NewGuid().ToString() + file.FileName;
+                string imgPath = Config.PlaylistCoverDir + Guid.NewGuid().ToString() + file.FileName;
                 string savepath = HttpContext.Current.Server.MapPath(imgPath);
                 file.SaveAs(savepath);
                 model.Cover = imgPath;
@@ -366,36 +360,25 @@ namespace BLL
             service.Edit(model);
             
             if(Tags!=null)
-            {
-                var sev = DALFactory.DataAccess.CreatePlaylistTypeService();
-                var list=sev.GetAll().Where(n => n.PlaylistId == id).ToList();              
+            {            
                 var ids = Tags.Split(',');
-                foreach (var it in list)
-                {
-                    sev.Remove(it.Id);
-                }
+                model.PlaylistType.Clear();
+                saveChanges();
                 foreach (var item in ids)
                 {
                     int i = int.Parse(item);
                     PlaylistType k = new PlaylistType();
                     k.SubTypeId = i;
-                    k.PlaylistId = id;
-                    sev.Create(k);
-                }
-            }
-            
+                    model.PlaylistType.Add(k);
+                    saveChanges();
 
-        }
-        public void Play(int id)
-        {
-            var p = service.GetById(id);
-            p.PlayTimes++;
-            service.Edit(p);
+                }
+            }          
         }
         public List<RecoJsonModel> GetReco()
         {
             List<RecoJsonModel> reco = new List<RecoJsonModel>();
-            var All = service.GetAllAsNoTracking().OrderByDescending(k => k.PlayTimes).Take(9).ToList();
+            var All = GetAllPlaylists().OrderByDescending(k => k.PlayTimes).Take(9);
             RecoJsonModel x = new RecoJsonModel();
             x.Title = "全部歌单";
             foreach (var item in All)
@@ -409,23 +392,23 @@ namespace BLL
             }
             reco.Add(x);
             var entity = DBContextFactory.Context;
-            Random r = new Random();       
+            Random r = new Random();
             for (int j = 0; j < 3; j++)
             {
                 RecoJsonModel re = new RecoJsonModel();
                 int i = r.Next(1, 30);
-                var con = entities.SubType.Find(i);
-                while (con==null)
+                var con = entity.SubType.Find(i);
+                while (con == null)
                 {
                     i = r.Next(1, 30);
-                    con = entities.SubType.Find(i);
+                    con = entity.SubType.Find(i);
                 }
                 re.Title = con.Name;
-                var list = con.PlaylistType.OrderByDescending(v => v.Playlist.PlayTimes).Take(9).ToList();
+                var list = con.PlaylistType.OrderByDescending(v => v.Playlist.PlayTimes).Take(9);
                 foreach (var item in list)
                 {
                     PlaylistCardJsonModel model = new PlaylistCardJsonModel();
-                    model.Id = item.Id;
+                    model.Id = item.PlaylistId;
                     model.Name = item.Playlist.Name;
                     model.PlayTimes = item.Playlist.PlayTimes;
                     model.Cover = item.Playlist.Cover;

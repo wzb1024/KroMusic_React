@@ -59,7 +59,7 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         public ContentResult PlaylistDetails(int id)
         {
-            var model = JsonConvert.SerializeObject(manager.GetPlaylist(id));
+            var model = JsonConvert.SerializeObject(manager.GetPlaylistJson(id));
             return Content(model);
         }
         /// <summary>
@@ -205,7 +205,9 @@ namespace KroMusic.Areas.Music.Controllers
         [AjaxSyncAction]
         public ActionResult Play(int id)
         {
-            manager.Play(id);
+            var p = manager.GetPlaylist(id,false);
+            p.PlayTimes++;
+            manager.saveChanges();
             return new EmptyResult();
         }
         [SigninAuthorize]

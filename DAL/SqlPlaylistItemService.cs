@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class SqlPlaylistItemService : BaseService<PlaylistItem>, IPlaylistItemService
+    public class SqlPlaylistItemService : BaseService<PlaylistItem>, IPlaylistItem
     {
         public override Expression<Func<PlaylistItem, bool>> GetByIdKey(int id)
         {

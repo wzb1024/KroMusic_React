@@ -112,7 +112,7 @@ const Description = ({ details }) => (
       <Descriptions.Item label="播放数">{details.PlayTimes}</Descriptions.Item>
       <Descriptions.Item label="点赞数">{details.Likes}</Descriptions.Item>
       <Descriptions.Item label="标签" span={2}>
-        {details.Tags.map((n) => n)}
+        {details.Tags.map((n) => n + "、")}
       </Descriptions.Item>
       <Descriptions.Item label="是否公开" span={1}>
         {details.IsPublic ? "是" : "否"}
@@ -135,7 +135,6 @@ class PaylistForm extends Component {
       details: props.details,
     };
     this.Cover = null;
-    this.handleHdimgChange = this.handleHdimgChange.bind(this);
     this.onFinish = this.onFinish.bind(this);
     this.beforeUpload = this.beforeUpload.bind(this);
   }
@@ -181,38 +180,22 @@ class PaylistForm extends Component {
     });
     reader.readAsDataURL(img);
   }
-  handleHdimgChange(info) {
-    if (info.file.status === "uploading") {
-      this.setState({ loading: true });
-      return;
+  beforeUpload(file) {
+    const isLt4M = file.size / 1024 / 1024 < 4;
+    if (!isLt4M) {
+      message.error("请选择小于4M的图片");
     }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, (imageUrl) => {
-        var d = this.state.details;
-        d.Cover = imageUrl;
-        this.setState({
-          details: d,
-        });
+    if (isLt4M) {
+      this.Cover = file;
+      this.getBase64(file, (imageUrl) => {
+        var de = this.state.details;
+        de.Cover = imageUrl;
+        this.setState({ details: de });
       });
     }
+    return false;
   }
-  beforeUpload(file) {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    if (isJpgOrPng && isLt2M) {
-      this.Cover = file;
-      return true;
-    } else {
-      return false;
-    }
-  }
+
   render() {
     const { details } = this.state;
     const { Option, OptGroup } = Select;
@@ -258,7 +241,9 @@ class PaylistForm extends Component {
         <img src={details.Cover} height="100px"></img>
         <Form.Item name="cover" label="封面">
           <Upload
+            accept="image/*"
             beforeUpload={this.beforeUpload}
+            fileList={false}
             showUploadList={false}
             onChange={this.handleHdimgChange}
           >

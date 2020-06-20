@@ -79,15 +79,11 @@ export default class Account extends Component {
     }
   }
   beforeUpload(file) {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
+    const isLt4M = file.size / 1024 / 1024 < 4;
+    if (!isLt4M) {
+      message.error("请选择小于4M的图片");
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
+    return isLt4M;
   }
   componentDidMount() {
     $.getJSON(
@@ -131,7 +127,7 @@ export default class Account extends Component {
           <img src="http://oss.krokro.top/img/20200320121658.png" />
         </div>
         <div id="account_taps">
-          <Tabs type="line" tabPosition="left" defaultActiveKey="6">
+          <Tabs type="line" tabPosition="left" defaultActiveKey="1">
             <TabPane tab="个人资料" key="1">
               <div id="msg_hdimg">
                 <Avatar
@@ -140,6 +136,7 @@ export default class Account extends Component {
                   icon={<UserOutlined />}
                 />
                 <Upload
+                  accept="image/*"
                   beforeUpload={this.beforeUpload}
                   showUploadList={false}
                   onChange={this.handleHdimgChange}

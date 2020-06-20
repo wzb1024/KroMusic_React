@@ -170,16 +170,11 @@ const SingerForm = ({ name, setVisible }) => {
     reader.readAsDataURL(img);
   };
   const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
+    const isLt4M = file.size / 1024 / 1024 < 4;
+    if (!isLt4M) {
+      message.error("请选择小于4M的图片");
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    if (isJpgOrPng && isLt2M) {
-      console.log(file);
+    if (isLt4M) {
       getBase64(file, (imageUrl) => {
         setImg(imageUrl);
       });
@@ -285,7 +280,7 @@ const SingerForm = ({ name, setVisible }) => {
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" style={{ width: "200px" }}>
-          保存修改
+          确认
         </Button>
       </Form.Item>
     </Form>

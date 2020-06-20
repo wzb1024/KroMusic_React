@@ -18,7 +18,7 @@ export default class AccountNav extends Component {
   }
   componentDidMount() {
     $.ajax({
-      url: "/User/Account/SigninState",
+      url: "/SignIn/SigninState",
       type: "get",
       dataType: "json",
       success: function (result) {

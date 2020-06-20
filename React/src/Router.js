@@ -10,7 +10,7 @@ import Singer from "@/components/Singer";
 const router = [
   {
     path: "/",
-    component: Account,
+    component: Home,
     exact: true,
   },
   {

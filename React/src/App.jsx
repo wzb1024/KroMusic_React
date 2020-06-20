@@ -143,6 +143,7 @@ class App extends Component {
               />
             ))}
           </Switch>
+          <div id="footer"></div>
         </div>
       </BrowserRouter>
     );

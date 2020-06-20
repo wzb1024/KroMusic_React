@@ -43,6 +43,11 @@ namespace KroMusic.Areas.Music.Controllers
             manager.Create(name, nationality, gender, age, file);
             return new EmptyResult();
         }
+        public ActionResult GetPopSingers()
+        {
+            var data = manager.GetPopSingers();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

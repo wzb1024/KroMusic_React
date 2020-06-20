@@ -8,55 +8,70 @@ namespace DALFactory
     {
         private static string AssemblyName = ConfigurationManager.AppSettings["Path"].ToString();
         private static string db = ConfigurationManager.AppSettings["DB"].ToString();
-        public static IUserService CreateUserService()
+        public static IUser CreateUserService()
         {
             string className = AssemblyName + "." + db + "UserService";
-            return (IUserService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (IUser)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static ISingerService CreateSingerrService()
+        public static ISinger CreateSingerrService()
         {
             string className = AssemblyName + "." + db + "SingerService";
-            return (ISingerService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (ISinger)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static IMusicService CreateMusicService()
+        public static IMusic CreateMusicService()
         {
             string className = AssemblyName + "." + db + "MusicService";
-            return (IMusicService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (IMusic)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static IPlaylistService CreatePlaylistService()
+        public static ILikeMusic CreateLikeMusicService()
+        {
+            string className = AssemblyName + "." + db + "LikeMusicService";
+            return (ILikeMusic)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IFavoriteMusic CreateFavoriteMusicService()
+        {
+            string className = AssemblyName + "." + db + "FavoriteMusicService";
+            return (IFavoriteMusic)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IPlaylist CreatePlaylistService()
         {
             string className = AssemblyName + "." + db + "PlaylistService";
-            return (IPlaylistService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (IPlaylist)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static ITypeService CreateTypeService()
+        public static IType CreateTypeService()
         {
             string className = AssemblyName + "." + db + "TypeService";
-            return (ITypeService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (IType)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static IFavoritePlaylistService CreateFavoritePlaylistService()
+        public static IFavoritePlaylist CreateFavoritePlaylistService()
         {
-            string className = AssemblyName + "." + db + "FavoritePlaylist";
-            return (IFavoritePlaylistService)Assembly.Load(AssemblyName).CreateInstance(className);
+            string className = AssemblyName + "." + db + "FavoritePlaylistService";
+            return (IFavoritePlaylist)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static IPlaylistCommentService CreatePlaylistCommentService()
+        public static ILikePlaylist CreateLikePlaylistService()
+        {
+            string className = AssemblyName + "." + db + "LikePlaylistService";
+            return (ILikePlaylist)Assembly.Load(AssemblyName).CreateInstance(className);
+        }
+        public static IPlaylistComment CreatePlaylistCommentService()
         {
             string className = AssemblyName + "." + db + "PlaylistCommentService";
-            return (IPlaylistCommentService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (IPlaylistComment)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static IMusicCommentService CreateMusicCommentService()
+        public static IMusicComment CreateMusicCommentService()
         {
             string className = AssemblyName + "." + db + "MusicCommentService";
-            return (IMusicCommentService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (IMusicComment)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static IPlaylistItemService CreatePlaylistItemService()
+        public static IPlaylistItem CreatePlaylistItemService()
         {
             string className = AssemblyName + "." + db + "PlaylistItemService";
-            return (IPlaylistItemService)Assembly.Load(AssemblyName).CreateInstance(className);
+            return (IPlaylistItem)Assembly.Load(AssemblyName).CreateInstance(className);
         }
-        public static IPlaylistTypeService CreatePlaylistTypeService()
+        public static ISingerAttention CreateSingerAttentionService()
         {
-            string className = AssemblyName + "." + db + "PlaylistTypeService";
-            return (IPlaylistTypeService)Assembly.Load(AssemblyName).CreateInstance(className);
+            string className = AssemblyName + "." + db + "SingerAttentionService";
+            return (ISingerAttention)Assembly.Load(AssemblyName).CreateInstance(className);
         }
     }
 }

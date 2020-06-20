@@ -54,6 +54,13 @@ em {
   overflow-y: scroll;
   height: inherit;
   overflow-x: hidden;
+  width: 1920px;
+}
+
+#footer {
+  width: 100%;
+  height: 120px;
+  background-color: #2d3436;
 }
 
 .container {
@@ -290,15 +297,77 @@ em {
   /* width: 77%; */
 }
 
+#hit-singers {
+  background-color: #dfe4ea;
+  height: 560px;
+}
+
 #hit-songs {
   height: 400px;
   width: 100%;
 }
 
 #index-ranking {
-  height: 400px;
+  height: 520px;
   width: 100%;
   background-color: #f1f2f6;
+  text-align: center;
+}
+
+
+.ranking_box {
+  margin: 80px 40px;
+  text-align: left;
+  display: inline-block;
+  width: 160px;
+  height: 360px;
+  border-radius: 30px;
+  background: #d1dbe0;
+  box-shadow: 5px 5px 20px #b2babe,
+    -5px -5px 20px #f0fcff;
+  padding: 10px;
+}
+
+.ranking_box:first-child {
+  background: #8fcff0;
+  box-shadow: 5px 5px 20px #7ab0cc,
+    -5px -5px 20px #a4eeff;
+}
+
+.ranking_box:nth-child(2) {
+  background: #8ff0cf;
+  box-shadow: 5px 5px 20px #7accb0,
+    -5px -5px 20px #a4ffee;
+
+}
+
+.ranking_box:nth-child(3) {
+  background: #8ff09f;
+  box-shadow: 5px 5px 20px #7acc87,
+    -5px -5px 20px #a4ffb7;
+
+}
+
+.ranking_box:nth-child(4) {
+  background: #fff266;
+  box-shadow: 5px 5px 20px #d9ce57,
+    -5px -5px 20px#ffff75;
+
+}
+
+.ranking_box:nth-child(5) {
+  background: #f4884e;
+  box-shadow: 5px 5px 20px #cf7442,
+    -5px -5px 20px #ff9c5a;
+
+}
+
+.ranking_box ul li {
+  padding: 5px;
+  height: 60px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /*æœç´¢*/
@@ -533,9 +602,6 @@ element.style {
   color: #bfbfbf;
 }
 
-.typeItem>button>span.active {
-  color: #bfbfbf;
-}
 
 .typeItem button span {
   font-size: 14px;
@@ -657,6 +723,7 @@ element.style {
   float: right;
   width: 600px;
   min-height: 800px;
+  position: relative;
 }
 
 .account_info {
@@ -711,6 +778,10 @@ ul.self_playlist>li:nth-child(4) {
 /*æ­Œå•*/
 #playlist_container {
   padding: 15px 35px;
+}
+
+#playlists_cantainer {
+  height: 850px;
 }
 
 #playlist_intro {
@@ -954,14 +1025,15 @@ ul.self_playlist>li:nth-child(4) {
   float: left;
   padding: 0 10px;
   font-size: 30px;
-  /* vertical-align: top; */
+  height: 160px;
   max-width: 600px;
 }
 
 #music_title>ul {
+  width: 120px;
   display: inline-block;
   vertical-align: middle;
-  margin: 50px;
+  margin: 20px;
 }
 
 
@@ -976,24 +1048,31 @@ ul.self_playlist>li:nth-child(4) {
   white-space: nowrap;
 }
 
+#music_title ul li a {
+  font-size: 18px;
+  color: gray;
+}
+
 #music_operate {
   margin: 0 auto;
   margin-top: 15px;
   width: max-content;
   height: 50px;
   border-radius: 35px;
+  line-height: 50px;
   /* padding: 10px 22px; */
 }
 
 #music_operate ul {
   font-size: 0;
   width: 100%;
+  line-height: 50px;
 }
 
 #music_operate ul li {
   display: inline-block;
-  height: 30px;
-  line-height: 30px;
+  height: 50px;
+  line-height: 50px;
   margin: 0 20px;
 }
 
@@ -1105,7 +1184,7 @@ ul.self_playlist>li:nth-child(4) {
   position: relative;
   width: 100%;
   height: 15%;
-  /* padding-top: 15px; */
+  padding-top: 15px;
   background: rgba(255, 255, 255, 0.3);
 }
 
@@ -1403,7 +1482,7 @@ ul#carousel_box>li {
   height: 30%;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.3);
-  bottom: -25px;
+  bottom: -30px;
   text-align: left;
   transform: initial;
 }
@@ -1446,10 +1525,141 @@ ul#carousel_box>li {
 
 #singer_content {
   margin-top: 40px;
+  min-height: 510px;
 }
 
 .attention_item {
   display: inline-block;
   padding: 10px;
   text-align: center;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#singer_card .music-card {
+  margin: 70px auto;
+  background: #fff;
+  box-shadow: 0px 8px 28px -9px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  position: relative;
+  width: 220px;
+  height: 300px;
+  border-radius: 6px;
+}
+
+#singer_card .image {
+  background-size: cover;
+  position: absolute;
+  z-index: 1;
+  opacity: 0.3;
+  height: 220px;
+  width: 220px;
+}
+
+#SCarousel {
+  /* height:200px; */
+  width: 90%;
+  margin: 0 auto;
+}
+
+#singer_card .image:after {
+  height: 70px;
+  content: '';
+  top: 150px;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  background: linear-gradient(rgba(9, 2, 4, 0), #444);
+}
+
+#singer_card .wave {
+  position: absolute;
+  height: 400px;
+  width: 400px;
+  opacity: 0.6;
+  left: 0;
+  top: 0;
+  margin-left: -42%;
+  margin-top: -90%;
+  background: radial-gradient(#353535, #383737);
+}
+
+#singer_card .wave:nth-child(2),
+#singer_card .wave:nth-child(3) {
+  top: 10px;
+}
+
+#singer_card .playing .wave {
+  border-radius: 40%;
+  animation: wave 3000ms infinite linear;
+}
+
+/* when stop */
+#singer_card .wave {
+  border-radius: 40%;
+  animation: wave 55s infinite linear;
+}
+
+#singer_card .playing .wave:nth-child(2) {
+  animation-duration: 4000ms;
+}
+
+/* when stop */
+#singer_card .wave:nth-child(2) {
+  animation-duration: 50s;
+}
+
+#singer_card .playing .wave:nth-child(3) {
+  animation-duration: 5000ms;
+}
+
+/* when stop */
+#singer_card .wave:nth-child(3) {
+  animation-duration: 45s;
+}
+
+#singer_card .info {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+#singer_card .title {
+  font-size: 1.4em;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-family: 'Reem Kufi', sans-serif;
+}
+
+#singer_card .artist {
+  color: #cfcfcf;
+  font-size: 1.2em;
+  letter-spacing: 0.08em;
+  font-family: 'Reem Kufi', sans-serif;
+  margin-top: -10px;
+}
+
+#singer_card .fa {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+}
+
+#singer_card .fa-play {
+  display: none;
 }

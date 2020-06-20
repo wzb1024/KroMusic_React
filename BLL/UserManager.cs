@@ -9,6 +9,7 @@ using IDAL;
 using DALFactory;
 using System;
 using System.Web.ModelBinding;
+using System.Security;
 
 namespace BLL
 {
@@ -19,8 +20,16 @@ namespace BLL
         //private static UserManager instance = new UserManager();
         //public static UserManager Instance { get { return instance; } }
 
-        IUserService service = DataAccess.CreateUserService();
-        
+        IUser service = DataAccess.CreateUserService();
+        public void saveChanges()
+        {
+            DBContextFactory.Context.SaveChanges();
+        }
+        public IQueryable<User> GetAllUsers(bool AsNoTracking = true)
+        {
+            if (AsNoTracking) return service.GetAllAsNoTracking();
+            else return service.GetAll();
+        }
         public static User GetUser(int id)
         {
             return DBContextFactory.Context.User.Find(id);
@@ -33,29 +42,31 @@ namespace BLL
             else
             {
                 int uid = int.Parse(userId);
-                return DBContextFactory.Context.User.Find(uid);
+                return GetUser(uid);
             }
            
         }
         public bool Success(string userName, string password)
         {
-            return service.GetAll().Any(m => m.UserName == userName && m.Password == password);
+            return GetAllUsers().Any(m => m.UserName == userName && m.Password == password);
         }
         public int GetId(string userName)
         {
-            return service.GetAll().First(m => m.UserName == userName).Id;
+            return GetAllUsers().First(m => m.UserName == userName).Id;
         }
         public bool CheckName(string userName)
         {
-            return service.GetAllAsNoTracking().FirstOrDefault(m => m.UserName == userName)!=null;
+            return GetAllUsers().FirstOrDefault(m => m.UserName == userName)!=null;
         }
+        //注册时检测昵称
         public bool ExistNickName(string nickName)
         {
-            return service.GetAllAsNoTracking().FirstOrDefault(m => m.NickName == nickName) != null;
+            return GetAllUsers().FirstOrDefault(m => m.NickName == nickName) != null;
         }
+        //修改昵称时检测
         public bool ExistNickName(string nickName, int id)
         {
-            return service.GetAllAsNoTracking().FirstOrDefault(m => m.NickName == nickName && m.Id != id) != null;
+            return GetAllUsers().FirstOrDefault(m => m.NickName == nickName && m.Id != id) != null;
         }
         public bool Create(string userName, string password, string nikName, string gender, int age, string email, string path)
         {
@@ -72,7 +83,7 @@ namespace BLL
         public AccountInfoJsonModel GetAccountMsg(int id)
         {
             AccountInfoJsonModel model;
-            var user = service.GetById(id);
+            var user = GetUser(id);
             model = ConvertHelper.UserConvert(user);  
             return model;
         }
@@ -156,8 +167,11 @@ namespace BLL
             var self = GetSelf();
             var exist = self.FavoriteMusic.FirstOrDefault(it => it.MusicId == mid);
             if(exist != null)
-            DBContextFactory.Context.FavoriteMusic.Remove(exist);
-            return DBContextFactory.Context.SaveChanges() > 0;
+            {
+                var sev = DataAccess.CreateFavoriteMusicService();
+               return sev.Remove(exist.Id)>0;
+            }
+            return false;
 
         }
         public bool Focus(int id)
@@ -166,8 +180,9 @@ namespace BLL
             var exist = self.SingerAttention.FirstOrDefault(it => it.SingerId == id);
             if(exist!=null)
             {
-                self.SingerAttention.Remove(exist);
-                DBContextFactory.Context.SaveChanges();
+                var sev = DataAccess.CreateSingerAttentionService();
+                sev.Remove(exist.Id);
+                
                 return false;
             }
             else
@@ -176,7 +191,7 @@ namespace BLL
                 SingerAttention SingerAttention = new SingerAttention();
                 SingerAttention.SingerId = id;
                 self.SingerAttention.Add(SingerAttention);
-                DBContextFactory.Context.SaveChanges();
+                saveChanges();
                 return true;
             }
         }
@@ -197,8 +212,10 @@ namespace BLL
         }
         public void Visit(int id)
         {
-            DBContextFactory.Context.PlaylistComment.Find(id).Visited = true;
-            DBContextFactory.Context.SaveChanges();
+            var sev = DataAccess.CreatePlaylistCommentService();
+            var c = sev.GetById(id);
+            c.Visited = true;
+            sev.Edit(c);
         }
     }
 }

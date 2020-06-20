@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
-class Carousel extends Component {
+import Slider from "react-slick";
+class PCarousel extends Component {
   constructor() {
     super();
     this.state = {
@@ -111,4 +112,59 @@ class Carousel extends Component {
     );
   }
 }
-export default Carousel;
+
+const Card = ({ data }) => {
+  const init = () => {
+    console.log(data);
+  };
+  useEffect(init, []);
+  return (
+    <div id="singer_card">
+      <div className="music-card playing">
+        <img src={data.Image} className="image"></img>
+
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+
+        <div className="info">
+          <h2 className="title">{data.Name}</h2>
+          <div className="artist">关注人数：{data.Fans}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SCarousel = () => {
+  const [singers, setSingers] = useState([]);
+  const init = () => {
+    $.getJSON("/Music/Singer/GetPopSingers", function (result) {
+      setSingers(result);
+    });
+  };
+
+  useEffect(init, [singers]);
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 6,
+    initialSlide: 0,
+    arrows: true,
+  };
+  return (
+    <Slider {...settings}>
+      {singers.map((item) => (
+        <div key={item.Id}>
+          <Link to={"/singer/" + item.Id}>
+            <Card data={item}></Card>
+          </Link>
+        </div>
+      ))}
+    </Slider>
+  );
+};
+
+export { PCarousel, SCarousel };

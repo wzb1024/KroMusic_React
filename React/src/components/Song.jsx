@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import { message, Button } from "antd";
 import { Comment, Avatar, Input, Tooltip } from "antd";
+import Download from "@/components/Download";
 import moment from "moment";
 import $ from "jquery";
 import Add from "@/components/Add";
@@ -209,6 +210,9 @@ export default class Song extends Component {
             <li>
               <Add id={details.Id} addToList={this.props.addToList}></Add>
             </li>
+            <li>
+              <Download data={details} />
+            </li>
           </ul>
         </div>
         {/* <div id="music_lyric_box" className="shadow">
@@ -246,7 +250,7 @@ export default class Song extends Component {
               全部评论&nbsp;<small>共{comments.length}条评论</small>
             </h3>
             {comments.map((item, i) => (
-              <div key={item.Id}>
+              <div key={item.Id} style={{ margin: "2px 0px" }}>
                 <Comment
                   actions={[
                     <SubEditor
@@ -321,8 +325,8 @@ export default class Song extends Component {
         <div id="relate_music_box">
           <h4>相关音乐</h4>
           {relate.map((item) => (
-            <div className="relate_music shadow" key={item.Id}>
-              <Link to={"/song/" + item.Id}>
+            <Link key={item.Id} to={"/song/" + item.Id}>
+              <div className="relate_music shadow">
                 <img
                   src={item.ImagePath}
                   style={{
@@ -332,11 +336,11 @@ export default class Song extends Component {
                   height="60px"
                   width="50px"
                 />
-              </Link>
-              <div style={{ fontSize: "16px", lineHeight: "60px" }}>
-                <Link to={"/song/" + item.Id}>{item.MusicName}</Link>
+                <div style={{ fontSize: "16px", lineHeight: "60px" }}>
+                  {item.MusicName}
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

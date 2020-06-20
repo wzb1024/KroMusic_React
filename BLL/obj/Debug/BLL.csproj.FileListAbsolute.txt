@@ -45,3 +45,11 @@ D:\Project\KroMusic\BLL\bin\Debug\TagLibSharp.dll
 D:\Project\KroMusic\BLL\bin\Debug\TagLibSharp.pdb
 D:\Project\KroMusic\BLL\bin\Debug\TagLibSharp.xml
 D:\Project\KroMusic\BLL\bin\Debug\Interop.Shell32.dll
+D:\Project\KroMusic\BLL\bin\Debug\System.Configuration.ConfigurationManager.dll
+D:\Project\KroMusic\BLL\bin\Debug\System.Security.AccessControl.dll
+D:\Project\KroMusic\BLL\bin\Debug\System.Security.Permissions.dll
+D:\Project\KroMusic\BLL\bin\Debug\System.Security.Principal.Windows.dll
+D:\Project\KroMusic\BLL\bin\Debug\System.Configuration.ConfigurationManager.xml
+D:\Project\KroMusic\BLL\bin\Debug\System.Security.AccessControl.xml
+D:\Project\KroMusic\BLL\bin\Debug\System.Security.Permissions.xml
+D:\Project\KroMusic\BLL\bin\Debug\System.Security.Principal.Windows.xml

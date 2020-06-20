@@ -30,7 +30,7 @@ const Signup = (props) => {
 
   const onFinish = (values) => {
     $.post(
-      "/User/Account/Signup",
+      "/SignIn/Signup",
       {
         UserName: values.username,
         Password: values.password,
@@ -50,14 +50,14 @@ const Signup = (props) => {
     );
   };
   const CheckUserName = (userName) => {
-    $.getJSON("/User/Account/CheckUserName", { UserName: userName }, function (
+    $.getJSON("/SignIn/CheckUserName", { UserName: userName }, function (
       result
     ) {
       $("#ckUN").html(result.Msg);
     });
   };
   const CheckNickName = (nickNme) => {
-    $.getJSON("/User/Account/CheckNickName", { NickName: nickNme }, function (
+    $.getJSON("/SignIn/CheckNickName", { NickName: nickNme }, function (
       result
     ) {
       $("#ckNN").html(result.Msg);
