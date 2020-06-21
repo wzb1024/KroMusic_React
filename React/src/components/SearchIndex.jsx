@@ -361,17 +361,6 @@ class SearchIndex extends Component {
               ))}
             </ul>
           </div>
-          <div id="search-pop-song">
-            <div
-              style={{
-                fontSize: "15px",
-                fontWeight: "bold",
-                color: "rgba(0, 0, 0, 0.5)",
-              }}
-            >
-              热门歌曲
-            </div>
-          </div>
         </div>
       </div>
     );

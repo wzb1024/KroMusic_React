@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using IDAL;
+﻿using IDAL;
 using Model;
+using System;
+using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class SqlPlaylistService:BaseService<Playlist>,IPlaylist
+    public class SqlPlaylistService : BaseService<Playlist>, IPlaylist
     {
 
         public override Expression<Func<Playlist, bool>> GetByIdKey(int id)
@@ -17,7 +13,7 @@ namespace DAL
             return u => u.Id == id;
         }
     }
-    public class SqlFavoritePlaylistService : BaseService<FavoritePlaylist>,IFavoritePlaylist
+    public class SqlFavoritePlaylistService : BaseService<FavoritePlaylist>, IFavoritePlaylist
     {
 
         public override Expression<Func<FavoritePlaylist, bool>> GetByIdKey(int id)

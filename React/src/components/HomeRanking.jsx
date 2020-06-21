@@ -10,16 +10,27 @@ const HomeRanking = () => {
   const [UAlist, setUAlist] = useState([]);
   const [JKlist, setJKlist] = useState([]);
   const init = () => {
-    $.getJSON("/Music/Song/GetPopSongs", (result) => setLikelist(result));
-    $.getJSON("/Music/Song/GetNewSongs", (result) => setNewlist(result));
-    $.getJSON("/Music/Song/GetRegionSongs", { region: "内地" }, (result) =>
-      setdemosticlist(result)
+    $.getJSON("/Music/Song/GetPopSongs", { count: 4 }, (result) =>
+      setLikelist(result)
     );
-    $.getJSON("/Music/Song/GetRegionSongs", { region: "欧美" }, (result) =>
-      setUAlist(result)
+    $.getJSON("/Music/Song/GetNewSongs", { count: 4 }, (result) =>
+      setNewlist(result)
     );
-    $.getJSON("/Music/Song/GetRegionSongs", { region: "日韩" }, (result) =>
-      setJKlist(result)
+    $.getJSON(
+      "/Music/Song/GetRegionSongs",
+
+      { region: "内地", count: 4 },
+      (result) => setdemosticlist(result)
+    );
+    $.getJSON(
+      "/Music/Song/GetRegionSongs",
+      { region: "欧美", count: 4 },
+      (result) => setUAlist(result)
+    );
+    $.getJSON(
+      "/Music/Song/GetRegionSongs",
+      { region: "日韩", count: 4 },
+      (result) => setJKlist(result)
     );
   };
 

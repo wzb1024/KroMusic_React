@@ -2,17 +2,17 @@
 
 namespace KroMusic.Areas.Music
 {
-    public class MusicAreaRegistration : AreaRegistration 
+    public class MusicAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "Music";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "Music_default",

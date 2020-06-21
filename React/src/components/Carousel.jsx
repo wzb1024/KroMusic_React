@@ -114,10 +114,6 @@ class PCarousel extends Component {
 }
 
 const Card = ({ data }) => {
-  const init = () => {
-    console.log(data);
-  };
-  useEffect(init, []);
   return (
     <div id="singer_card">
       <div className="music-card playing">
@@ -144,7 +140,7 @@ const SCarousel = () => {
     });
   };
 
-  useEffect(init, [singers]);
+  useEffect(init, singers);
   var settings = {
     dots: true,
     infinite: true,

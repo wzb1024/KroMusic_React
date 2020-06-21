@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Web;
+﻿using log4net;
+using System;
 using System.Web.Mvc;
-using log4net;
 
 namespace KroMusic.Filter
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
-    public class MyExceptionAttribute:HandleErrorAttribute
+    public class MyExceptionAttribute : HandleErrorAttribute
     {
-            ILog log = LogManager.GetLogger(typeof(MyExceptionAttribute));
+        ILog log = LogManager.GetLogger(typeof(MyExceptionAttribute));
         public override void OnException(ExceptionContext filterContext)
         {
             if (!filterContext.ExceptionHandled)

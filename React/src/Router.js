@@ -6,6 +6,8 @@ import Account from "@/components/Account";
 import Playlist from "@/components/Playlist";
 import Song from "@/components/Song";
 import Singer from "@/components/Singer";
+import BannerTop from "./components/BannerTop";
+import Singers from "./components/Singers";
 
 const router = [
   {
@@ -35,7 +37,7 @@ const router = [
   },
   {
     path: "/singers",
-    component: Home,
+    component: Singers,
     exact: true,
   },
   {
@@ -45,7 +47,7 @@ const router = [
   },
   {
     path: "/ranking",
-    component: Home,
+    component: BannerTop,
     exact: true,
   },
 ];

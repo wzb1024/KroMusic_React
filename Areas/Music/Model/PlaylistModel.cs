@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace KroMusic.Areas.Music.Data
+﻿namespace KroMusic.Areas.Music.Data
 {
     public class PlaylistViewModel
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string Name { get; set; }
         public bool IsPublic { get; set; }
         public string Description { get; set; }

@@ -631,13 +631,13 @@ element.style {
 
 #breadcrumb button span {
   font-size: 17px;
-  color: #bfbfbf;
+  color: #1890FF;
   transition: all 0.1s;
 }
 
 #breadcrumb>span {
   font-size: 16px;
-  color: #bfbfbf;
+  color: #1890FF;
 }
 
 #sort_btn button {
@@ -1663,3 +1663,140 @@ ul#carousel_box>li {
 #singer_card .fa-play {
   display: none;
 }
+
+
+/**********/
+#singer_container {
+  width: 42%;
+}
+
+#singer_content {
+  margin-top: 40px;
+}
+
+.attention_item {
+  display: inline-block;
+  padding: 10px;
+  text-align: center;
+}
+
+.singer_container {
+  width: 60%;
+  margin: 0 auto;
+  min-height: 700px;
+}
+
+.singer_box {
+  display: inline-block;
+  width: 200px;
+  height: 230px;
+}
+
+/***排行榜****/
+.toplist_nav_item {
+  font-size: 90px;
+  display: block;
+  line-height: 22px;
+  padding: 8px 17px
+}
+
+.toplist_nav_list {
+  float: left;
+  width: 200px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black
+}
+
+.toplist_nav_tit {
+  font-size: 20px;
+  line-height: 60px;
+  font-weight: 400;
+  border-bottom: 5px solid #ebebeb
+}
+
+dd,
+dl,
+dt {
+  margin: 0;
+  padding: 0;
+}
+
+.mod_songlist_toolbar {
+  position: relative;
+  margin-bottom: 20px;
+  font-size: 0px;
+}
+
+.mod_btn_green {
+  border-radius: 2px;
+  font-size: 14px;
+  margin-right: 6px;
+  padding: 0 23px;
+  height: 38px;
+  line-height: 38px;
+  display: inline-block;
+  white-space: nowrap;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid #31c27c;
+  background-color: #31c27c;
+  color: #fff;
+}
+
+.mod_btn_green__icon_play {
+  width: 13px;
+  height: 16px;
+  background-position: -80px -220px;
+  vertical-align: -3px;
+}
+
+.mod_songlist {
+  margin-bottom: 60px;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.songlist__header {
+  height: 100px;
+  line-height: 100px;
+  position: relative;
+  width: 100%;
+}
+
+li {
+  list-style: none;
+}
+
+.songlist__header_name {
+  float: left;
+  position: relative;
+  margin-right: 200px;
+}
+
+.songlist__header_author {
+  float: left;
+  box-sizing: border-box;
+}
+
+.songlist__header_time {
+  position: absolute;
+  top: 2px;
+  right: 25px;
+  width: 50px;
+}
+
+.songlist_song {
+  height: 160px;
+  width: 100%;
+}
+
+.songlist_singer {
+  margin-left: 180px;
+}
+
+.songlist_time {
+  margin-left: 480px;
+}
+
+/***排行榜****/

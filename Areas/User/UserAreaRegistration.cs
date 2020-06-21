@@ -2,17 +2,17 @@
 
 namespace KroMusic.Areas.User
 {
-    public class UserAreaRegistration : AreaRegistration 
+    public class UserAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "User";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "User_default",

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
-using DAL;
-using System.Web;
+﻿using DAL;
 using IDAL;
-using System.Security;
-using System.IO;
+using Model;
 using Shell32;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
 
 namespace BLL
 {
@@ -18,9 +15,9 @@ namespace BLL
     {
 
         IMusic service = DALFactory.DataAccess.CreateMusicService();
-       
 
-         public  void saveChanges()
+
+        public void saveChanges()
         {
             DBContextFactory.Context.SaveChanges();
         }
@@ -44,16 +41,16 @@ namespace BLL
         {
             List<Music> songs = new List<Music>();
             List<SongJsonModel> models = new List<SongJsonModel>();
-            var m= GetSong(id);
+            var m = GetSong(id);
             songs.Add(m);
-            var relate = GetSong(id,false).Singer.Music.Where(it=>it.Id!=id).Take(6).ToList();
+            var relate = GetSong(id, false).Singer.Music.Where(it => it.Id != id).Take(6).ToList();
             foreach (var item in relate)
             {
                 songs.Add(item);
             }
             foreach (var item in songs)
             {
-                var i =ConvertHelper.SongConvert(item);
+                var i = ConvertHelper.SongConvert(item);
                 models.Add(i);
             }
 
@@ -62,7 +59,7 @@ namespace BLL
         }
         public List<SearchResultItemJsonModel> GetMusicsByKeywords(string keywords)
         {
-            var results = GetAllSongs().Where(u => u.MusicName.Contains(keywords)||keywords.Contains(u.MusicName)).ToList<Music>();
+            var results = GetAllSongs().Where(u => u.MusicName.Contains(keywords) || keywords.Contains(u.MusicName)).ToList<Music>();
             List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
             foreach (var item in results)
             {
@@ -74,7 +71,7 @@ namespace BLL
         public CollectJsonModel Collect(int musicId)
         {
             var self = UserManager.GetSelf();
-            var exist = self.FavoriteMusic.FirstOrDefault(u => u.MusicId== musicId );
+            var exist = self.FavoriteMusic.FirstOrDefault(u => u.MusicId == musicId);
             if (exist == null)
             {
                 FavoriteMusic s = new FavoriteMusic();
@@ -82,7 +79,7 @@ namespace BLL
                 s.MusicId = musicId;
                 self.FavoriteMusic.Add(s);
                 saveChanges();
-                return new CollectJsonModel {State=true, Collected = true, Message = "已添加" };
+                return new CollectJsonModel { State = true, Collected = true, Message = "已添加" };
             }
             else
             {
@@ -94,8 +91,8 @@ namespace BLL
         public LikeJsonModel Like(int musicId)
         {
             var self = UserManager.GetSelf();
-            var exist = self.LikeMusic.FirstOrDefault(u => u.MusicId == musicId );
-            var n = GetSong(musicId,false);
+            var exist = self.LikeMusic.FirstOrDefault(u => u.MusicId == musicId);
+            var n = GetSong(musicId, false);
             if (exist == null)
             {
                 LikeMusic s = new LikeMusic();
@@ -130,23 +127,23 @@ namespace BLL
                 u.MusicName = m.MusicName;
                 u.Path = m.Path;
                 u.SingerName = m.Singer.Name;
-                var sp= m.Span.Split(':');
+                var sp = m.Span.Split(':');
                 int min = int.Parse(sp[1]);
                 int se = int.Parse(sp[2]);
-                u.Span = (min*60+se).ToString();
+                u.Span = (min * 60 + se).ToString();
                 if (self != null)
                 {
-                    
+
                     u.Favorite = m.FavoriteMusic.Any(it => it.UserId == self.Id);
                 }
                 mlist.Add(u);
             }
             return mlist;
         }
-        public bool AddToPlaylist(int mid,int pid)
+        public bool AddToPlaylist(int mid, int pid)
         {
             var song = GetSong(mid, false);
-            bool exist = song.PlaylistItem.FirstOrDefault(u => u.PlaylistId == pid)!=null;
+            bool exist = song.PlaylistItem.FirstOrDefault(u => u.PlaylistId == pid) != null;
             if (exist) return false;
             else
             {
@@ -221,7 +218,7 @@ namespace BLL
         {
             var userId = UserManager.GetSelf().Id;
             var song = GetSong(id);
-            var target = song.MusicComment.FirstOrDefault(u=>u.Id==targetId);
+            var target = song.MusicComment.FirstOrDefault(u => u.Id == targetId);
             MusicComment comment = new MusicComment();
             comment.Content = value;
             comment.UserId = userId;
@@ -250,26 +247,26 @@ namespace BLL
             model.TargetId = target.Id;
             return model;
         }
-        public bool ExistSong(string title,string singer)
+        public bool ExistSong(string title, string singer)
         {
-            return GetAllSongs().FirstOrDefault(it => it.MusicName == title&& it.Singer.Name == singer) != null;
+            return GetAllSongs().FirstOrDefault(it => it.MusicName == title && it.Singer.Name == singer) != null;
         }
         public bool ExistSinger(string singer)
         {
-            return DBContextFactory.Context.Singer.FirstOrDefault(it=>it.Name==singer) != null;
+            return DBContextFactory.Context.Singer.FirstOrDefault(it => it.Name == singer) != null;
         }
-        public void Create(string title,string singer, HttpPostedFileBase file)
+        public void Create(string title, string singer, HttpPostedFileBase file)
         {
 
             string desDir = HttpContext.Current.Server.MapPath(Config.MusicDir);
             string imgDir = HttpContext.Current.Server.MapPath(Config.MusicCoverDir);
-            string filename = singer + "-" + title+".mp3";
+            string filename = singer + "-" + title + ".mp3";
             string fullname = desDir + filename;
             if (!File.Exists(fullname))
             {
                 Music song = new Music();
                 var smanager = new SingerManager();
-                int sid = smanager.GetAllSingers().FirstOrDefault(u=>u.Name==singer).Id;
+                int sid = smanager.GetAllSingers().FirstOrDefault(u => u.Name == singer).Id;
                 song.SingerId = sid;
                 file.SaveAs(fullname);
                 ShellClass sh = new ShellClass();
@@ -291,7 +288,7 @@ namespace BLL
                 }
                 catch
                 {
-                    song.ImagePath = Config.MusicCoverDir+"default.jpg";
+                    song.ImagePath = Config.MusicCoverDir + "default.jpg";
                 }
                 song.Path = Config.MusicDir + filename;
                 song.MusicName = title;

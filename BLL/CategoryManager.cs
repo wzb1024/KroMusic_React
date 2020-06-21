@@ -1,13 +1,11 @@
-﻿using DAL;
-using IDAL;
-using Model;
+﻿using IDAL;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BLL
 {
 
-    public class CategoryManager 
+    public class CategoryManager
     {
         IType service = DALFactory.DataAccess.CreateTypeService();
         /// <summary>
@@ -16,7 +14,7 @@ namespace BLL
         /// <returns></returns>
         public List<SubTypeJsonModel> GetAllCategories()
         {
-           
+
             List<SubTypeJsonModel> model = new List<SubTypeJsonModel>();
             var all = service.GetAllAsNoTracking().ToList();
             foreach (var item in all)
@@ -34,6 +32,6 @@ namespace BLL
             }
             return model;
         }
-      
+
     }
 }

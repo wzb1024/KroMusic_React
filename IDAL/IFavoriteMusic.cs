@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
+﻿using Model;
 
 namespace IDAL
 {
-    public interface IFavoriteMusic:IBaseService<FavoriteMusic>
+    public interface IFavoriteMusic : IBaseService<FavoriteMusic>
     {
     }
 }

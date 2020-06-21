@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class SqlMusicService : BaseService<Music>,IMusic
+    public class SqlMusicService : BaseService<Music>, IMusic
     {
         public override Expression<Func<Music, bool>> GetByIdKey(int id)
         {

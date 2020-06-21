@@ -1,19 +1,16 @@
 ﻿using DAL;
+using DALFactory;
+using IDAL;
 using Model;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
-using IDAL;
-using DALFactory;
-using System;
-using System.Web.ModelBinding;
-using System.Security;
 
 namespace BLL
 {
-   
+
     public class UserManager
     {
         //private UserManager() { }                                       //单例模式
@@ -44,7 +41,7 @@ namespace BLL
                 int uid = int.Parse(userId);
                 return GetUser(uid);
             }
-           
+
         }
         public bool Success(string userName, string password)
         {
@@ -56,7 +53,7 @@ namespace BLL
         }
         public bool CheckName(string userName)
         {
-            return GetAllUsers().FirstOrDefault(m => m.UserName == userName)!=null;
+            return GetAllUsers().FirstOrDefault(m => m.UserName == userName) != null;
         }
         //注册时检测昵称
         public bool ExistNickName(string nickName)
@@ -78,13 +75,13 @@ namespace BLL
             user.Gender = gender;
             user.Age = age;
             user.Email = email;
-            return service.Create(user)>0;
+            return service.Create(user) > 0;
         }
         public AccountInfoJsonModel GetAccountMsg(int id)
         {
             AccountInfoJsonModel model;
             var user = GetUser(id);
-            model = ConvertHelper.UserConvert(user);  
+            model = ConvertHelper.UserConvert(user);
             return model;
         }
         public List<PlaylistJsonModel> GetSelfPlaylists()
@@ -101,7 +98,7 @@ namespace BLL
                 playlist.Cover = item.Cover;
                 playlist.CreateTime = item.CreateTime.ToString();
                 playlist.Likes = 0;
-                playlist.PlayTimes = 0;       
+                playlist.PlayTimes = 0;
                 playlist.NickName = item.User.NickName;
                 playlist.IsPublic = item.IsPublic;
                 var tag = item.PlaylistType.ToList();
@@ -116,7 +113,7 @@ namespace BLL
                 playlist.TagId = ids;
                 var songs = item.PlaylistItem.ToList();
                 var items = new List<SongJsonModel>();
-                foreach ( var i in songs)
+                foreach (var i in songs)
                 {
                     SongJsonModel m = new SongJsonModel();
                     m.Id = i.Id;
@@ -137,13 +134,13 @@ namespace BLL
             self.Hdimage = path;
             service.Edit(self);
         }
-        public bool ModifyMsg(ModifyMsgJsonModel model,int id)
+        public bool ModifyMsg(ModifyMsgJsonModel model, int id)
         {
             var user = service.GetById(id);
             user.Age = model.Age;
             user.Email = model.Email;
             user.NickName = model.NickName;
-            return service.Edit(user)>0;
+            return service.Edit(user) > 0;
         }
         public List<SongJsonModel> GetFavoSongs()
         {
@@ -166,10 +163,10 @@ namespace BLL
         {
             var self = GetSelf();
             var exist = self.FavoriteMusic.FirstOrDefault(it => it.MusicId == mid);
-            if(exist != null)
+            if (exist != null)
             {
                 var sev = DataAccess.CreateFavoriteMusicService();
-               return sev.Remove(exist.Id)>0;
+                return sev.Remove(exist.Id) > 0;
             }
             return false;
 
@@ -178,16 +175,16 @@ namespace BLL
         {
             var self = GetSelf();
             var exist = self.SingerAttention.FirstOrDefault(it => it.SingerId == id);
-            if(exist!=null)
+            if (exist != null)
             {
                 var sev = DataAccess.CreateSingerAttentionService();
                 sev.Remove(exist.Id);
-                
+
                 return false;
             }
             else
             {
-                
+
                 SingerAttention SingerAttention = new SingerAttention();
                 SingerAttention.SingerId = id;
                 self.SingerAttention.Add(SingerAttention);

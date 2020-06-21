@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { Tabs, Avatar, Result, Button, Upload, message } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  HeartOutlined,
+  UnorderedListOutlined,
+  ProfileOutlined,
+  TeamOutlined,
+  FileAddOutlined,
+} from "@ant-design/icons";
 import $ from "jquery";
 import CollectedPlaylists from "@/components/CollectedPlaylists";
 import MyPlaylists from "@/components/MyPlaylists";
@@ -127,8 +134,20 @@ export default class Account extends Component {
           <img src="http://oss.krokro.top/img/20200320121658.png" />
         </div>
         <div id="account_taps">
-          <Tabs type="line" tabPosition="left" defaultActiveKey="1">
-            <TabPane tab="个人资料" key="1">
+          <Tabs
+            type="line"
+            tabPosition="left"
+            defaultActiveKey="1"
+            tabBarGutter={20}
+          >
+            <TabPane
+              tab={
+                <span>
+                  <UserOutlined style={{ margin: "0px" }} /> 个人资料
+                </span>
+              }
+              key="1"
+            >
               <div id="msg_hdimg">
                 <Avatar
                   src={state.Hdimage}
@@ -191,19 +210,54 @@ export default class Account extends Component {
                 </Button>
               </div>
             </TabPane>
-            <TabPane tab="我喜欢" key="2">
+            <TabPane
+              tab={
+                <span>
+                  <HeartOutlined style={{ margin: "0px" }} /> 我喜欢
+                </span>
+              }
+              key="2"
+            >
               <FavoriteSongs addToList={this.props.addToList}></FavoriteSongs>
             </TabPane>
-            <TabPane tab="我的歌单" key="3">
+            <TabPane
+              tab={
+                <span>
+                  <UnorderedListOutlined style={{ margin: "0px" }} /> 我的歌单
+                </span>
+              }
+              key="3"
+            >
               <MyPlaylists></MyPlaylists>
             </TabPane>
-            <TabPane tab="收藏歌单" key="4">
+            <TabPane
+              tab={
+                <span>
+                  <ProfileOutlined style={{ margin: "0px" }} /> 收藏歌单
+                </span>
+              }
+              key="4"
+            >
               <CollectedPlaylists></CollectedPlaylists>
             </TabPane>
-            <TabPane tab="关注歌手" key="5">
+            <TabPane
+              tab={
+                <span>
+                  <TeamOutlined style={{ margin: "0px" }} /> 关注歌手
+                </span>
+              }
+              key="5"
+            >
               <Attention></Attention>
             </TabPane>
-            <TabPane tab="扩展乐库" key="6">
+            <TabPane
+              tab={
+                <span>
+                  <FileAddOutlined style={{ margin: "0px" }} /> 扩展乐库
+                </span>
+              }
+              key="6"
+            >
               <Extend></Extend>
             </TabPane>
           </Tabs>

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace IDAL
 {
-    public interface IBaseService<T> where T:class,new()
+    public interface IBaseService<T> where T : class, new()
     {
         int Create(T model);
         int Edit(T model);

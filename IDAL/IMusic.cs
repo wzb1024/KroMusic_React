@@ -2,7 +2,7 @@
 
 namespace IDAL
 {
-    public interface IMusic:IBaseService<Music>
+    public interface IMusic : IBaseService<Music>
     {
     }
 }

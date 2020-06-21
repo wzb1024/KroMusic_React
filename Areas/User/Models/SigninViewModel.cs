@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KroMusic.Areas.User.Models
 {
     public class SigninViewModel
     {
         [Required]
-        [Display(Name ="用户名")]
+        [Display(Name = "用户名")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]

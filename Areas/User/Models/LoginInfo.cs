@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace KroMusic.Areas.User.Models
+﻿namespace KroMusic.Areas.User.Models
 {
     /// <summary>
     /// 用于返回登录json数据

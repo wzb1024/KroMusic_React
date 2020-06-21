@@ -2,7 +2,7 @@
 
 namespace IDAL
 {
-   public interface ILikeMusic:IBaseService<LikeMusic>
+    public interface ILikeMusic : IBaseService<LikeMusic>
     {
     }
 }

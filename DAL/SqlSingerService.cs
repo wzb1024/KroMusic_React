@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using IDAL;
+﻿using IDAL;
 using Model;
+using System;
+using System.Linq.Expressions;
 
 namespace DAL
 {
-    public class SqlSingerService : BaseService<Singer>,ISinger
+    public class SqlSingerService : BaseService<Singer>, ISinger
     {
         public override Expression<Func<Singer, bool>> GetByIdKey(int id)
         {

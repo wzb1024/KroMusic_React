@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.IO;
-using Shell32;
-using KroMusic.Filter;
-using BLL;
-using Newtonsoft.Json;
+﻿using System.Web.Mvc;
 
 namespace KroMusic.Controllers
 {
@@ -23,6 +14,7 @@ namespace KroMusic.Controllers
         [Route("signup")]
         [Route("song/{id}")]
         [Route("account")]
+        [Route("singers")]
         public ActionResult Index()
         {
             return PartialView();

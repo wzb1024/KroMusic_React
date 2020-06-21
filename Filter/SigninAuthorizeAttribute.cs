@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace KroMusic.Filter
 {
-    public class SigninAuthorizeAttribute:AuthorizeAttribute
+    public class SigninAuthorizeAttribute : AuthorizeAttribute
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -14,8 +10,9 @@ namespace KroMusic.Filter
             //判断登录情况
             if (filterContext.HttpContext.Session["UserId"] == null)
             {
-                
-                filterContext.Result = new JsonResult {
+
+                filterContext.Result = new JsonResult
+                {
                     Data = new
                     {
                         State = false,

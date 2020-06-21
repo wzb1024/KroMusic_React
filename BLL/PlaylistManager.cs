@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Web;
-using DAL;
+﻿using DAL;
 using IDAL;
 using Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace BLL
 {
@@ -40,7 +38,7 @@ namespace BLL
         public SearchResultJsonModel GetPlaylistsByKeywords(string keywords, int pageIndex, int pageSize)
         {
             var model = new SearchResultJsonModel();
-            var query = GetAllPlaylists().Where(u => u.Name.Contains(keywords)||keywords.Contains(u.Name));
+            var query = GetAllPlaylists().Where(u => u.Name.Contains(keywords) || keywords.Contains(u.Name));
             var result = query.OrderByDescending(i => i.PlayTimes).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             model.Total = query.Count();
             List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
@@ -117,7 +115,7 @@ namespace BLL
                 Name = model.Name,
                 NickName = model.User.NickName,
             };
-            if (self!= null)
+            if (self != null)
             {
                 jsonModel.IsCollected = self.FavoritePlaylist.Any(item => item.PlaylistId == id);
                 jsonModel.IsLiked = self.LikePlaylist.Any(item => item.PlaylistId == id);
@@ -196,7 +194,7 @@ namespace BLL
             foreach (var item in u.PlaylistItem)
             {
                 var m = item.Music;
-                SongJsonModel model = new SongJsonModel { Id = item.MusicId, ImagePath = m.ImagePath,SingerId=m.SingerId, MusicName = m.MusicName, Path = m.Path, SingerName = item.Music.Singer.Name, Span = m.Span.ToString().Remove(0, 3) };
+                SongJsonModel model = new SongJsonModel { Id = item.MusicId, ImagePath = m.ImagePath, SingerId = m.SingerId, MusicName = m.MusicName, Path = m.Path, SingerName = item.Music.Singer.Name, Span = m.Span.ToString().Remove(0, 3) };
                 data.Add(model);
             }
             return data;
@@ -230,8 +228,8 @@ namespace BLL
                 u.Hdimg = item.User.Hdimage;
                 u.Time = item.Time.ToString();
                 List<SubCommentJsonModel> subComments = new List<SubCommentJsonModel>();
-                var n = model.PlaylistComment.Where(m => m.ReplyId == item.Id).OrderByDescending(i=>i.Time).ToList();
-                foreach (var it in n) 
+                var n = model.PlaylistComment.Where(m => m.ReplyId == item.Id).OrderByDescending(i => i.Time).ToList();
+                foreach (var it in n)
                 {
                     SubCommentJsonModel sub = new SubCommentJsonModel();
                     var target = it.PlaylistComment3;
@@ -277,15 +275,15 @@ namespace BLL
         public SubCommentJsonModel Reply(int id, string value, int targetId)
         {
             var self = UserManager.GetSelf();
-            var p = GetPlaylist(id);
-            var target = p.PlaylistComment.FirstOrDefault(u=>u.Id==targetId);
+            var p = GetPlaylist(id,false);
+            var target = p.PlaylistComment.FirstOrDefault(u => u.Id == targetId);
             PlaylistComment comment = new PlaylistComment();
             comment.Content = value;
-            
+
             comment.UserId = self.Id;
             comment.Time = DateTime.Now;
             comment.TargetId = targetId;
-            if(target.ReplyId!=null)
+            if (target.ReplyId != null)
             {
                 comment.ReplyId = target.ReplyId;
             }
@@ -318,7 +316,7 @@ namespace BLL
             {
                 Playlist model = new Playlist();
                 model.Name = name;
-                model.Cover =Config.PlaylistCoverDir+"Default.png";
+                model.Cover = Config.PlaylistCoverDir + "Default.png";
                 model.CreateTime = DateTime.Now;
                 model.Description = "主人没有留下任何描述哦~";
                 model.Likes = 0;
@@ -326,14 +324,14 @@ namespace BLL
                 model.PlayTimes = 0;
                 self.Playlist.Add(model);
                 saveChanges();
-                var o= GetPlaylistJson(model.Id);
+                var o = GetPlaylistJson(model.Id);
                 return o;
-                
+
             }
         }
         public bool DelPlaylist(int id)
         {
-           return service.Remove(id)>0;
+            return service.Remove(id) > 0;
         }
         public void RmItems(int[] items)
         {
@@ -343,10 +341,10 @@ namespace BLL
                 sev.Remove(item);
             }
         }
-        public void Modify(int id,string desc,string Tags,bool ispublic,string name, HttpPostedFileBase file)
+        public void Modify(int id, string desc, string Tags, bool ispublic, string name, HttpPostedFileBase file)
         {
-            
-            var model = GetPlaylist(id,false);
+
+            var model = GetPlaylist(id, false);
             model.Description = desc;
             model.IsPublic = ispublic;
             model.Name = name;
@@ -358,9 +356,9 @@ namespace BLL
                 model.Cover = imgPath;
             }
             service.Edit(model);
-            
-            if(Tags!=null)
-            {            
+
+            if (Tags != null)
+            {
                 var ids = Tags.Split(',');
                 model.PlaylistType.Clear();
                 saveChanges();
@@ -373,7 +371,7 @@ namespace BLL
                     saveChanges();
 
                 }
-            }          
+            }
         }
         public List<RecoJsonModel> GetReco()
         {

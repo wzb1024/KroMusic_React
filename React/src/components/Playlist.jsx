@@ -67,7 +67,7 @@ class Playlist extends Component {
       }.bind(this)
     );
     $.ajax({
-      url: "/User/Account/SigninState",
+      url: "/SignIn/SigninState",
       type: "get",
       dataType: "json",
       success: function (result) {

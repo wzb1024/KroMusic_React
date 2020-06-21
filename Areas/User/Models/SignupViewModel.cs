@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KroMusic.Areas.User.Models
 {
@@ -13,7 +9,7 @@ namespace KroMusic.Areas.User.Models
         [Display(Name = "用户名")]
         public string UserName { get; set; }
         [Required(ErrorMessage = "请填写密码！")]
-        [StringLength(16, MinimumLength = 6,ErrorMessage ="密码长度为6~16")]
+        [StringLength(16, MinimumLength = 6, ErrorMessage = "密码长度为6~16")]
         [DataType(DataType.Password)]
         [Display(Name = "密码")]
         public string Password { get; set; }
@@ -23,14 +19,14 @@ namespace KroMusic.Areas.User.Models
 
         //public string PasswordConfirm { get; set; }
         [Required(ErrorMessage = "请填写昵称！")]
-        [StringLength(6, MinimumLength = 3,ErrorMessage ="昵称长度为3~6")]
+        [StringLength(6, MinimumLength = 3, ErrorMessage = "昵称长度为3~6")]
         [Display(Name = "昵称")]
         public string NickName { get; set; }
         [Required(ErrorMessage = "请填写性别！")]
         [Display(Name = "性别")]
         public string Gender { get; set; }
         [Required(ErrorMessage = "请填写年龄！")]
-        [Range(6, 99,ErrorMessage ="非法年龄！")]
+        [Range(6, 99, ErrorMessage = "非法年龄！")]
         [Display(Name = "年龄")]
         public int Age { get; set; }
         [Required(ErrorMessage = "请填写邮箱！")]

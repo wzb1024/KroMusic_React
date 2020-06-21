@@ -1,14 +1,9 @@
-﻿using System;
+﻿using BLL;
+using KroMusic.Filter;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using KroMusic.Filter;
-using BLL;
-using KroMusic.Areas.Music.Data;
-using Model;
-using Newtonsoft.Json;
-using Microsoft.Ajax.Utilities;
 
 namespace KroMusic.Areas.Music.Controllers
 {
@@ -16,16 +11,16 @@ namespace KroMusic.Areas.Music.Controllers
     [AjaxSyncAction]
     public class PlaylistController : Controller
     {
-        PlaylistManager manager =new PlaylistManager();
+        PlaylistManager manager = new PlaylistManager();
         CategoryManager categoryManager = new CategoryManager();
         public ActionResult RcmdList()
         {
             return View();
         }
-        public ActionResult Search(string keywords,int pageIndex)
+        public ActionResult Search(string keywords, int pageIndex)
         {
             int pageSize = 15;
-            var result = manager.GetPlaylistsByKeywords(keywords,pageIndex,pageSize);
+            var result = manager.GetPlaylistsByKeywords(keywords, pageIndex, pageSize);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -69,7 +64,7 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         [SigninAuthorize]
         public JsonResult PlaylistCollect(int id)
-        {          
+        {
             var result = manager.Collect(id);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -81,7 +76,7 @@ namespace KroMusic.Areas.Music.Controllers
         [SigninAuthorize]
         public JsonResult PlaylistLike(int id)
         {
-         
+
             var result = manager.Like(id);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -92,7 +87,7 @@ namespace KroMusic.Areas.Music.Controllers
         [SigninAuthorize]
         public ActionResult CancelCollectPlaylists(List<int> playlists)
         {
-           
+
             manager.CancelCollectPlaylists(playlists);
             var model = new
             {
@@ -139,10 +134,10 @@ namespace KroMusic.Areas.Music.Controllers
         }
         [SigninAuthorize]
         [HttpPost]
-        public ActionResult Comment(int id,string value)
+        public ActionResult Comment(int id, string value)
         {
 
-            var model = manager.Comment(id,value);
+            var model = manager.Comment(id, value);
             var result = new
             {
                 State = true,
@@ -152,10 +147,10 @@ namespace KroMusic.Areas.Music.Controllers
         }
         [SigninAuthorize]
         [HttpPost]
-        public ActionResult Reply(int id, string value,int targetId)
+        public ActionResult Reply(int id, string value, int targetId)
         {
 
-            var model = manager.Reply(id, value,targetId);
+            var model = manager.Reply(id, value, targetId);
             var result = new
             {
                 State = true,
@@ -167,7 +162,7 @@ namespace KroMusic.Areas.Music.Controllers
         [SigninAuthorize]
         [HttpPost]
         public ActionResult CreatePlaylist(string name)
-        { 
+        {
             var model = manager.CreatePlaylist(name);
             if (model == null)
             {
@@ -193,7 +188,7 @@ namespace KroMusic.Areas.Music.Controllers
         public ActionResult DelPlaylist(int id)
         {
             bool result = manager.DelPlaylist(id);
-            return Json(new { State = result },JsonRequestBehavior.AllowGet);
+            return Json(new { State = result }, JsonRequestBehavior.AllowGet);
         }
         [SigninAuthorize]
         [HttpPost]
@@ -205,7 +200,7 @@ namespace KroMusic.Areas.Music.Controllers
         [AjaxSyncAction]
         public ActionResult Play(int id)
         {
-            var p = manager.GetPlaylist(id,false);
+            var p = manager.GetPlaylist(id, false);
             p.PlayTimes++;
             manager.saveChanges();
             return new EmptyResult();
@@ -217,7 +212,7 @@ namespace KroMusic.Areas.Music.Controllers
             var id = int.Parse(Request["Id"]);
             var desc = Request["Description"];
             var tags = Request["Tags"];
-            var isPublic =bool.Parse( Request["IsPublic"]);
+            var isPublic = bool.Parse(Request["IsPublic"]);
             var name = Request["Name"];
             manager.Modify(id, desc, tags, isPublic, name, cover);
 
@@ -229,6 +224,6 @@ namespace KroMusic.Areas.Music.Controllers
             var result = manager.GetReco();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
+
     }
 }

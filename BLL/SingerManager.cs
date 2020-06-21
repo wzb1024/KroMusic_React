@@ -15,19 +15,19 @@ namespace BLL
         {
             DBContextFactory.Context.SaveChanges();
         }
-        public IQueryable<Singer> GetAllSingers(bool AsNoTracking=true)
+        public IQueryable<Singer> GetAllSingers(bool AsNoTracking = true)
         {
             if (AsNoTracking) return service.GetAllAsNoTracking();
             else return service.GetAll();
         }
-        public Singer GetSinger(int id, bool AsNoTracking=true)
+        public Singer GetSinger(int id, bool AsNoTracking = true)
         {
             if (AsNoTracking) return service.GetByIdAsNoTracking(id);
             else return service.GetById(id);
         }
         public IEnumerable<Singer> GetSingerByKeywords(string keywords)
         {
-            return GetAllSingers().Where(u => u.Name.Contains(keywords)|| keywords.Contains(u.Name));
+            return GetAllSingers().Where(u => u.Name.Contains(keywords) || keywords.Contains(u.Name));
         }
         public SingerJsonModel GetDetails(int id)
         {
@@ -67,20 +67,20 @@ namespace BLL
             singer.Gender = gender;
             singer.Nationality = nationality;
             singer.Name = name;
-            string imgPath =Config.SingerCoverDir + name + ".jpg";
+            string imgPath = Config.SingerCoverDir + name + ".jpg";
             string savepath = HttpContext.Current.Server.MapPath(imgPath);
             file.SaveAs(savepath);
             singer.Image = imgPath;
             service.Create(singer);
         }
-        public List<SingerJsonModel > GetPopSingers()
+        public List<SingerJsonModel> GetPopSingers()
         {
             List<SingerJsonModel> list = new List<SingerJsonModel>();
             var singers = GetAllSingers().OrderByDescending(u => u.SingerAttention.Count()).Take(15);
             foreach (var item in singers)
             {
                 SingerJsonModel model = ConvertHelper.SingerConvert(item);
-                list.Add(model);           
+                list.Add(model);
             }
             return list;
 

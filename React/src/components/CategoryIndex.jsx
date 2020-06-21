@@ -3,6 +3,8 @@ import $ from "jquery";
 import { Button } from "antd";
 import PlaylistCard from "@/components/PlaylistCard";
 import { Pagination, Spin } from "antd";
+import { Radio, Divider } from "antd";
+import { FireOutlined, UnorderedListOutlined } from "@ant-design/icons";
 
 class CatrgoryIndex extends Component {
   constructor(props) {
@@ -18,11 +20,10 @@ class CatrgoryIndex extends Component {
     };
 
     this.select = this.select.bind(this);
-    this.handleLastestSort = this.handleLastestSort.bind(this);
-    this.handlePopSort = this.handlePopSort.bind(this);
     this.getAllPlaylists = this.getAllPlaylists.bind(this);
     this.initPage = this.initPage.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
   }
   initPage() {
     $.getJSON(
@@ -63,22 +64,6 @@ class CatrgoryIndex extends Component {
     // var i = pagination.children.length;
     // pagination.style.width = i * 32 + (i - 1) * 8 + "px";
   }
-  handlePopSort() {
-    this.setState(
-      {
-        popsort: true,
-      },
-      () => this.initPage()
-    );
-  }
-  handleLastestSort() {
-    this.setState(
-      {
-        popsort: false,
-      },
-      () => this.initPage()
-    );
-  }
   getAllPlaylists() {
     if (breadcrumb.children.length > 2) {
       breadcrumb.removeChild(breadcrumb.children[1]);
@@ -104,7 +89,7 @@ class CatrgoryIndex extends Component {
       breadcrumb.removeChild(breadcrumb.children[1]);
     }
     var l = document.createElement("span");
-    var t = document.createTextNode(">>");
+    var t = document.createTextNode("/ ");
     l.appendChild(t);
     breadcrumb.appendChild(l);
     breadcrumb.appendChild(u.cloneNode(true));
@@ -132,6 +117,14 @@ class CatrgoryIndex extends Component {
         });
       }.bind(this)
     );
+  }
+  handleSortChange(e) {
+    let key = e.target.value;
+    if (key == "pop") {
+      this.setState({ popsort: true }, this.initPage);
+    } else {
+      this.setState({ popsort: false }, this.initPage);
+    }
   }
   render() {
     return (
@@ -161,22 +154,21 @@ class CatrgoryIndex extends Component {
               </Button>
             </div>
             <div id="sort_btn">
-              <Button
-                type="link"
-                className={this.state.popsort ? "selected" : ""}
-                onClick={this.handlePopSort}
+              <Radio.Group
+                defaultValue="pop"
+                buttonStyle="solid"
+                onChange={this.handleSortChange}
               >
-                最热
-              </Button>
-              <Button
-                type="link"
-                className={this.state.popsort ? "" : "selected"}
-                onClick={this.handleLastestSort}
-              >
-                最新
-              </Button>
+                <Radio.Button value="pop">
+                  <FireOutlined style={{ margin: "0px" }} /> 最热
+                </Radio.Button>
+                <Radio.Button value="new">
+                  <UnorderedListOutlined style={{ margin: "0px" }} /> 最新
+                </Radio.Button>
+              </Radio.Group>
             </div>
           </div>
+          <Divider style={{ margin: "0px 0px 10px" }}></Divider>
           <div id="playlistcards">
             {this.state.loading ? (
               <Spin size="large" />

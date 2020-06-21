@@ -1,6 +1,4 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using KroMusic.Filter;
+﻿using System.Web.Mvc;
 
 namespace KroMusic
 {
@@ -8,7 +6,7 @@ namespace KroMusic
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-           // filters.Add(new MyExceptionAttribute());
+            // filters.Add(new MyExceptionAttribute());
         }
     }
 }

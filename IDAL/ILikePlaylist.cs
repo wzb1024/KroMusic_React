@@ -2,7 +2,7 @@
 
 namespace IDAL
 {
-    public interface ILikePlaylist:IBaseService<LikePlaylist>
+    public interface ILikePlaylist : IBaseService<LikePlaylist>
     {
     }
 }

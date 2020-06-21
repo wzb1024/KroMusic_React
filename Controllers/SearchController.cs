@@ -1,9 +1,8 @@
-﻿using System;
+﻿using KroMusic.Filter;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using KroMusic.Filter;
 
 namespace KroMusic.Controllers
 {
@@ -40,9 +39,9 @@ namespace KroMusic.Controllers
                 cookie = new HttpCookie("historySearch");
             else
                 cookie = cok;
-            
+
             cookie.Expires = DateTime.Now.AddDays(7);
-            cookie.Values[HttpUtility.UrlEncode(keyword)]= HttpUtility.UrlEncode(keyword);
+            cookie.Values[HttpUtility.UrlEncode(keyword)] = HttpUtility.UrlEncode(keyword);
             Response.AppendCookie(cookie);
             return new EmptyResult();
         }

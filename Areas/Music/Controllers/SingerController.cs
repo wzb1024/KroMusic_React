@@ -1,11 +1,9 @@
-﻿using System;
+﻿using BLL;
+using KroMusic.Filter;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using KroMusic.Filter;
-using BLL;
-using KroMusic.Areas.Music.Data;
 
 namespace KroMusic.Areas.Music.Controllers
 {
@@ -13,32 +11,32 @@ namespace KroMusic.Areas.Music.Controllers
     public class SingerController : Controller
     {
         SingerManager manager = new SingerManager();
-        
+
         public ActionResult Search(string keywords)
         {
-             var results = manager.GetSingerByKeywords(keywords);
+            var results = manager.GetSingerByKeywords(keywords);
             List<SearchResultItemJsonModel> data = new List<SearchResultItemJsonModel>();
             if (results != null)
                 foreach (var item in results)
                 {
-                    SearchResultItemJsonModel u = new SearchResultItemJsonModel() {Id=item.Id, Name = item.Name,Owner = item.Image };
+                    SearchResultItemJsonModel u = new SearchResultItemJsonModel() { Id = item.Id, Name = item.Name, Owner = item.Image };
                     data.Add(u);
                 }
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-       
+
         public ActionResult GetDetails(int id)
         {
             var data = manager.GetDetails(id);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        
+
         public ActionResult GetSongs(int id)
         {
             var data = manager.GetSongs(id);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Create(string name,string nationality,string gender,int age,HttpPostedFileBase file)
+        public ActionResult Create(string name, string nationality, string gender, int age, HttpPostedFileBase file)
         {
             manager.Create(name, nationality, gender, age, file);
             return new EmptyResult();
@@ -48,6 +46,10 @@ namespace KroMusic.Areas.Music.Controllers
             var data = manager.GetPopSingers();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult GetSingers(string gender,string region)
+        {
+            var data = manager.GetAllSingers().Where(u => u.Gender == gender && u.Nationality == region).Select(n => new { Id = n.Id, Name = n.Name, Image = n.Image });
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }
