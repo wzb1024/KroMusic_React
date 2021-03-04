@@ -48,8 +48,12 @@ namespace KroMusic.Areas.Music.Controllers
         }
         public ActionResult GetSingers(string gender,string region)
         {
-            var data = manager.GetAllSingers().Where(u => u.Gender == gender && u.Nationality == region).Select(n => new { Id = n.Id, Name = n.Name, Image = n.Image });
-            return Json(data, JsonRequestBehavior.AllowGet);
+            var data = manager.GetAllSingers();
+            if (gender!="全部")           data = data.Where(u => u.Gender==gender);
+
+            if (region != "全部") data = data.Where(u => u.Nationality == region);
+             var re =data.Select(n => new { Id = n.Id, Name = n.Name, Image = n.Image });
+            return Json(re, JsonRequestBehavior.AllowGet);
         }
     }
 }

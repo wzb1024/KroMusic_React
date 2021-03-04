@@ -108,7 +108,7 @@ export default class Signin extends React.Component {
                 登录
               </Button>
               <span>
-                Or
+                Or &nbsp; &nbsp;
                 <Link
                   onClick={() => this.setState({ visible: false })}
                   to="/signup"

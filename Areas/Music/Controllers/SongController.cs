@@ -131,23 +131,32 @@ namespace KroMusic.Areas.Music.Controllers
             
             if(count!=null)
             {
-                int c = int.Parse(count.ToString());
-                var data = manager.GetAllSongs().OrderByDescending(u => u.LikeMusic.Count()).Take(c).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name,Span=n.Span });
+                int c = (int)count;
+                var data = manager.GetAllSongs().OrderByDescending(u => u.LikeMusic.Count()).Take(c).Select(n => new { Id = n.Id, MusicName = n.MusicName, SingerId = n.SingerId, Singer = n.Singer.Name,Span=n.Span });
                       return Json(data, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var data = manager.GetAllSongs().OrderByDescending(u => u.LikeMusic.Count()).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name, Span = n.Span });
+                var data = manager.GetAllSongs().OrderByDescending(u => u.LikeMusic.Count()).Select(n => new { Id = n.Id, MusicName = n.MusicName, SingerId = n.SingerId, Singer = n.Singer.Name, Span = n.Span });
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
           
         }
-        public ActionResult GetHeatSongs()
+        public ActionResult GetHeatSongs(int? count)
         {
 
-                var data = manager.GetAllSongs().OrderByDescending(u => u.PlayTimes).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name, Span = n.Span });
+            if (count != null)
+            {
+                int c = (int)count;
+                var data = manager.GetAllSongs().OrderByDescending(u => u.PlayTimes).Take(c).Select(n => new { Id = n.Id, MusicName = n.MusicName, SingerId = n.SingerId, Singer = n.Singer.Name, Span = n.Span });
                 return Json(data, JsonRequestBehavior.AllowGet);
-            
+            }
+            else
+            {
+                var data = manager.GetAllSongs().OrderByDescending(u => u.PlayTimes).Select(n => new { Id = n.Id, MusicName = n.MusicName, SingerId = n.SingerId, Singer = n.Singer.Name, Span = n.Span });
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+
 
         }
         public ActionResult GetNewSongs(int? count)
@@ -155,12 +164,13 @@ namespace KroMusic.Areas.Music.Controllers
             if (count != null)
             {
                 int c = int.Parse(count.ToString());
-                var data = manager.GetAllSongs().OrderByDescending(u => u.ReleaseTime).Take(c).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name, Span = n.Span });
+               
+                var data = manager.GetAllSongsByMounth().OrderByDescending(u => u.ReleaseTime).Take(c).Select(n => new { Id = n.Id, MusicName = n.MusicName,SingerId=n.SingerId, Singer = n.Singer.Name, Span = n.Span });
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var data = manager.GetAllSongs().OrderByDescending(u => u.ReleaseTime).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name, Span = n.Span });
+                var data = manager.GetAllSongsByMounth().OrderByDescending(u => u.ReleaseTime).Select(n => new { Id = n.Id, MusicName = n.MusicName, SingerId = n.SingerId, Singer = n.Singer.Name, Span = n.Span });
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
@@ -169,12 +179,12 @@ namespace KroMusic.Areas.Music.Controllers
             if (count != null)
             {
                 int c = int.Parse(count.ToString());
-                var data = manager.GetAllSongs().OrderByDescending(x => x.Singer.Nationality == region).Take(c).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name, Span = n.Span });
+                var data = manager.GetAllSongs().Where(x => x.Singer.Nationality == region).OrderByDescending(u => u.PlayTimes).Take(c).Select(n => new { Id = n.Id, MusicName = n.MusicName, SingerId = n.SingerId, Singer = n.Singer.Name, Span = n.Span });
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var data = manager.GetAllSongs().OrderByDescending(x => x.Singer.Nationality == region).Select(n => new { Id = n.Id, MusicName = n.MusicName, Singer = n.Singer.Name, Span = n.Span });
+                var data = manager.GetAllSongs().Where(x => x.Singer.Nationality == region).OrderByDescending(u => u.PlayTimes).Select(n => new { Id = n.Id, MusicName = n.MusicName, SingerId = n.SingerId, Singer = n.Singer.Name, Span = n.Span });
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }

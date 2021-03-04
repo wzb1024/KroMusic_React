@@ -42,7 +42,7 @@ namespace KroMusic.Areas.Music.Controllers
         /// <returns></returns>
         public JsonResult GetPlaylists(int id, int pageIndex, bool orderByHeat)
         {
-            int pageSize = 15;
+            int pageSize = 12;
             var data = manager.GetPlaylistsByType(id, orderByHeat, pageIndex, pageSize);
             return Json(data, JsonRequestBehavior.AllowGet);
         }

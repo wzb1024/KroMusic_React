@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import $ from "jquery";
 const gridStyle = {
   width: "25%",
-  padding: "0",
+  padding: "5px",
   paddingBottom: "5px",
+  height: "160px",
 };
 var deleteList = new Array();
 export default class CollectedPlaylists extends Component {
@@ -95,12 +96,12 @@ export default class CollectedPlaylists extends Component {
                   className="playlist_ckb"
                   style={
                     this.state.isEdit
-                      ? { display: "block", position: "absolute" }
-                      : { display: "none", position: "absolute" }
+                      ? { display: "block", position: "absolute", top: "2px" }
+                      : { display: "none", position: "absolute", top: "2px" }
                   }
                 ></Checkbox>
                 <Link to={"/playlist/" + Item.Id}>
-                  <img src={Item.Cover} height="120" width="120" />
+                  <img src={Item.Cover} height="80%" width="100%" />
                 </Link>
                 <div>
                   <Link

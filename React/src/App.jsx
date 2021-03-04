@@ -21,6 +21,8 @@ import Account from "@/components/Account";
 import Playlist from "@/components/Playlist";
 import Song from "@/components/Song";
 import Singer from "@/components/Singer";
+import BannerTop from "./components/BannerTop";
+
 import $ from "jquery";
 class App extends Component {
   constructor() {
@@ -128,10 +130,23 @@ class App extends Component {
               component={() => <Singer addToList={this.addToList}></Singer>}
               exact
             ></Route>
-
             <Route
               from="/account"
               component={() => <Account addToList={this.addToList}></Account>}
+              exact
+            ></Route>
+            <Route
+              from="/ranking"
+              component={() => (
+                <BannerTop addToList={this.addToList}></BannerTop>
+              )}
+              exact
+            ></Route>
+            <Route
+              from="/ranking"
+              component={() => (
+                <BannerTop addToList={this.addToList}></BannerTop>
+              )}
               exact
             ></Route>
             {router.map((route, i) => (

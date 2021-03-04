@@ -24,6 +24,8 @@ class SearchIndex extends Component {
     this.clearHistory = this.clearHistory.bind(this);
     this.clickHistory = this.clickHistory.bind(this);
     this.handlePlaylistPageChange = this.handlePlaylistPageChange.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+
     this.search = this.search.bind(this); //延迟ajax
     //this.handleGetmore = this.handleGetmore.bind(this);
   }
@@ -67,64 +69,48 @@ class SearchIndex extends Component {
       }.bind(this)
     );
   }
-  componentDidMount() {
-    var $input = $("#search_input");
+  handleInput(keyword) {
     var $search = $("#search_box");
-    var $icon = $(document.getElementsByClassName("search_icon")[0]);
-
-    $icon.click(function () {
-      $input.focus();
-    });
-    var timer = null; //定义定时器
-    var timeOut = null;
-    $input.bind(
-      "propertychange input change",
-      function (e) {
-        var keyword = e.target.value;
-        if (keyword != "") {
-          if (timer != null) clearTimeout(timer);
-          timer = setTimeout(() => {
-            $("#search_blur").addClass("active");
-            timeOut = setTimeout(
-              () => $("#result_box").addClass("active"),
-              500
-            );
-
-            $search.animate({
-              top: "20px",
-            });
-            this.search(keyword);
-          }, 300);
-        } else {
-          if (timer != null) clearTimeout(timer);
-          if (timeOut != null) clearTimeout(timeOut);
-          $("#search_blur").removeClass("active");
-          $("#result_box").removeClass("active");
-          $search.animate({
-            top: "180px",
-          });
-          $("#result_box").slideUp("fast");
-          this.clear();
-        }
-      }.bind(this)
-    );
-    $input.blur(function () {
-      if (!$("#result_box").hasClass("active")) {
-        $search.animate({
-          width: "260px",
-          borderRadius: "15px",
-        });
-        $icon.css("display", "block");
-      }
-    });
-    $input.focus(function () {
-      $icon.css("display", "none");
+    if (keyword != "") {
+      $("#search_blur").addClass("active");
+      setTimeout(() => $("#result_box").addClass("active"), 500);
 
       $search.animate({
-        width: "600px",
-        borderRadius: "40px",
+        top: "20px",
       });
+      this.search(keyword);
+    } else {
+      console.log(keyword);
+      $("#search_blur").removeClass("active");
+      $("#result_box").removeClass("active");
+      $search.animate({
+        top: "180px",
+      });
+      $("#result_box").slideUp("fast");
+      this.clear();
+    }
+  }
+  blur() {
+    if (!$("#result_box").hasClass("active")) {
+      $("#search_box").animate({
+        width: "260px",
+        borderRadius: "15px",
+      });
+      $(document.getElementsByClassName("search_icon")[0]).css(
+        "display",
+        "block"
+      );
+    }
+  }
+  focus() {
+    $(document.getElementsByClassName("search_icon")[0]).css("display", "none");
+
+    $("#search_box").animate({
+      width: "600px",
+      borderRadius: "40px",
     });
+  }
+  componentDidMount() {
     $.getJSON(
       "/Search/GetHistory",
       function (result) {
@@ -142,9 +128,9 @@ class SearchIndex extends Component {
     });
   }
   clickHistory(value) {
-    $("#search_input").focus();
     $("#search_input").val(value);
-    this.search(value);
+    this.handleInput(value);
+    $("#search_input").focus();
   }
   handleTagDelete(key) {
     $.ajax("/Search/Delete", {
@@ -183,34 +169,17 @@ class SearchIndex extends Component {
     return (
       <div id="search-container">
         <div id="search_blur"></div>
-        {/* <Drawer
-          getContainer={false}
-          height="100%"
-          zIndex={8}
-          placement="top"
-          style={{ position: "absolute" }}
-          closable={true}
-          onClose={() => {
-            this.setState({
-              visible: false,
-            });
-          }}
-          visible={this.state.visible}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Drawer> */}
         <div id="search_box">
-          <SearchOutlined className="search_icon" />
           <input
             type="text"
             id="search_input"
-            onKeyPress={(e) => {
-              if (e.target.value != "" && event.keyCode == 13) {
-                this.search(e.target.value);
-              }
-            }}
+            onChange={(e) => this.handleInput(e.target.value)}
+            onBlur={this.blur}
+            onFocus={this.focus}
+          />
+          <SearchOutlined
+            className="search_icon"
+            onClick={() => $("#search_input").focus()}
           />
         </div>
         <div id="result_box">
@@ -223,12 +192,17 @@ class SearchIndex extends Component {
                 </li>
               ) : (
                 <>
-                  <li>
-                    <span>歌单名</span>
-                    <span style={{ float: "right", fontSize: "13px" }}>
-                      歌手
-                    </span>
-                  </li>
+                  <span
+                    style={{
+                      width: "180px",
+                      display: "inline-block",
+                      fontSize: "initial",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    歌曲名
+                  </span>
+                  <span style={{ fontSize: "initial" }}>歌手</span>
                   {this.state.songs.map((item, i) => {
                     if (i < 5) {
                       return (
@@ -237,10 +211,15 @@ class SearchIndex extends Component {
                           onClick={() => this.handleSearch(item.Name)}
                         >
                           <li key={item.Id}>
-                            <span>{item.Name}</span>
-                            <span style={{ float: "right", fontSize: "13px" }}>
-                              {item.Owner}
+                            <span
+                              style={{
+                                width: "180px",
+                                display: "inline-block",
+                              }}
+                            >
+                              {item.Name}
                             </span>
+                            <span>{item.Owner}</span>
                           </li>
                         </Link>
                       );
@@ -265,15 +244,20 @@ class SearchIndex extends Component {
                         to={"/singer/" + item.Id}
                         onClick={() => this.handleSearch(item.Name)}
                       >
-                        <li key={item.id}>
+                        <li
+                          key={item.id}
+                          style={{ textAlign: "center", padding: "5px" }}
+                        >
                           <span>
                             <Avatar
                               src={item.Owner}
-                              size="small"
+                              size="middle"
                               icon={<UserOutlined />}
                             />
                           </span>
-                          <span style={{ marginLeft: "15px" }}>
+                          <span
+                            style={{ marginLeft: "35px", fontSize: "initial" }}
+                          >
                             {item.Name}
                           </span>
                         </li>
@@ -293,12 +277,18 @@ class SearchIndex extends Component {
                 </li>
               ) : (
                 <>
-                  <li>
-                    <span>歌单名</span>
-                    <span style={{ float: "right", fontSize: "13px" }}>
-                      创建者
-                    </span>
-                  </li>
+                  <span
+                    style={{
+                      width: "180px",
+                      display: "inline-block",
+                      fontSize: "initial",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    歌单名
+                  </span>
+                  <span style={{ fontSize: "initial" }}>创建者</span>
+
                   {this.state.playlist.result.map((item, i) => {
                     return (
                       <Link
@@ -306,10 +296,12 @@ class SearchIndex extends Component {
                         onClick={() => this.handleSearch(item.Name)}
                       >
                         <li key={item.Id}>
-                          <span>{item.Name}</span>
-                          <span style={{ float: "right", fontSize: "13px" }}>
-                            {item.Owner}
+                          <span
+                            style={{ width: "180px", display: "inline-block" }}
+                          >
+                            {item.Name}
                           </span>
+                          <span>{item.Owner}</span>
                         </li>
                       </Link>
                     );

@@ -26,6 +26,12 @@ namespace BLL
             if (AsNoTracking) return service.GetAllAsNoTracking();
             else return service.GetAll();
         }
+        public IQueryable<Music> GetAllSongsByMounth()
+        {
+            DateTime dtMonthFirstday = Convert.ToDateTime(new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString("yyyy-MM-dd"));
+            var data=  GetAllSongs().Where(u =>u.ReleaseTime >= dtMonthFirstday);
+            return data;
+        }
         public Music GetSong(int id, bool AsNoTracking = true)
         {
             if (AsNoTracking) return service.GetByIdAsNoTracking(id);
@@ -235,11 +241,12 @@ namespace BLL
             song.MusicComment.Add(comment);
             saveChanges();
             SubCommentJsonModel model = new SubCommentJsonModel();
+            var user = UserManager.GetUser(userId);
             model.UserId = userId;
             model.Id = comment.Id;
             model.Content = value;
-            model.Hdimg = comment.User.Hdimage;
-            model.NickName = comment.User.NickName;
+            model.Hdimg = user.Hdimage;
+            model.NickName = user.NickName;
             model.Time = comment.Time.ToString();
             model.TarName = target.User.NickName;
             model.TarUserId = target.User.Id;

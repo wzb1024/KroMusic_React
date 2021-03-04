@@ -131,14 +131,14 @@ export default class Account extends Component {
     ) : (
       <div id="account_container" className="container">
         <div id="account_msg">
-          <img src="http://oss.krokro.top/img/20200320121658.png" />
+          <img src="/Sourse/bkg-imgs/infor_side.jpg" />
         </div>
         <div id="account_taps">
           <Tabs
             type="line"
             tabPosition="left"
             defaultActiveKey="1"
-            tabBarGutter={20}
+            tabBarGutter={30}
           >
             <TabPane
               tab={

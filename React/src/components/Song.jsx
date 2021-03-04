@@ -160,7 +160,15 @@ export default class Song extends Component {
           </div>
           <div id="music_title">
             <ul>
-              <li>{details.MusicName}</li>
+              <li
+                style={{
+                  "margin-right": "60px",
+                  "font-weight": "bold",
+                  "font-size": "20px",
+                }}
+              >
+                {details.MusicName}
+              </li>
               <li>
                 <Link to={"/singer/" + details.SingerId}>
                   {details.SingerName}
@@ -168,8 +176,10 @@ export default class Song extends Component {
               </li>
             </ul>
             <ul>
-              <li>流派：{details.Genre}</li>
-              <li>发布时间：{details.ReleaseTime}</li>
+              <li style={{ marginRight: "30px" }}>流派：{details.Genre}</li>
+              <li style={{ marginRight: "30px" }}>
+                发布时间：{details.ReleaseTime}
+              </li>
               <li>播放量：{details.PlayTimes}</li>
             </ul>
           </div>
@@ -187,7 +197,7 @@ export default class Song extends Component {
                   <i
                     className="fa fa-thumbs-up"
                     aria-hidden="true"
-                    style={{ color: "red" }}
+                    style={{ color: "rgb(255, 120, 117)" }}
                   ></i>
                 ) : (
                   <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
@@ -200,7 +210,7 @@ export default class Song extends Component {
                   <i
                     className="fa fa-heart"
                     aria-hidden="true"
-                    style={{ color: "red" }}
+                    style={{ color: "rgb(255, 120, 117)" }}
                   ></i>
                 ) : (
                   <i className="fa fa-heart-o" aria-hidden="true"></i>
@@ -215,17 +225,6 @@ export default class Song extends Component {
             </li>
           </ul>
         </div>
-        {/* <div id="music_lyric_box" className="shadow">
-          <h2
-            style={{
-              letterSpacing: "2px",
-              color: "rgba(0,0,0,0.5)",
-              fontSize: "16px",
-            }}
-          >
-            歌词
-          </h2>
-        </div> */}
         <div id="music_comment">
           <div>
             <Comment
@@ -325,8 +324,8 @@ export default class Song extends Component {
         <div id="relate_music_box">
           <h4>相关音乐</h4>
           {relate.map((item) => (
-            <Link key={item.Id} to={"/song/" + item.Id}>
-              <div className="relate_music shadow">
+            <div className="relate_music shadow">
+              <a key={item.Id} href={"/song/" + item.Id}>
                 <img
                   src={item.ImagePath}
                   style={{
@@ -335,12 +334,15 @@ export default class Song extends Component {
                   }}
                   height="60px"
                   width="50px"
-                />
-                <div style={{ fontSize: "16px", lineHeight: "60px" }}>
+                />{" "}
+              </a>
+
+              <div style={{ fontSize: "16px", lineHeight: "60px" }}>
+                <a key={item.Id} href={"/song/" + item.Id}>
                   {item.MusicName}
-                </div>
+                </a>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>

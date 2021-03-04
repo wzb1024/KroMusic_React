@@ -6,7 +6,6 @@ import Account from "@/components/Account";
 import Playlist from "@/components/Playlist";
 import Song from "@/components/Song";
 import Singer from "@/components/Singer";
-import BannerTop from "./components/BannerTop";
 import Singers from "./components/Singers";
 
 const router = [
@@ -43,11 +42,6 @@ const router = [
   {
     path: "/signup",
     component: Signup,
-    exact: true,
-  },
-  {
-    path: "/ranking",
-    component: BannerTop,
     exact: true,
   },
 ];

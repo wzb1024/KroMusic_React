@@ -16,6 +16,7 @@ body {
   /* background-color: #f8fff0; */
   width: 100%;
   height: inherit;
+  background: url("/Sourse/bkg-imgs/background.png");
 }
 
 li {
@@ -64,10 +65,15 @@ em {
 }
 
 .container {
-  width: 1020px;
+  width: 920px;
   margin: 0 auto;
   /* background-color: #ffffff; */
-  /* min-height: 870px; */
+  min-height: 870px;
+  box-shadow: 0px 5px 15px 1px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-radius: 5px;
 }
 
 .ue-bar {
@@ -176,15 +182,34 @@ em {
   height: 100%;
   width: 100%;
   background-color: white;
+  position: relative;
+}
+
+.signup_content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  height: 500px;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
+
+}
+
+.signup_side {
+  background: url("/Sourse/bkg-imgs/signup_side.jpg");
+
+  background-size: cover;
+  width: 50%;
+  height: 100%;
+  float: left;
 }
 
 #signup_box {
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
-  width: 360px;
-  padding-top: 20px;
-  position: absolute;
-  top: 20%;
-  right: 25%;
+  width: 50%;
+  height: 100%;
+  float: left;
+  padding-top: 15px;
 }
 
 #ckUN {
@@ -317,7 +342,7 @@ em {
 
 .ranking_box {
   margin: 80px 40px;
-  text-align: left;
+  text-align: center;
   display: inline-block;
   width: 160px;
   height: 360px;
@@ -562,7 +587,7 @@ em {
 
 /*åˆ†ç±»é¡µ*/
 #categories_nav {
-  margin: 0 auto;
+  margin: 25px auto;
   width: 860px;
   border-bottom: 1px solid #d9d9d9;
   padding: 0 20px;
@@ -595,7 +620,7 @@ element.style {
 }
 
 .typeItem button {
-  padding: 2px 4px;
+  padding: 2px 10px;
 }
 
 .typeItem>button:hover span {
@@ -660,9 +685,10 @@ element.style {
 #playlistcards {
   overflow: hidden;
   text-align: center;
+  padding-left: 50px;
 }
 
-#playlistcards> :not(:nth-child(5n)) {
+#playlistcards> :not(:nth-child(4n)) {
   margin-right: 22.5px;
 }
 
@@ -682,18 +708,17 @@ element.style {
 
 /*è´¦æˆ·*/
 #account_container {
-  padding: 30px 60px;
+  padding: 10px;
 }
 
 #account_msg {
   width: 300px;
-
   float: left;
   overflow: hidden;
 }
 
 #account_msg>img {
-  height: 800px;
+  height: 850px;
   transform: translateX(-20%);
 }
 
@@ -777,7 +802,7 @@ ul.self_playlist>li:nth-child(4) {
 
 /*æ­Œå•*/
 #playlist_container {
-  padding: 15px 35px;
+  padding: 15px 8px;
 }
 
 #playlists_cantainer {
@@ -785,11 +810,10 @@ ul.self_playlist>li:nth-child(4) {
 }
 
 #playlist_intro {
-  width: 260px;
+  width: 210px;
   background-color: #ffffff;
   padding: 20px 15px 5px;
   position: fixed;
-  top: 115px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
 }
 
@@ -799,9 +823,11 @@ ul.self_playlist>li:nth-child(4) {
 
 #playlist_cover {
   height: 160px;
-  width: 160px;
+  width: 200px;
   /* border: 1px solid black; */
   margin-bottom: 15px;
+  position: relative;
+  left: -10px;
 }
 
 #playlist_intro>ul>li {
@@ -840,6 +866,12 @@ ul.self_playlist>li:nth-child(4) {
   letter-spacing: 1px;
   width: 25%;
   text-overflow: ellipsis;
+}
+
+#playlist_content ul li:first-child,
+#singer_content ul li:first-child,
+#favorite_songs ul li:first-child {
+  width: 40%;
 }
 
 #playlist_content ul:nth-child(2n + 1),
@@ -1021,23 +1053,23 @@ ul.self_playlist>li:nth-child(4) {
   /* margin-right: 30px; */
 }
 
-#music_title {
-  float: left;
+#singer_title {
+  /* float: left; */
   padding: 0 10px;
   font-size: 30px;
   height: 160px;
-  max-width: 600px;
+  /* width: 600px; */
 }
 
-#music_title>ul {
-  width: 120px;
+#singer_title>ul {
+  width: 20%;
   display: inline-block;
   vertical-align: middle;
   margin: 20px;
 }
 
 
-#music_title ul li {
+#singer_title ul li {
   font-size: 18px;
   width: 180px;
   height: 35px;
@@ -1045,6 +1077,37 @@ ul.self_playlist>li:nth-child(4) {
   display: block;
   text-overflow: ellipsis;
   overflow: hidden;
+  white-space: nowrap;
+}
+
+#singer_title ul li a {
+  font-size: 18px;
+  color: gray;
+}
+
+#music_title {
+  float: left;
+  padding: 0 10px;
+  font-size: 30px;
+  height: 160px;
+}
+
+#music_title>ul {
+  /* width: 20%; */
+  display: block;
+  vertical-align: middle;
+  margin: 20px;
+}
+
+
+#music_title ul li {
+  font-size: 18px;
+  /* width: 180px; */
+  height: 35px;
+  line-height: 30px;
+  display: inline-block;
+  /* text-overflow: ellipsis; */
+  /* overflow: hidden; */
   white-space: nowrap;
 }
 
@@ -1077,7 +1140,7 @@ ul.self_playlist>li:nth-child(4) {
 }
 
 #music_operate ul li:hover * {
-  transform: scale(1.1);
+  transform: scale(1.05);
   color: rgba(0, 0, 0, 0.4);
 }
 
@@ -1521,16 +1584,17 @@ ul#carousel_box>li {
 
 #singer_container {
   width: 42%;
+  text-align: center;
 }
 
-#singer_content {
+#singer_content>div {
   margin-top: 40px;
   min-height: 510px;
 }
 
 .attention_item {
   display: inline-block;
-  padding: 10px;
+  padding: 7.5px;
   text-align: center;
 }
 
@@ -1671,7 +1735,9 @@ ul#carousel_box>li {
 }
 
 #singer_content {
-  margin-top: 40px;
+  margin: 40px auto;
+  text-align: left;
+  width: 80%;
 }
 
 .attention_item {
@@ -1681,51 +1747,47 @@ ul#carousel_box>li {
 }
 
 .singer_container {
-  width: 60%;
   margin: 0 auto;
   min-height: 700px;
+  text-align: center;
 }
 
 .singer_box {
   display: inline-block;
-  width: 200px;
-  height: 230px;
 }
 
 /***排行榜****/
 .toplist_nav_item {
-  font-size: 90px;
+  font-size: 16px;
   display: block;
   line-height: 22px;
-  padding: 8px 17px
+  padding: 8px 17px;
+  text-align: right;
 }
 
+
+
 .toplist_nav_list {
+  height: 600px;
+  margin-top: 60px;
   float: left;
-  width: 200px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: black
+  width: 120px;
+  margin-left: 50px;
 }
 
 .toplist_nav_tit {
-  font-size: 20px;
-  line-height: 60px;
+  font-size: 18px;
+  line-height: 40px;
   font-weight: 400;
-  border-bottom: 5px solid #ebebeb
-}
-
-dd,
-dl,
-dt {
-  margin: 0;
-  padding: 0;
+  /* border-bottom: 5px solid #ebebeb; */
 }
 
 .mod_songlist_toolbar {
-  position: relative;
-  margin-bottom: 20px;
-  font-size: 0px;
+  float: left !important;
+  /* margin-bottom: 20px; */
+  /* font-size: 0px; */
+  width: 85%;
+  margin-top: 40px;
 }
 
 .mod_btn_green {
@@ -1758,10 +1820,13 @@ dt {
 }
 
 .songlist__header {
-  height: 100px;
-  line-height: 100px;
-  position: relative;
+  /* height: 100px; */
+  /* line-height: 100px; */
+  /* position: relative; */
   width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: px;
 }
 
 li {
@@ -1771,19 +1836,28 @@ li {
 .songlist__header_name {
   float: left;
   position: relative;
-  margin-right: 200px;
+  width: 300px;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .songlist__header_author {
   float: left;
   box-sizing: border-box;
+  /* margin-right: 10%; */
+  font-size: 14px;
+  width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .songlist__header_time {
-  position: absolute;
-  top: 2px;
-  right: 25px;
-  width: 50px;
+  font-size: 14px;
+  /* position: absolute; */
+  /* top: 2px; */
+  /* right: 25px; */
+  /* width: 50px; */
 }
 
 .songlist_song {
@@ -1799,4 +1873,49 @@ li {
   margin-left: 480px;
 }
 
-/***排行榜****/
+/***歌手****/
+.singers_category {
+  text-align: center;
+  padding-top: 60px;
+}
+
+
+.list_item {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.list_item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+
+.shadow::before,
+.shadow::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+}
+
+.shadow::before,
+.shadow::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  height: 20%;
+}
+
+.shadow::before,
+.shadow::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  height: 20%;
+}

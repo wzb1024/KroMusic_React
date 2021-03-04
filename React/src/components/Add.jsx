@@ -3,21 +3,23 @@ import $ from "jquery";
 import { Popover, Button, message } from "antd";
 
 const addToPlaylist = (mid, pid) => {
-  $.post("/Music/Song/AddToPlaylist", { mid: mid, pid: pid }, function (
-    result
-  ) {
-    if (result.State) {
-      message.success("添加成功");
-    } else {
-      message.error("歌单中已存在");
+  $.post(
+    "/Music/Song/AddToPlaylist",
+    { mid: mid, pid: pid },
+    function (result) {
+      if (result.State) {
+        message.success("添加成功");
+      } else {
+        message.error("歌单中已存在");
+      }
     }
-  });
+  );
 };
 
 const Content = ({ list, setVisible, id }) => {
   if (list.length > 0) {
     var dom = list.map((item) => (
-      <div>
+      <div className="list_item" onClick={() => addToPlaylist(id, item.Id)}>
         <Button
           type="link"
           style={{
@@ -26,7 +28,6 @@ const Content = ({ list, setVisible, id }) => {
             height: "16px",
             lineHeight: "16px",
           }}
-          onClick={() => addToPlaylist(id, item.Id)}
         >
           {item.Name}
         </Button>

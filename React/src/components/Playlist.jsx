@@ -209,7 +209,7 @@ class Playlist extends Component {
           <>
             <div id="playlist_intro">
               <div id="playlist_cover">
-                <img src={details.Cover} height="160px" width="160px" />
+                <img src={details.Cover} height="160px" width="200px" />
               </div>
               <ul>
                 <li>
@@ -250,12 +250,16 @@ class Playlist extends Component {
               <div id="playlist_operate">
                 <button onClick={this.handleLike}>
                   <LikeTwoTone
-                    twoToneColor={details.IsLiked ? "#ff181c" : "#b3b3b3"}
+                    twoToneColor={
+                      details.IsLiked ? "rgb(255, 120, 117)" : "#b3b3b3"
+                    }
                   />
                 </button>
                 <button onClick={this.handleCollect}>
                   <StarTwoTone
-                    twoToneColor={details.IsCollected ? "#52c41a" : "#b3b3b3"}
+                    twoToneColor={
+                      details.IsCollected ? "rgb(255, 120, 117)" : "#b3b3b3"
+                    }
                   />
                 </button>
                 <button>

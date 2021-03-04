@@ -16,7 +16,7 @@ class CatrgoryIndex extends Component {
       currentTypeId: 0,
       popsort: true,
       loading: false,
-      total: 15,
+      total: 12,
     };
 
     this.select = this.select.bind(this);
@@ -181,7 +181,7 @@ class CatrgoryIndex extends Component {
           <Pagination
             hideOnSinglePage={false}
             className="pagination"
-            defaultPageSize={15}
+            defaultPageSize={12}
             defaultCurrent={1}
             total={this.state.total}
             current={this.state.pageIndex}

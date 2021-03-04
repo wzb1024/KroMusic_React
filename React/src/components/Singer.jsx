@@ -93,7 +93,7 @@ export default class Singer extends Component {
           <div id="music_cover">
             <img src={details.Image} width="140" height="160" />
           </div>
-          <div id="music_title">
+          <div id="singer_title">
             <ul>
               <li style={{ fontSize: "20px", fontWeight: "bold" }}>
                 {details.Name}

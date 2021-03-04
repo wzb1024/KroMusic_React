@@ -249,7 +249,6 @@ const SingerForm = ({ name, setVisible }) => {
         >
           <Select.Option value="内地">内地</Select.Option>
           <Select.Option value="港澳">港澳</Select.Option>
-          <Select.Option value="台湾">台湾</Select.Option>
           <Select.Option value="日韩">日韩</Select.Option>
           <Select.Option value="欧美">欧美</Select.Option>
           <Select.Option value="其他">其他</Select.Option>

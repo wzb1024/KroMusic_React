@@ -37,7 +37,6 @@ const HomeRanking = () => {
   useEffect(init, []);
   return (
     <>
-      <Card data={newlist} title="歌曲上新"></Card>
       <Card data={likelist} title="流行榜"></Card>
       <Card data={demosticlist} title="内地榜"></Card>
       <Card data={UAlist} title="欧美榜"></Card>
@@ -70,7 +69,7 @@ const Card = ({ data, title }) => {
                 style={{
                   fontSize: "16px",
                   letterSpacing: "1px",
-                  fontWeight: "530",
+                  fontWeight: "600",
                 }}
               >
                 {item.MusicName}
@@ -78,7 +77,7 @@ const Card = ({ data, title }) => {
               <br />
               <span
                 style={{
-                  fontSize: "15px",
+                  fontSize: "13px",
                   letterSpacing: "0px",
                   fontWeight: "520",
                 }}
